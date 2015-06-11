@@ -2,12 +2,17 @@
 <html>
   <head>
     <title>{{ title }}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='public/css/style.css' />
   </head>
   <body>
     <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}</p>
-    <script src="js/test1.js"></script>
+    <p id="Hello">Welcome to {{ title }}</p>
+    <button id="sagar" type="button" name="button">Hello!</button>
+    <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+    <script src="public/js/test1.js"></script>
+
+
+    </script>
 
   </body>
 </html>
