@@ -2,17 +2,30 @@
 <html>
   <head>
     <title>{{ title }}</title>
+    <meta name="description",contents="">
+    <meta name="author", contents="Sagar, Paul">
+    <meta name="viewport", content="width=device-width,initial-scale=1">
     <link rel='stylesheet' href='public/css/style.css' />
+    <link rel='stylesheet' href='public/css/frontPage.css' />
   </head>
   <body>
-    <h1>{{ title }}</h1>
-    <p id="Hello">Welcome to {{ title }}</p>
-    <button id="sagar" type="button" name="button">Hello!</button>
+    <div id='wrapper'>
+
+      <div id = 'register'>not working</div>
+
+
+      <button id="sagar" type="button" name="button">Hello!</button>
+
+      <div class="textField">
+        <h2>Welcome to <h1>video45</h1></h2><br />
+        <h3> Bring Videos to life in 45 seconds </h3>
+      </div>
+
+    </div>
     <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="public/js/test1.js"></script>
-
-
-    </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
+    <script src="bower_components/react/react.min.js"></script>
+    <script type="text/jsx;harmony=true" src="public/js/Comments.js"></script>
   </body>
 </html>
