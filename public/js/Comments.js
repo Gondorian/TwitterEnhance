@@ -33,7 +33,7 @@ var RegisterBox = React.createClass({
     return (
       <div className="registerBox">
       <form className="form">  
-      <h3><b>New to Video45?</b> Sign p</h3><hr />
+      <h3><b>New to Video45?</b> Sign up</h3><hr />
           <input type="text" placeholder="Full Name" /><br/>
           <input type="text" placeholder="Email" /><br/>
           <input type="password" placeholder="Password" id="pass"/><br/>
