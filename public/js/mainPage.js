@@ -1,3 +1,17 @@
+var custName = "l";
+
+$(window).scroll(function(){
+	var wScroll = $(this).scrollTop();
+	if(wScroll > 350){
+		$(".navbar").addClass('visible');
+		$("#navSearch").css('display','inline')
+	}else{
+		$(".navbar").removeClass('visible');
+		$("#navSearch").css('display','none')
+	}
+	$("#fancySearch").css("opacity", 1-(wScroll/100) );
+	$("#fancySearch").css("transform",'translateY(-' + wScroll +'px)');
+});
 
 var Aside = React.createClass({
 	render: function(){
@@ -65,10 +79,29 @@ var Navbar = React.createClass({
 });
 
 var Content = React.createClass({
+	getInitialState: function() {
+	cust = "ral";
+    return {custName: cust};
+  	},
+	componentDidMount: function(){
+	$.ajax({
+      	url: "http://localhost:3000/users/profileName",
+      	dataType: 'json',
+      	cache: false,
+      	success: function(data) {
+ 	     	alert( "Data Loaded: " + data );
+        	this.setState({custName: data});
+      	}.bind(this),
+      	error: function(xhr, status, err) {
+	        console.error("http://localhost:3000/users/profileName", status, err.toString());
+      	}.bind(this)
+    });
+  	},		
 	render: function(){
 		return(
 			<div className="wrapper">
-				<Navbar cust={"Travis"}/>
+				{console.log("name: "+ custName)};
+				<Navbar cust={this.state.custName}/>
 				<FancyNavbar />
 				<div className="newBody">
 					<div className="content">
@@ -91,21 +124,3 @@ React.render(
 	document.getElementById("content")
 );
 
-$(document).ready(function(){
-	$.get( "http://localhost:3000/users/profileName", function( data ) {
-  		alert( "Data Loaded: " + data );
-	});
-});
-
-$(window).scroll(function(){
-	var wScroll = $(this).scrollTop();
-	if(wScroll > 350){
-		$(".navbar").addClass('visible');
-		$("#navSearch").css('display','inline')
-	}else{
-		$(".navbar").removeClass('visible');
-		$("#navSearch").css('display','none')
-	}
-	$("#fancySearch").css("opacity", 1-(wScroll/100) );
-	$("#fancySearch").css("transform",'translateY(-' + wScroll +'px)');
-});
