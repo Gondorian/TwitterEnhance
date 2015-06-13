@@ -18,11 +18,12 @@ var LoginBox =React.createClass({
   render: function(){
     return(
       <div className="loginBox">
-        <form className ="form" action="http://localhost:3000/users/login" method="POST" >
+        <form className ="form" action="http://localhost:3000/users/login" method="POST">
           <input type="text" placeholder="Email" name="email"/><br/>
           <input type="password" placeholder="Password" id="password" name="password"/>
           <input type="submit" value="Log In" id="logButton" />
-          <input type="checkbox" value="remember" className="check"/> Remember me
+          <input type="checkbox" value="remember" className="check" name="group" id="remember"/> 
+          <label htmlFor="remember">Remember me</label>
           <a href="#">Forgot Password? </a>
         </form>
       </div>

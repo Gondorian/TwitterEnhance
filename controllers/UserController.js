@@ -59,6 +59,4 @@ exports.logout = function(req){
     else
       return true;
   });
-
-
 }
