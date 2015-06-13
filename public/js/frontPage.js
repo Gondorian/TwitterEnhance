@@ -65,6 +65,22 @@ React.render(
   document.getElementById('register')
 );
 
+
+var toggleHelp = 1;
+
+var imageToggle = function(){
+  if(toggleHelp==1){
+    $('#wrapper').css('background-image','url("http://i.imgur.com/a62BBWB.jpg?1")');
+  }else{
+    $('#wrapper').css('background-image','url("http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg")');
+  }
+  toggleHelp = toggleHelp*-1;
+  setTimeout(function(){
+      imageToggle();
+  },10000);
+}
+
+
 $(document).ready(function(){
   var width = parseInt($('#wrapper').css('width'));
   if(width<860){
@@ -74,7 +90,9 @@ $(document).ready(function(){
     $('.textField').removeClass('largeScreen');
     $('#frontpage').css('margin-top','100px')
   }
+  imageToggle();
 });
+
 
 $(window).resize(function(){
   var width = parseInt($('#wrapper').css('width'));
@@ -87,3 +105,4 @@ $(window).resize(function(){
   }
   console.log(width);
 });
+

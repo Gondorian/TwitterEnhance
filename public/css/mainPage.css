@@ -58,19 +58,19 @@ body {
 .content {
   height: 2000px;
   margin-top: 410px;
-  background-color: black;
+  background-color: gray;
   padding-left: 300px; }
 
 .sideBar {
   float: left;
   position: relative;
-  background-color: white;
+  background-color: gray;
   height: 100%;
   margin-left: -300px;
   width: 300px; }
 
 .panel {
-  background-color: purple;
+  background-color: gray;
   height: 200px; }
 
 /*# sourceMappingURL=mainPage.css.map */

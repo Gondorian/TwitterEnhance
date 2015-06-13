@@ -15,6 +15,7 @@ var Panel = React.createClass({
 		return(
 			<div className="panel">
 				{this.props.test}
+
 			</div>
 		);
 	}
@@ -73,7 +74,6 @@ React.render(
 
 $(window).scroll(function(){
 	var wScroll = $(this).scrollTop();
-	console.log(1-(wScroll/400));
 	if(wScroll > 350){
 		$(".navbar").css('display','block');
 	}else{
