@@ -1,13 +1,16 @@
 var express = require('express');
+var UserController = require('../controllers/UserController');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  if(UserController.isLoggedIn)
+    res.redirect('/users/profile');
+  else
+    res.render('index');
+
 });
 
-router.get('/test', function(req, res, next) {
-  res.send("This is a response!");
-});
+
 
 module.exports = router;

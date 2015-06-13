@@ -65,7 +65,6 @@ React.render(
   document.getElementById('register')
 );
 
-
 var toggleHelp = -1;
 
 var imageToggle = function(){
@@ -104,3 +103,4 @@ $(window).resize(function(){
   }
   console.log(width);
 });
+
