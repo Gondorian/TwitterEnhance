@@ -4,7 +4,7 @@
 var nano = require('nano')('http://localhost:5984');
 var video45 = nano.use('video45');
 
-exports.inserNewUser= function(fullName, email, password){
+exports.insertNewUser= function(fullName, email, password){
   video45.insert(
     {"fullName": fullName,
      "email": email,
@@ -19,4 +19,14 @@ exports.inserNewUser= function(fullName, email, password){
 
 exports.checkIfUserExists = function(){
 
+}
+
+exports.getProfileName = function(email){
+  var profile = video45.get(email,
+    function(err, body) {
+      if (!err)
+        console.log(body);
+    });
+
+  //console.log(profile);
 }

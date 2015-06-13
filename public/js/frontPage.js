@@ -22,8 +22,8 @@ var LoginBox =React.createClass({
           <input type="text" placeholder="Email" name="email"/><br/>
           <input type="password" placeholder="Password" id="password" name="password"/>
           <input type="submit" value="Log In" id="logButton" />
-          <input type="checkbox" value="remember" className="check" name="remember"/> 
-          <label for="remember">Remember me</label>
+          <input type="checkbox" value="remember" className="check" name="group" id="remember"/> 
+          <label htmlFor="remember">Remember me</label>
           <a href="#">Forgot Password? </a>
         </form>
       </div>
@@ -104,4 +104,3 @@ $(window).resize(function(){
   }
   console.log(width);
 });
-

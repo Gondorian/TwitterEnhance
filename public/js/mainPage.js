@@ -51,10 +51,10 @@ var FancyNavbar = React.createClass({
 var Navbar = React.createClass({
 	render: function(){
 		return(
-			<div className = "navbar" >
-				<p> Hello, {this.props.cust}</p>
+			<div className = "navbar">
+				<p> Hello, {this.props.cust} </p>
 				<form action="http://localhost:3000/users/logout" method="GET">
-					<input className="button" type="submit" value="logout"  />
+					<input className="button" type="submit" value="logout"/>
 				</form>
 				<form>
 					<input id="navSearch" type="text" placeholder="search" />
@@ -79,7 +79,7 @@ var Content = React.createClass({
 							<Panel test={"#Selfie"}/>
 							<Panel test={"#Notrepetitve.jpg"}/>
 						</div>
-					</div>	
+					</div>
 				</div>
 			</div>
 		);

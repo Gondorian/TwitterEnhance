@@ -27,7 +27,8 @@ body {
   float: right;
   border: none;
   margin-right: 30px;
-  margin-top: 15px; }
+  margin-top: 15px;
+  cursor: pointer; }
   .languageChoice select {
     border: none; }
 
@@ -74,6 +75,12 @@ body {
     .textField.largeScreen h2, .textField.largeScreen h3 {
       display: none; }
 
+#remember {
+  cursor: pointer; }
+
+label {
+  cursor: pointer; }
+
 #logButton {
   background-color: #4db8ff;
   border-color: #2f9ae1;
@@ -83,8 +90,8 @@ body {
   font-weight: bold;
   cursor: pointer; }
 
-#logButton::hover {
-  background-color: #4db8ff; }
+#logButton:hover {
+  background-color: #39a4eb; }
 
 #regButton {
   margin-left: 125px;
@@ -96,6 +103,9 @@ body {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer; }
+
+#regButton:hover {
+  background-color: #caa100; }
 
 .form {
   background-color: white;
