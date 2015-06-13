@@ -39,14 +39,17 @@ router.get('/logout', function(req, res, next){
 
 // Request for registering a user.
 router.post('/register', function(req, res, next){
-  var success = UserController.registerUser(req);
-  console.log('value of success:' + success);
-  if(success){
-    console.log('Succesfully registered. Redirecting to profile.');
-    res.redirect('/users/profile');
-  }
-  else
-    res.redirect('/');
+  UserController.registerUser(req, function(success){
+    if(success){
+      console.log('Succesfully registered. Redirecting to profile.');
+      res.redirect('/users/profile');
+    }
+    else
+      res.redirect('/');
+
+
+  });
+
 });
 
 router.post('/login', function(req, res, next){

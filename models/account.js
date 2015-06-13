@@ -19,13 +19,33 @@ exports.insertNewUser= function(fullName, email, password){
   });
 }
 
-exports.checkIfUserExists = function(email, password, callback){
+//check if credentials match to ones in database
+exports.checkCredentials = function(email, password, callback){
 
   video45.get(email,                //retrieves the document with id
     function(err, body) {
       if (!err){                   //if doc exists, checks password and calls the callback
         pass = body['password'];
         if(pass == password)
+          callback(true);
+        else
+          callback(false);
+      }
+      else {                      //if doc doesnt exist, calls the callback with false
+        callback(false);
+      }
+
+    });
+}
+
+//check if user is in database
+exports.checkIfUserExists = function(email, callback){
+
+  video45.get(email,                //retrieves the document with id
+    function(err, body) {
+      if (!err){                   //if doc exists callback true
+        em = body['email'];
+        if(em == email)
           callback(true);
         else
           callback(false);

@@ -2,12 +2,28 @@ var Account = require('../models/account');
 
 var session;
 
-exports.registerUser = function(req){
+exports.registerUser = function(req, callback){
   var fullName = req.body.fullName;
   var email = req.body.email;
   var password = req.body.password;
 
-  Account.insertNewUser(fullName, email, password);
+  Account.checkIfUserExists(email, function(exists){
+      if(exists){         //if user exists, callback false (no success)
+        callback(false);
+      }
+      else{               //else insert the user, set the session and callback with true
+        //var fullName = req.body.fullName;
+        //var email = req.body.email;
+        //var password = req.body.password;
+
+        Account.insertNewUser(fullName, email, password);
+        req.session.email = email;
+        callback(true);
+      }
+  });
+
+
+
   console.log('it has got here!');
   return true;
 }
@@ -16,7 +32,7 @@ exports.login = function(req, callback){        //get the user's session and set
   var email = req.body.email;
   var password = req.body.password;
 
-  Account.checkIfUserExists(email, password, function(exists){
+  Account.checkCredentials(email, password, function(exists){
       if(exists){         //if user exists, set the session variable to the email from the request
         var session = req.session;
         session.email = req.body.email;

@@ -9,7 +9,7 @@ $(window).scroll(function(){
 		$(".navbar").removeClass('visible');
 		$("#navSearch").css('display','none')
 	}
-	$("#fancySearch").css("opacity", 1-(wScroll/100) );
+	$("#fancySearch").css("opacity", 1-(wScroll/200));
 	$("#fancySearch").css("transform",'translateY(-' + wScroll +'px)');
 });
 
