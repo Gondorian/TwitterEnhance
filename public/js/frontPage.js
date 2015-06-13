@@ -22,6 +22,8 @@ var LoginBox =React.createClass({
           <input type="text" placeholder="Email" /><br/>
           <input type="password" placeholder="Password" id="password"/>
           <input type="submit" value="Log In" id="logButton" />
+          <input type="checkbox" value="remember" className="check"/> Remember me
+          <a href="#">Forgot Password? </a>
         </form>
       </div>
     );
@@ -47,7 +49,7 @@ var RegisterBox = React.createClass({
 var FrontPage = React.createClass({
   render: function(){
     return (
-      <div className="frontPage">
+      <div className="menus">
         <Navbar />
         <div className="content">
           <LoginBox />
@@ -62,3 +64,26 @@ React.render(
   <FrontPage />,
   document.getElementById('register')
 );
+
+$(document).ready(function(){
+  var width = parseInt($('#wrapper').css('width'));
+  if(width<860){
+    $('.textField').addClass('largeScreen');
+    $('#frontpage').css('margin-top','50px')
+  }else{
+    $('.textField').removeClass('largeScreen');
+    $('#frontpage').css('margin-top','100px')
+  }
+});
+
+$(window).resize(function(){
+  var width = parseInt($('#wrapper').css('width'));
+  if(width<860){
+    $('.textField').addClass('largeScreen');
+    $('#frontpage').css('margin-top','50px')
+  }else{
+    $('.textField').removeClass('largeScreen');
+    $('#frontpage').css('margin-top','100px')
+  }
+  console.log(width);
+});

@@ -10,20 +10,12 @@
   </head>
   <body>
     <div id='wrapper'>
-
-      <button id="sagar" type="button" name="button">Hello!</button>
-      <div id = "frontpage">
-        <div class="textField">
-          <h2>Welcome to <h1>video45</h1></h2><br />
-          <h3> Bring Videos to life in 45 seconds </h3>
-        </div>
-        <div id = 'register'>not working</div>
-      </div>
+      <div id = 'content'>not working</div>
     </div>
     <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="public/js/test1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
-    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/react.min.js"></script>
     <script type="text/jsx;harmony=true" src="public/js/frontPage.js"></script>
   </body>
 </html>
