@@ -5,7 +5,7 @@ var session;
 exports.registerUser = function(req){
   var fullName = req.body.fullName;
   var email = req.body.email;
-  var password = req.body.email;
+  var password = req.body.password;
 
   Account.insertNewUser(fullName, email, password);
   console.log('it has got here!');
@@ -30,8 +30,9 @@ exports.login = function(req, callback){        //get the user's session and set
 }
 
 exports.getUserProfile = function(req, callback){
-  var session = req.session;
+  session = req.session;
   var email = session.email;
+  console.log('email for profilename request: ' + email);
   Account.getProfileName(email, function(name){
     callback(name);
   });
@@ -41,11 +42,11 @@ exports.getUserProfile = function(req, callback){
 exports.isLoggedIn = function(req){
   session = req.session;
   if(session.email){
-    console.log('email: ' + session.email);
+    console.log('The Session email: ' + session.email);
     return true;
   }
   else {
-    console.log('No email found!');
+    console.log('No Session email found!');
     false;
   }
 }
@@ -59,4 +60,6 @@ exports.logout = function(req){
     else
       return true;
   });
+
+
 }

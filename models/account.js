@@ -38,12 +38,14 @@ exports.checkIfUserExists = function(email, password, callback){
 }
 
 exports.getProfileName = function(email, callback){
-
+  console.log('email for profilename request 2: ' + email);
   video45.get(email,
     function(err, body) {
       if (!err){
-        name = body['name'];
-        callback(name);
+        console.log(body);
+        var returnName = body['fullName'];
+        console.log('the name that was in the body: ' + returnName);
+        callback(returnName);
       }
 
     });

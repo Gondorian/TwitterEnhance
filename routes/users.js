@@ -8,13 +8,18 @@ var UserController = require('../controllers/UserController');
 // GET REQUESTS
 
 router.get('/profile', function(req, res, next) {
-  console.log('profile requested!');
-  res.render('mainPage');
+  console.log('Profile page requested!');
+  if(UserController.isLoggedIn(req))
+    res.render('mainPage');
+  else {
+    res.redirect('/');
+  }
 });
 
 router.get('/profileName', function(req, res, next){
   UserController.getUserProfile(req, function(name){
-    res.send(name);
+    res.send({thename: name});
+    console.log('Name sent: ' + name);
   });
 });
 

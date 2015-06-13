@@ -89,14 +89,15 @@ var Content = React.createClass({
       	dataType: 'json',
       	cache: false,
       	success: function(data) {
- 	     	alert( "Data Loaded: " + data );
         	this.setState({custName: data});
       	}.bind(this),
       	error: function(xhr, status, err) {
-	        console.error("http://localhost:3000/users/profileName", status, err.toString());
+	        console.log("bruh this aint returning no response");
+					console.log(status);
+					console.log(xhr);
       	}.bind(this)
     });
-  	},		
+	},
 	render: function(){
 		return(
 			<div className="wrapper">
@@ -123,4 +124,3 @@ React.render(
 	<Content />,
 	document.getElementById("content")
 );
-
