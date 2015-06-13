@@ -9,7 +9,6 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-<<<<<<< HEAD
 // Request for registering a user.
 router.post('/register1', function(req, res, next){
   var fullName = req.body.fullName;
@@ -30,12 +29,8 @@ router.post('/register', function(req, res, next){
 
 });
 
-
-
-=======
 router.get('/welcome', function(req, res, next) {
   res.render('mainPage');
 });
 
->>>>>>> 90cb76b609b0086ceb94aeaea11e3145451b1157
 module.exports = router;
