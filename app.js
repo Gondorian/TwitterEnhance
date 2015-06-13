@@ -5,6 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//Authentication
+var session = require ('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+
+
+//Routes
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -22,8 +30,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
+// passport stuff
+app.use(session({ secret: 'sagarisaboss' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// set the route files.
 app.use('/', routes);
 app.use('/users', users);
+
+// passport config
+/*
+var Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

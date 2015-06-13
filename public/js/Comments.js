@@ -32,11 +32,11 @@ var RegisterBox = React.createClass({
   render: function() {
     return (
       <div className="registerBox">
-      <form className="form">  
+      <form className="form" action="http://localhost:3000/users/register" method="POST">
       <h3><b>New to Video45?</b> Sign up</h3><hr />
-          <input type="text" placeholder="Full Name" /><br/>
-          <input type="text" placeholder="Email" /><br/>
-          <input type="password" placeholder="Password" id="pass"/><br/>
+          <input type="text" placeholder="Full Name" name="fullName" /><br/>
+          <input type="text" placeholder="Email" name="email"/><br/>
+          <input type="password" placeholder="Password" id="pass" name="password"/><br/>
           <input type="submit" value="Sign up for Video45" id="regButton"/>
         </form>
       </div>
