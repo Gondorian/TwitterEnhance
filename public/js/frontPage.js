@@ -19,8 +19,8 @@ var LoginBox =React.createClass({
     return(
       <div className="loginBox">
         <form className ="form">
-          <input type="text" placeholder="Email" /><br/>
-          <input type="password" placeholder="Password" id="password"/>
+          <input type="text" placeholder="Email" name="email"/><br/>
+          <input type="password" placeholder="Password" id="password" name="password"/>
           <input type="submit" value="Log In" id="logButton" />
           <input type="checkbox" value="remember" className="check"/> Remember me
           <a href="#">Forgot Password? </a>
@@ -65,9 +65,7 @@ React.render(
   document.getElementById('register')
 );
 
-
-
-var toggleHelp = 1;
+var toggleHelp = -1;
 
 var imageToggle = function(){
   if(toggleHelp==1){
@@ -80,7 +78,6 @@ var imageToggle = function(){
       imageToggle();
   },10000);
 }
-
 
 $(document).ready(function(){
   var width = parseInt($('#wrapper').css('width'));
@@ -106,3 +103,4 @@ $(window).resize(function(){
   }
   console.log(width);
 });
+

@@ -7,9 +7,9 @@ exports.registerUser = function(req){
   var email = req.body.email;
   var password = req.body.email;
 
-  account.inserNewUser(fullName, email, password);
-
-  return false;
+  Account.insertNewUser(fullName, email, password);
+  console.log('it has got here!');
+  return true;
 }
 
 exports.login = function(req){        //get the user's session and set the session variable 'email' to the one supplied by the user
@@ -17,11 +17,12 @@ exports.login = function(req){        //get the user's session and set the sessi
   session = req.session;
   session.email = email;
 
-  return false;
+  return true;
 
 }
 
-exports.getUserProfile = function(email){
+exports.getUserProfile = function(req){
+  Account.getProfileName('paul@gmail.com');
 
 }
 
@@ -31,16 +32,25 @@ function authenticate(email, password){
 
 exports.isLoggedIn = function(req){
   session = req.session;
-  if(req.session.email){
+  if(session.email){
+    console.log('email: ' + session.email);
     return true;
+  }
+  else {
+    console.log('No email found!');
+    false;
   }
 }
 
 exports.logout = function(req){
-  req.session.destroy(function(err){
-    if(err)
+  return req.session.destroy(function(err){
+    if(err){
+      console.log(err);
       return false;
+    }
     else
       return true;
   });
+
+
 }
