@@ -1,41 +1,45 @@
 var express = require('express');
 var router = express.Router();
 
-var passport = require('passport');
+//var passport = require('passport');
 var account = require('../models/account');
+var UserController = require('../controllers/UserController');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-<<<<<<< HEAD
-// Request for registering a user.
-router.post('/register1', function(req, res, next){
-  var fullName = req.body.fullName;
-  var email = req.body.email;
-  var password = req.body.password;
-
-  res.send('I have recieved your name: ' + fullName + ', email: ' + email + ', password: ' + password);
-
-});
-
-router.post('/register', function(req, res, next){
-  var fullName = req.body.fullName;
-  var email = req.body.email;
-  var password = req.body.password;
-  account.inserNewUser(fullName, email, password);
-
-  res.render('Success!');
-
-});
-
-
-
-=======
-router.get('/welcome', function(req, res, next) {
+router.get('/profile', function(req, res, next) {
   res.render('mainPage');
 });
 
->>>>>>> 90cb76b609b0086ceb94aeaea11e3145451b1157
+router.get('/profileName', function(req, res, next){
+  UserController.getUserProfile(req);
+
+});
+
+
+//POST REQUESTS
+
+// Request for registering a user.
+router.post('/register', function(req, res, next){
+  var success = UserController.registerUser(req);
+
+  if(success)
+    res.redirect('/profile');
+  else
+    res.redirect('/');
+});
+
+router.post('/login', function(req, res, next){
+
+  var success = UserController.login(req);
+  if (success)
+    res.redirect('/profile');
+  else
+    res.redirect('/');
+
+});
+
+
+
+
+
 module.exports = router;

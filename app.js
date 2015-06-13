@@ -4,12 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-//Authentication
 var session = require ('express-session');
+
+/*
+//Authentication
+
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+*/
 
 
 //Routes
@@ -32,9 +34,10 @@ app.use(express.static(__dirname));
 
 // passport stuff
 app.use(session({ secret: 'sagarisaboss' }));
+/*
 app.use(passport.initialize());
 app.use(passport.session());
-
+*/
 
 // set the route files.
 app.use('/', routes);
