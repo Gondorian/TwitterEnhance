@@ -13,7 +13,9 @@ router.get('/profile', function(req, res, next) {
 });
 
 router.get('/profileName', function(req, res, next){
-  res.send(UserController.getUserProfile(req));
+  UserController.getUserProfile(req, function(name){
+    res.send(name);
+  });
 });
 
 router.get('/logout', function(req, res, next){
@@ -43,18 +45,21 @@ router.post('/register', function(req, res, next){
 });
 
 router.post('/login', function(req, res, next){
+  //secret way of getting in
   if(req.body.email == "paul"){
     res.redirect('/users/profile');
   }
   else{
-    var success = UserController.login(req);
+    UserController.login(req, function(succcess){
+      if(succcess){       //if credentials were correct
+        console.log('Logged in succesfully!');
+        res.redirect('/');
+      }
+      else{              //if credentials were incorrect
+        res.redirect('/');
+      }
+    });
 
-    if (success){
-      res.redirect('/users/profile');
-    }
-    else{
-      res.redirect('/');
-    }
   }
 
 

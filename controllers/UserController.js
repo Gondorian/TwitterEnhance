@@ -12,21 +12,29 @@ exports.registerUser = function(req){
   return true;
 }
 
-exports.login = function(req){        //get the user's session and set the session variable 'email' to the one supplied by the user
+exports.login = function(req, callback){        //get the user's session and set the session variable 'email' to the one supplied by the user
   var email = req.body.email;
-  session = req.session;
-  session.email = email;
+  var password = req.body.password;
 
-  return true;
+  Account.checkIfUserExists(email, password, function(exists){
+      if(exists){         //if user exists, set the session variable to the email from the request
+        var session = req.session;
+        session.email = req.body.email;
+        callback(true);
+      }
+      else{               //else callback with false
+        callback(false);
+      }
+  });
 
 }
 
-exports.getUserProfile = function(req){
-  Account.getProfileName('paul@gmail.com');
-
-}
-
-function authenticate(email, password){
+exports.getUserProfile = function(req, callback){
+  var session = req.session;
+  var email = session.email;
+  Account.getProfileName(email, function(name){
+    callback(name);
+  });
 
 }
 
