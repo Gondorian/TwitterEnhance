@@ -5,7 +5,8 @@ var router = express.Router();
 var account = require('../models/account');
 var UserController = require('../controllers/UserController');
 
-/* GET users listing. */
+// GET REQUESTS
+
 router.get('/profile', function(req, res, next) {
   res.render('mainPage');
 });
@@ -13,6 +14,14 @@ router.get('/profile', function(req, res, next) {
 router.get('/profileName', function(req, res, next){
   UserController.getUserProfile(req);
 
+});
+
+router.get('/logout', function(req, res, next){
+  var success = UserController.logout(req);
+  if(success)
+    res.redirect('/');
+  else
+    res.send("you can't leave. video45 is love, video45 is life.")
 });
 
 
