@@ -38,11 +38,7 @@ exports.isLoggedIn = function(req){
 
 exports.logout = function(req){
   req.session.destroy(function(err){
-    if(err){
-      console.log(err);
-    }
-    else{
-      res.redirect('/');
-    }
+    if(err) return(false);
+    else return(true);
   });
 }

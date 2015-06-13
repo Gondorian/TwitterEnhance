@@ -51,9 +51,10 @@ var FancyNavbar = React.createClass({
 var Navbar = React.createClass({
 	render: function(){
 		return(
-			<div className = "navbar">
-				<form>
-					<input className="button" type="submit" value="logout" />
+			<div className = "navbar" >
+				<p> Hello, {this.props.cust}</p>
+				<form action="http://localhost:3000/users/logout" method="GET">
+					<input className="button" type="submit" value="logout"  />
 				</form>
 				<form>
 					<input id="navSearch" type="text" placeholder="search" />
@@ -67,14 +68,14 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className="wrapper">
-				<Navbar />
+				<Navbar cust={"Travis"}/>
 				<FancyNavbar />
 				<div className="newBody">
 					<div className="content">
 						<Aside />
 						<div className="panelList">
 							<p> Videos </p>
-							<Panel test={"#BestHashtag"}/>
+							<Panel test={"#flying"}/>
 							<Panel test={"#Selfie"}/>
 							<Panel test={"#Notrepetitve.jpg"}/>
 						</div>
@@ -89,6 +90,12 @@ React.render(
 	<Content />,
 	document.getElementById("content")
 );
+
+$(document).ready(function(){
+	$.get( "http://localhost:3000/users/profileName", function( data ) {
+  		alert( "Data Loaded: " + data );
+	});
+});
 
 $(window).scroll(function(){
 	var wScroll = $(this).scrollTop();

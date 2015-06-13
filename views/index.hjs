@@ -16,7 +16,6 @@
           <h3> Bring Videos to life in 45 seconds </h3>
         </div>
         <div id = 'register'>not working</div>
-
       </div>
     </div>
     <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
