@@ -18,7 +18,7 @@ var LoginBox =React.createClass({
   render: function(){
     return(
       <div className="loginBox">
-        <form className ="form">
+        <form className ="form" action="http://localhost:3000/users/login" method="POST" >
           <input type="text" placeholder="Email" name="email"/><br/>
           <input type="password" placeholder="Password" id="password" name="password"/>
           <input type="submit" value="Log In" id="logButton" />
@@ -103,4 +103,3 @@ $(window).resize(function(){
   }
   console.log(width);
 });
-
