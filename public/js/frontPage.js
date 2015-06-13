@@ -22,6 +22,8 @@ var LoginBox =React.createClass({
           <input type="text" placeholder="Email" /><br/>
           <input type="password" placeholder="Password" id="password"/>
           <input type="submit" value="Log In" id="logButton" />
+          <input type="checkbox" value="remember" className="check"/> Remember me
+          <a href="#">Forgot Password? </a>
         </form>
       </div>
     );
@@ -47,7 +49,7 @@ var RegisterBox = React.createClass({
 var FrontPage = React.createClass({
   render: function(){
     return (
-      <div className="frontPage">
+      <div className="menus">
         <Navbar />
         <div className="content">
           <LoginBox />
@@ -62,3 +64,48 @@ React.render(
   <FrontPage />,
   document.getElementById('register')
 );
+<<<<<<< HEAD:public/js/Comments.js
+=======
+
+
+var toggleHelp = 1;
+
+var imageToggle = function(){
+  if(toggleHelp==1){
+    $('#wrapper').css('background-image','url("http://i.imgur.com/a62BBWB.jpg?1")');
+  }else{
+    $('#wrapper').css('background-image','url("http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg")');
+  }
+  toggleHelp = toggleHelp*-1;
+  setTimeout(function(){
+      imageToggle();
+  },10000);
+}
+
+
+$(document).ready(function(){
+  var width = parseInt($('#wrapper').css('width'));
+  if(width<860){
+    $('.textField').addClass('largeScreen');
+    $('#frontpage').css('margin-top','50px')
+  }else{
+    $('.textField').removeClass('largeScreen');
+    $('#frontpage').css('margin-top','100px')
+  }
+  imageToggle();
+});
+
+
+$(window).resize(function(){
+  var width = parseInt($('#wrapper').css('width'));
+  if(width<860){
+    $('.textField').addClass('largeScreen');
+    $('#frontpage').css('margin-top','50px')
+  }else{
+    $('.textField').removeClass('largeScreen');
+    $('#frontpage').css('margin-top','100px')
+  }
+  console.log(width);
+});
+
+>>>>>>> 90cb76b609b0086ceb94aeaea11e3145451b1157:public/js/frontPage.js

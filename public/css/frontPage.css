@@ -1,3 +1,7 @@
+body {
+  margin-right: 10%;
+  margin-left: 10%; }
+
 #wrapper {
   position: fixed;
   top: 0px;
@@ -5,7 +9,9 @@
   right: 0px;
   bottom: 0px;
   background-position: 0px 50px;
-  background-image: url("http://i.imgur.com/2wC3FVJ.png");
+  background-image: url("http://i.imgur.com/a62BBWB.jpg?1");
+  -webkit-transition: background-image 1s ease-in-out;
+  transition: background-image 1s ease-in;
   background-repeat: no-repeat;
   background-size: cover; }
 
@@ -20,16 +26,35 @@
 .languageChoice {
   float: right;
   border: none;
-  margin-right: 15px;
+  margin-right: 30px;
   margin-top: 15px; }
   .languageChoice select {
     border: none; }
 
+#frontpage {
+  width: 100%;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 500px; }
+
+.menus {
+  margin-left: auto;
+  margin-right: auto; }
+
+.content {
+  float: right;
+  display: inline-block;
+  margin-right: 15%;
+  width: 300px; }
+
 .textField {
+  float: left;
   display: inline-block;
   text-align: right;
+  align-content: center;
   width: 50%;
-  margin-top: 100px; }
+  margin-bottom: 0px; }
   .textField h1, .textField h2, .textField h3 {
     display: inline;
     font-weight: 500; }
@@ -42,6 +67,12 @@
     font-family: "Courier New", Courier, monospace; }
   .textField h3 {
     font-size: 17px; }
+  .textField.largeScreen {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px; }
+    .textField.largeScreen h2, .textField.largeScreen h3 {
+      display: none; }
 
 #logButton {
   background-color: #4db8ff;
@@ -65,27 +96,27 @@
   background-color: white;
   width: 100%;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 20px; }
   .form input {
     width: 90%;
     border-radius: 4px;
     padding: 4px;
-    margin: 8px;
+    margin: 4px;
     border: solid;
     border-width: 1px;
     border-color: grey; }
   .form h3 {
+    margin-top: 5px;
     padding-left: 10px;
     font-weight: 100; }
+  .form .check {
+    width: 20px; }
+  .form a {
+    margin-left: 20px;
+    text-decoration: none; }
 
 #password {
   width: 60%; }
-
-.content {
-  margin-top: 100px;
-  float: right;
-  margin-right: 10%;
-  width: 300px; }
 
 /*# sourceMappingURL=frontPage.css.map */
