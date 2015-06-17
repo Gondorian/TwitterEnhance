@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   console.log('requesting front page!');
   if(UserController.isLoggedIn(req)){
     res.redirect('/users/profile');
-  }    
+  }
   else{
     res.render('loginPage');
   }
