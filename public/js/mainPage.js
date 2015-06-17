@@ -68,7 +68,9 @@ var Navbar = React.createClass({
 			<div className = "navbar">
 				<p> Hello, {this.props.cust} </p>
 				<form action="http://localhost:3000/users/logout" method="GET">
-					<input className="button" type="submit" value="logout"/>
+					<div class="input-field">
+						<input className="button" type="submit" value="logout"/>
+					</div>
 				</form>
 				<form>
 					<input id="navSearch" type="text" placeholder="search" />

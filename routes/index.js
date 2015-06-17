@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
   if(UserController.isLoggedIn(req))
     res.redirect('/users/profile');
   else
-    res.render('frontPage');
+    res.render('loginPage');
 
 });
 

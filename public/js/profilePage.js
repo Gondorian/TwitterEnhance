@@ -6,25 +6,34 @@ var data = [
 	{url: "http://thedailyfandom.com/wp-content/uploads/2015/01/Why_5d76e0_1095350.jpg"}
 ];
 
+//edit the contents of the right panels here, note editing this will edit
+//all copies as this is the template used by vidList
 var Videos = React.createClass({
 	render: function(){
 		return(
-			<div className="panel">
-				<div className="poster">
-					<img className="posterImg" src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m(01-32)_gr.jpg" />
-					<p>Posted by someone</p>
-				</div>
-				<img className="vidImg" src={this.props.url} />
-				<div className="vidInfo">
-					<p id="commentText">check out this video</p>
-					<hr/>
-					<p>___ likes___ reposts ____ share </p>
-					<hr/>
-					<div className="comments">
-						<p>__ comments</p>
-						<form>
-							<input type="text" id='comment' maxlength="255" placeholder="enter something Nice" />
-						</form>
+			<div className="row">
+				<div className="panel col s5 offset-s5">
+					<div className="poster">
+						<img className="posterImg" src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m(01-32)_gr.jpg" />
+						<p>Posted by someone</p>
+					</div>
+					<img className="vidImg" src={this.props.url} />
+					<div className="vidInfo">
+						<p id="commentText">check out this video</p>
+						<hr/>
+						<p>___ likes___ reposts ____ share </p>
+						<hr/>
+						<div className="comments">
+							<p>__ comments</p>
+							<form>
+								 <div className="row">
+        							<div className="input-field col s12">
+										<textarea id='comment' className="materialize-textarea"/>
+										<label for="comment"> Enter something Nice </label>
+									</div>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -32,6 +41,9 @@ var Videos = React.createClass({
 	}
 });
 
+//vidList is the container for the growable list of panels, if the actual
+//panels must be edited use Video. if additional types of panels must be edited
+//do that here
 var VidList = React.createClass({
 	render: function(){
 		var imageNodes = this.props.data.map(function(vidUrl){
@@ -47,50 +59,94 @@ var VidList = React.createClass({
 	}
 });
 
+//profileInfo is the information contained in the left pushpin, all
+// modifications can be done here
 var ProfileInfo = React.createClass({
 	render: function(){
 		return(
-			<div className = "profileInfo">
-				<img className ="profilePic" src="https://instagramimages-a.akamaihd.net/profiles/profile_230790170_75sq_1391224426.jpg" /><br />
-				<p className="profileName"> {this.props.cust} </p>
-				<p className="description"> {this.props.desc} </p>
-				<table className = "stats">
-					<tr>
-						<td>___ <br />posts</td>
-						<td>___ <br />followers</td>
-						<td id="lastCell">___ <br />following</td>
-					</tr>
-				</table>
-				<form>
-					<input type="submit" value="FOLLOWING" /> 
-				</form>
+			<div id="profileRow" className="row">
+				<div className = "profileInfo">
+					<img className ="profilePic" src="https://instagramimages-a.akamaihd.net/profiles/profile_230790170_75sq_1391224426.jpg" /><br />
+					<p className="profileName"> {this.props.cust} </p>
+					<p className="description"> {this.props.desc} </p>
+					<table className = "stats">
+						<tr>
+							<td>___ <br />posts</td>
+							<td>___ <br />followers</td>
+							<td id="lastCell">___ <br />following</td>
+						</tr>
+					</table>
+					<form>
+						<button className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
+						</button>
+					</form>
+				</div>
 			</div>
 		);
 	}
 });
 
+//this will edit the content of the navbar
 var Navbar = React.createClass({
 	render: function(){
 		return(
-			<div className = "navbar">
-				<p> Hello, {this.props.cust} </p>
-				<form action="http://localhost:3000/users/logout" method="GET">
-					<input className="button" type="submit" value="logout"/>
-				</form>
-				<form>
-					<input id="navSearch" type="text" placeholder="search" />
-				</form>
+			<div  className="navbar-fixed">
+				<nav>
+					<div className = "nav-wrapper">
+						<a href='#' className="brand-logo"> Hello, {this.props.cust} </a>
+						<a href="#" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
+						<ul className="right hide-on-med-and-down">
+							<li>
+								<form>
+								<div className="input-field">
+									<input id="navSearch" type="search" placeholder="search" />
+									<label for="navsearch"><i className="mdi-action-search"></i></label>
+								</div>
+								</form>
+							</li>
+							<li id="logoutBut">
+								<div className="input-field">
+									<form action="http://localhost:3000/users/logout" method="GET">
+										<button className="btn waves-effect waves-light" type="submit" name="action">logout
+										</button>
+									</form>
+								</div>
+							</li>
+						</ul>
+						<ul className="side-nav" id="mobile-demo">
+					     	<li>
+								<form>
+									<div className="input-field">
+										<input id="navSearch" type="search" placeholder="search" />
+										<label for="navsearch"><i className="mdi-action-search"></i></label>
+									</div>
+								</form>
+							</li>
+							<li id="logoutBut">
+								<div className="input-field">
+									<form action="http://localhost:3000/users/logout" method="GET">
+										<button className="btn waves-effect waves-light" type="submit" name="action">logout
+										</button>
+									</form>
+								</div>
+							</li>
+				     	</ul>
+					</div>
+				</nav>
 			</div>
 		);
 	}
 });
 
-
+//the Parent of all elements below, this will handle any properties that
+//must be passed to the children
 var Content = React.createClass({
+	//getInitialState will run when the component first loads and will initialize part of its state
 	getInitialState: function() {
 		cust = "ral";
     	return {custName: cust};
   	},
+  	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
 	$.ajax({
       	url: "http://localhost:3000/users/profileName",
@@ -107,6 +163,7 @@ var Content = React.createClass({
       	}.bind(this)
     });
 	},
+	//render will recreate the components and everything thatis on the screen starts here
 	render: function(){
 		return(
 			<div className = "profilePage">
@@ -118,28 +175,37 @@ var Content = React.createClass({
 	}
 });
 
+//the root this calls the parent with some dummy data
 React.render(
 	<Content data={data} />,
 	document.getElementById("content")
 );
 
+//allows for multi displays by monitoring screen size
 var handleResize = function(){
 	var windWidth = parseInt($("body").css("width"));
-	console.log(windWidth);
-	if(windWidth < 950){
+	//reorganize the page if the screen size is small
+	if(windWidth < 975){
+		//This is for small screen organization
 		$(".profileInfo").addClass("smallScreen");
+		//recenter the panel if the screen is small
+		$(".panel").removeClass("col s5 offset-s5")>
 		$(".pictures").addClass("smallScreen");
 	}else{
+		//return to a lare screen organization
 		$(".profileInfo").removeClass("smallScreen");
+		$(".panel").addClass("col s5 offset-s5")>
 		$(".pictures").removeClass("smallScreen");
 	}
 }
 
-
+//monitors screen resize
 $(window).resize(function(){
 	handleResize();
 });
 
+//checks for document loading
 $(document).ready(function(){
+	$(".button-collapse").sideNav();
 	handleResize();
 })

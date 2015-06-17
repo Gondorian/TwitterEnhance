@@ -5,50 +5,18 @@ body {
 .content {
   position: relative; }
 
-.navbar {
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 30px;
-  width: 100%;
-  padding-top: 10px;
-  padding-right: 20px;
+.nav-wrapper {
   padding-left: 20px;
-  border: none;
-  border-width: 1px;
-  background-color: white;
-  border: solid;
-  border-width: 1px; }
-  .navbar p {
-    display: inline;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
-    font-style: bold; }
-  .navbar form {
-    float: right;
-    margin-right: 30px; }
-  .navbar #navSearch {
-    display: none;
-    border-radius: 20px;
-    height: 18px;
-    padding-left: 10px; }
-  .navbar .button {
-    background-color: #c8c8ff;
-    border-radius: 10px;
-    margin-top: -3px;
-    padding: 5px;
-    font-size: 12px;
-    color: black;
-    cursor: pointer; }
-  .navbar .button:hover {
-    background-color: #646464; }
+  overflow: hidden; }
+  .nav-wrapper li {
+    margin-right: 20px; }
+  .nav-wrapper #logoutBut:hover {
+    background-color: transparent; }
 
 .profileInfo {
   position: fixed;
-  width: 270px;
-  top: 50px;
+  max-width: 270px;
+  top: 90px;
   left: 10%;
   height: 100%;
   padding: 10px;
@@ -56,7 +24,8 @@ body {
   text-align: center; }
   .profileInfo.smallScreen {
     position: static;
-    width: 535px;
+    display: block;
+    max-width: 535px;
     height: auto;
     margin: 50px auto 0px; }
   .profileInfo .profileName {
@@ -67,18 +36,20 @@ body {
     margin: 0px auto;
     display: block;
     width: 240px; }
-  .profileInfo input {
+  .profileInfo button {
     display: block;
     color: #4ab825;
     border-radius: 1px;
     width: 240px;
-    font-style: bolder;
     background-color: white;
-    font-size: 1em;
-    padding: 7px 15px;
     cursor: pointer; }
-  .profileInfo input:hover {
-    border-color: #7cea57; }
+    .profileInfo button i {
+      position: absolute;
+      left: 10px;
+      font-size: 2em; }
+  .profileInfo button:hover {
+    border-color: #7cea57;
+    background-color: transparent; }
 
 .profilePic {
   display: block;
@@ -102,28 +73,30 @@ body {
     font-size: 20px;
     border-right: solid;
     border-color: green;
-    border-width: 1px; }
+    border-width: 1px;
+    vertical-align: middle;
+    text-align: center; }
   .stats #lastCell {
     border-right: none; }
 
 .panel {
-  max-width: 555px;
   width: 100%;
   background-color: white;
-  border-radius: 1px; }
+  border-radius: 1px;
+  max-width: 555px;
+  margin-left: auto;
+  margin-right: auto; }
 
 .pictures {
   display: block;
-  margin-top: 80px;
-  max-width: 555px;
-  margin-left: 25%;
-  padding-left: 150px; }
+  margin-top: 60px;
+  width: 100%; }
   .pictures.smallScreen {
     margin: 10px auto;
     padding-left: 0px; }
 
 .poster {
-  max-width: 535px;
+  width: 100%;
   padding-left: 20px;
   padding-top: 10px; }
   .poster p {
@@ -140,32 +113,25 @@ body {
 .vidImg {
   display: block;
   padding: 10px;
-  width: 535px;
-  height: 535px; }
+  max-width: 535px;
+  width: 100%;
+  height: 535px;
+  margin-left: auto;
+  margin-right: auto; }
 
 .vidInfo {
-  max-width: 535px;
+  width: 100%;
   padding-left: 20px;
-  margin-bottom: 60px;
   padding-bottom: 20px; }
   .vidInfo form {
     display: block;
     margin: 50px auto 0px;
     width: 90%; }
-  .vidInfo input {
-    background-color: #F6F5F6;
-    width: 90%;
-    padding: 10px;
-    font-size: 15px;
-    border-radius: 3px;
-    border-style: solid;
-    border-color: #F6F5F6;
-    border-width: 1px; }
   .vidInfo p {
     margin: 20px;
     color: #A9B0C3; }
   .vidInfo hr {
-    max-width: 475px; }
+    width: 80%; }
   .vidInfo #commentText {
     color: black;
     font-size: 24px; }
