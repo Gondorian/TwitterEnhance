@@ -8,8 +8,17 @@ router.get('/', function(req, res, next) {
   if(UserController.isLoggedIn(req))
     res.redirect('/users/profile');
   else
-    res.render('index');
+    res.render('frontPage');
 
+});
+
+router.get('/profilepage', function(req, res, next) {
+  console.log('Profile page requested!');
+  if(UserController.isLoggedIn(req))
+    res.render('profilePage');
+  else {
+    res.redirect('/');
+  }
 });
 
 

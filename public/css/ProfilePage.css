@@ -107,14 +107,15 @@ body {
     border-right: none; }
 
 .panel {
-  width: 555px;
+  max-width: 555px;
+  width: 100%;
   background-color: white;
   border-radius: 1px; }
 
 .pictures {
   display: block;
   margin-top: 80px;
-  width: 555px;
+  max-width: 555px;
   margin-left: 25%;
   padding-left: 150px; }
   .pictures.smallScreen {
@@ -122,7 +123,7 @@ body {
     padding-left: 0px; }
 
 .poster {
-  width: 535px;
+  max-width: 535px;
   padding-left: 20px;
   padding-top: 10px; }
   .poster p {
@@ -143,7 +144,7 @@ body {
   height: 535px; }
 
 .vidInfo {
-  width: 535px;
+  max-width: 535px;
   padding-left: 20px;
   margin-bottom: 60px;
   padding-bottom: 20px; }
@@ -155,15 +156,18 @@ body {
     background-color: #F6F5F6;
     width: 90%;
     padding: 10px;
-    font-size: 20px;
-    rows: 1; }
+    font-size: 15px;
+    border-radius: 3px;
+    border-style: solid;
+    border-color: #F6F5F6;
+    border-width: 1px; }
   .vidInfo p {
     margin: 20px;
     color: #A9B0C3; }
   .vidInfo hr {
-    width: 475px; }
+    max-width: 475px; }
   .vidInfo #commentText {
     color: black;
-    font-size: 30px; }
+    font-size: 24px; }
 
 /*# sourceMappingURL=profilePage.css.map */
