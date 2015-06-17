@@ -148,6 +148,8 @@ var Content = React.createClass({
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
+		this.setState({custName: info[0]});
+		console.log(info[0]);
 	},
 	//render will recreate the components and everything thatis on the screen starts here
 	render: function(){
