@@ -22,7 +22,7 @@ var LoginBox =React.createClass({
           <input type="text" placeholder="Email" name="email"/><br/>
           <input type="password" placeholder="Password" id="password" name="password"/>
           <input type="submit" value="Log In" id="logButton" />
-          <input type="checkbox" value="remember" className="check" name="group" id="remember"/> 
+          <input type="checkbox" value="remember" className="check" name="group" id="remember"/>
           <label htmlFor="remember">Remember me</label>
           <a href="#">Forgot Password? </a>
         </form>
@@ -83,9 +83,11 @@ var imageToggle = function(){
 
 $(document).ready(function(){
   var width = parseInt($('#wrapper').css('width'));
-  $('#registration').ajaxForm(function(response) { 
-    alert("response accepted"+response); 
+
+  $('#registration').ajaxForm(function(response) {
+    alert("response accepted"+response);
   });
+
   if(width<860){
     $('.textField').addClass('largeScreen');
     $('#frontpage').css('margin-top','50px')

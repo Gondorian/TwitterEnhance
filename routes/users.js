@@ -57,13 +57,14 @@ router.get('/:id', function (req, res, next){
 
 // Request for registering a user.
 router.post('/register', function(req, res, next){
+  console.log('Attempting to register new user.');
   UserController.registerUser(req, function(success){
-    if(success){
+    if(success == true){
       console.log('Succesfully registered. Redirecting to profile.');
       res.redirect('/users/profile');
     }
     else
-      res.send('Username already exists!');
+      res.send(success);
   });
 
 });

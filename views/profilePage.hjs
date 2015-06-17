@@ -5,8 +5,8 @@
     <meta name="description",contents="">
     <meta name="author", contents="Sagar, Paul">
     <meta name="viewport", content="width=device-width,initial-scale=1">
-    <link rel='stylesheet' href='../public/css/style.css' />
-    <link rel='stylesheet' href='../public/css/profilePage.css' />
+    <link rel='stylesheet' href='/public/css/style.css' />
+    <link rel='stylesheet' href='/public/css/ProfilePage.css' />
   </head>
   <body>
     <div id = 'content'>not working</div>

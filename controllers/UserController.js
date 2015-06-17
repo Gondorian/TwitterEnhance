@@ -5,20 +5,19 @@ var Account = require('../models/account');
 exports.registerUser = function(req, callback){
   var fullName = req.body.fullName;
   var email = req.body.email;
-  var userName = 'tester';
+  var userName = req.body.username;
   var password = req.body.password;
 
-  Account.checkIfUserExists(email, function(exists){
-      if(exists){         //if user already exists, callback false (no success)
-        callback(false);
-      }
-      else{               //else insert the user, set the session and callback with true
+  Account.checkIfUserExists(email, userName, function(exists){
+      if(exists == false){         //if user doesn't already exists, insert new user
         Account.insertNewUser(fullName, email, userName, password);
         req.session.userName = userName;
         callback(true);
       }
+      else{               //else insert the user, set the session and callback with true
+        callback(exists);
+      }
   });
-
 }
 
 exports.login = function(req, callback){        //get the user's session and set the session variable 'email' to the one supplied by the user

@@ -8,10 +8,15 @@ var video45 = nano.use('video45');
 
 exports.insertNewUser= function(fullName, email, userName, password){
   video45.insert(
-    {"fullName": fullName,
+    {"type": "user",
+     "fullName": fullName,
      "email": email,
      "userName": userName,
-     "password": password
+     "password": password,
+     "numberOfPosts": 0,
+     "numberOfFollowers": 0,
+     "profilePic": "default",
+     "profileColour": "red"
     }, function(err, body){
     if(err)
       console.log('Error: ' + err);
@@ -39,22 +44,24 @@ exports.checkCredentials = function(email, password, callback){
 }
 
 //check if user is in database
-exports.checkIfUserExists = function(email, callback){
-
-  video45.get(email,                //retrieves the document with id
-    function(err, body) {
-      if (!err){                   //if doc exists callback true
-        em = body['email'];
-        if(em == email)
-          callback(true);
-        else
-          callback(false);
+exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
+  video45.view('user', 'userNames', function(err, body){
+    var found = false;
+    body.rows.forEach(function(doc) {
+      if(doc.key == email){
+        found = 'Email already exists';
       }
-      else                       //if doc doesnt exist, calls the callback with false
-        callback(false);
-
-
+      else if (doc.value == userName) {
+        found = 'Username is taken!';
+      }
     });
+    if(found == false)    //if email or username wasnt found, callback false
+      callback(false);
+    else {
+      callback(found);  //else return the err
+    }
+  });
+
 }
 
 exports.getProfileName = function(email, callback){
