@@ -1,6 +1,1 @@
-$("#sagar").click(function(){
-  console.log('clicked');
-  $.get("http://localhost:3000/test", function(data, status){
-
-  });
-});
+console.log("The name that is recieved is: " + name);

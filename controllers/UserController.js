@@ -14,7 +14,7 @@ exports.registerUser = function(req, callback){
         req.session.userName = userName;
         callback(true);
       }
-      else{               //else insert the user, set the session and callback with true
+      else{               //else callback with the error
         callback(exists);
       }
   });
@@ -25,27 +25,38 @@ exports.login = function(req, callback){        //get the user's session and set
   var password = req.body.password;
 
   Account.checkCredentials(email, password, function(exists){
-      if(exists){         //if user exists, set the session variable to the email from the request
+      if(exists){         //if user exists, set the session variable to username of the user
         var session = req.session;
-        session.email = req.body.email;
-        callback(true);
+        Account.getUserName(email, function(userName){    //get the username based on the email provided
+          session.userName = userName;
+          callback(true);
+        });
       }
       else{               //else callback with false
         callback(false);
       }
   });
-
 }
 
-exports.loadUserProfile = function(req){
-  //check if the id is of the user that is logged in.
-  var id = req.params.id;
-
+exports.loadProfile = function(req, userName, callback){
+  if(req.session.userName == userName){     //if request is for currently logged in user
+    Account.getUserProfile(userName, function(data){
+        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, true];
+        callback(info);
+    });
+  }
+  else{                                     //if request is for some other user's profile
+    Account.getUserProfile(userName, function(data){
+      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, false];
+      callback(info);
+    });
+  }
 }
 
+//get the profile details
 exports.getUserProfile = function(req, callback){
   var session = req.session;
-  var email = session.email;          //get the session email
+  var userName = session.userName;          //get the session email
   console.log('email for profilename request: ' + email);
   Account.getProfileName(email, function(name){
     callback(name);

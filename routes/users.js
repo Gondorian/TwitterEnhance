@@ -11,26 +11,16 @@ var UserController = require('../controllers/UserController');
 // GET REQUESTS
 //==============
 
-router.get('/profile', function(req, res, next) {
-  console.log('Profile page requested!');
-  if(UserController.isLoggedIn(req))
-    res.render('mainPage');
-  else {
-    res.redirect('/');
-  }
-});
-
-
-
-router.get('/profileName', function(req, res, next){
-  UserController.getUserProfile(req, function(name){
-    res.send({thename: name});
-    console.log('Name sent: ' + name);
+// Get the user profile page and its related data
+router.get('/:userName', function(req, res, next){
+  var userName = req.params.userName;
+  UserController.loadProfile(req, userName, function(info){
+    res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6]});
   });
 });
 
 
-
+// request to logout the current user
 router.get('/logout', function(req, res, next){
   console.log('recieved logout request');
   var success = UserController.logout(req);
@@ -44,9 +34,6 @@ router.get('/logout', function(req, res, next){
 
 
 
-router.get('/:id', function (req, res, next){
-  UserController.loadUserProfile(req);
-});
 
 
 
@@ -83,6 +70,7 @@ router.post('/login', function(req, res, next){
         res.redirect('/');
       }
       else{              //if credentials were incorrect
+        console.log("Could not log in. :(");
         res.redirect('/');
       }
     });

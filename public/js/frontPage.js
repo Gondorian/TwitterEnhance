@@ -85,7 +85,7 @@ $(document).ready(function(){
   var width = parseInt($('#wrapper').css('width'));
 
   $('#registration').ajaxForm(function(response) {
-    alert("response accepted"+response);
+    alert("response accepted "+response);
   });
 
   if(width<860){
