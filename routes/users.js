@@ -5,7 +5,11 @@ var router = express.Router();
 var account = require('../models/account');
 var UserController = require('../controllers/UserController');
 
+
+
+//==============
 // GET REQUESTS
+//==============
 
 router.get('/profile', function(req, res, next) {
   console.log('Profile page requested!');
@@ -16,12 +20,16 @@ router.get('/profile', function(req, res, next) {
   }
 });
 
+
+
 router.get('/profileName', function(req, res, next){
   UserController.getUserProfile(req, function(name){
     res.send({thename: name});
     console.log('Name sent: ' + name);
   });
 });
+
+
 
 router.get('/logout', function(req, res, next){
   console.log('recieved logout request');
@@ -35,7 +43,17 @@ router.get('/logout', function(req, res, next){
 });
 
 
+
+router.get('/:id', function (req, res, next){
+  UserController.loadUserProfile(req);
+});
+
+
+
+
+//==============
 //POST REQUESTS
+//==============
 
 // Request for registering a user.
 router.post('/register', function(req, res, next){
@@ -45,13 +63,13 @@ router.post('/register', function(req, res, next){
       res.redirect('/users/profile');
     }
     else
-      res.redirect('/');
-
-
+      res.send('Username already exists!');
   });
 
 });
 
+
+// Request to login
 router.post('/login', function(req, res, next){
   //secret way of getting in
   if(req.body.email == "paul"){
@@ -67,9 +85,7 @@ router.post('/login', function(req, res, next){
         res.redirect('/');
       }
     });
-
   }
-
 
 });
 

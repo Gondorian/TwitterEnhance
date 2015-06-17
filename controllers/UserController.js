@@ -1,31 +1,24 @@
 var Account = require('../models/account');
 
-var session;
+
 
 exports.registerUser = function(req, callback){
   var fullName = req.body.fullName;
   var email = req.body.email;
+  var userName = 'tester';
   var password = req.body.password;
 
   Account.checkIfUserExists(email, function(exists){
-      if(exists){         //if user exists, callback false (no success)
+      if(exists){         //if user already exists, callback false (no success)
         callback(false);
       }
       else{               //else insert the user, set the session and callback with true
-        //var fullName = req.body.fullName;
-        //var email = req.body.email;
-        //var password = req.body.password;
-
-        Account.insertNewUser(fullName, email, password);
-        req.session.email = email;
+        Account.insertNewUser(fullName, email, userName, password);
+        req.session.userName = userName;
         callback(true);
       }
   });
 
-
-
-  console.log('it has got here!');
-  return true;
 }
 
 exports.login = function(req, callback){        //get the user's session and set the session variable 'email' to the one supplied by the user
@@ -45,9 +38,15 @@ exports.login = function(req, callback){        //get the user's session and set
 
 }
 
+exports.loadUserProfile = function(req){
+  //check if the id is of the user that is logged in.
+  var id = req.params.id;
+
+}
+
 exports.getUserProfile = function(req, callback){
-  session = req.session;
-  var email = session.email;
+  var session = req.session;
+  var email = session.email;          //get the session email
   console.log('email for profilename request: ' + email);
   Account.getProfileName(email, function(name){
     callback(name);
@@ -55,19 +54,19 @@ exports.getUserProfile = function(req, callback){
 
 }
 
-exports.isLoggedIn = function(req){
-  session = req.session;
-  if(session.email){
-    console.log('The Session email: ' + session.email);
+exports.isLoggedIn = function(req){     //checks if logged in by seeing if the session.userName variable is set
+  var session = req.session;
+  if(session.userName){
+    console.log('The Session username: ' + session.userName);
     return true;
   }
   else {
-    console.log('No Session email found!');
+    console.log('No Session username found!');
     false;
   }
 }
 
-exports.logout = function(req){
+exports.logout = function(req){             //destroys the session. if there is an error, returns false, else true
   return req.session.destroy(function(err){
     if(err){
       console.log(err);

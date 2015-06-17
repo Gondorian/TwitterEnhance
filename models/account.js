@@ -6,13 +6,13 @@ var video45 = nano.use('video45');
 
 
 
-exports.insertNewUser= function(fullName, email, password){
+exports.insertNewUser= function(fullName, email, userName, password){
   video45.insert(
     {"fullName": fullName,
      "email": email,
+     "userName": userName,
      "password": password
-    }, email, function(err, body){
-
+    }, function(err, body){
     if(err)
       console.log('Error: ' + err);
 
@@ -50,9 +50,9 @@ exports.checkIfUserExists = function(email, callback){
         else
           callback(false);
       }
-      else {                      //if doc doesnt exist, calls the callback with false
+      else                       //if doc doesnt exist, calls the callback with false
         callback(false);
-      }
+
 
     });
 }
