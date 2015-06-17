@@ -93,8 +93,8 @@ var Content = React.createClass({
       	}.bind(this),
       	error: function(xhr, status, err) {
 	        console.log("bruh this aint returning no response");
-					console.log(status);
-					console.log(xhr);
+			console.log(status);
+			console.log(xhr);
       	}.bind(this)
     });
 	},

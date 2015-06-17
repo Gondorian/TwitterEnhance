@@ -35,10 +35,11 @@ var RegisterBox = React.createClass({
   render: function() {
     return (
       <div className="registerBox">
-      <form className="form" action="http://localhost:3000/users/register" method="POST">
+      <form id = "registration" className="form" action="http://localhost:3000/users/register" method="POST">
       <h3><b>New to Video45?</b> Sign up</h3><hr />
           <input type="text" placeholder="Full Name" name="fullName" /><br/>
           <input type="text" placeholder="Email" name="email"/><br/>
+          <input type="text" placeholder="Username" name="username" /><br/>
           <input type="password" placeholder="Password" id="pass" name="password"/><br/>
           <input type="submit" value="Sign up for Video45" id="regButton"/>
         </form>
@@ -70,7 +71,7 @@ var toggleHelp = -1;
 
 var imageToggle = function(){
   if(toggleHelp==1){
-    $('#wrapper').css('background-image','url("http://i.imgur.com/a62BBWB.jpg?1")');
+    $('#wrapper').css('background-image','url("http://www.best-free-wallpaper.org/wp-content/uploads/2014/09/super-high-resolution-nature-wallpaper.jpg")');
   }else{
     $('#wrapper').css('background-image','url("http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg")');
   }
@@ -82,6 +83,9 @@ var imageToggle = function(){
 
 $(document).ready(function(){
   var width = parseInt($('#wrapper').css('width'));
+  $('#registration').ajaxForm(function(response) { 
+    alert("response accepted"+response); 
+  });
   if(width<860){
     $('.textField').addClass('largeScreen');
     $('#frontpage').css('margin-top','50px')

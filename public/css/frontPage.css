@@ -55,7 +55,9 @@ body {
   text-align: right;
   align-content: center;
   width: 50%;
-  margin-bottom: 0px; }
+  margin-bottom: 0px;
+  color: white;
+  text-shadow: 2px 2px 4px #000000; }
   .textField h1, .textField h2, .textField h3 {
     display: inline;
     font-weight: 500; }
@@ -102,7 +104,8 @@ label {
   width: auto;
   font-size: 15px;
   font-weight: 600;
-  cursor: pointer; }
+  cursor: pointer;
+  color: white; }
 
 #regButton:hover {
   background-color: #caa100; }
