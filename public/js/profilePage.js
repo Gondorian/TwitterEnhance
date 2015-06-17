@@ -148,20 +148,6 @@ var Content = React.createClass({
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
-	$.ajax({
-      	url: "http://localhost:3000/users/profileName",
-      	dataType: 'json',
-      	cache: false,
-      	success: function(data) {
-      		console.log("read from server" + data);
-        	this.setState({custName: data});
-      	}.bind(this),
-      	error: function(xhr, status, err) {
-	        console.log("bruh this aint returning no response");
-			console.log(status);
-			console.log(xhr);
-      	}.bind(this)
-    });
 	},
 	//render will recreate the components and everything thatis on the screen starts here
 	render: function(){

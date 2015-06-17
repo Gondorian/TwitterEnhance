@@ -86,19 +86,7 @@ var Content = React.createClass({
     return {custName: cust};
   	},
 	componentDidMount: function(){
-	$.ajax({
-      	url: "http://localhost:3000/users/profileName",
-      	dataType: 'json',
-      	cache: false,
-      	success: function(data) {
-        	this.setState({custName: data});
-      	}.bind(this),
-      	error: function(xhr, status, err) {
-	        console.log("bruh this aint returning no response");
-			console.log(status);
-			console.log(xhr);
-      	}.bind(this)
-    });
+	
 	},
 	render: function(){
 		return(

@@ -5,24 +5,22 @@ var router = express.Router();
 var account = require('../models/account');
 var UserController = require('../controllers/UserController');
 
+
+
+//==============
 // GET REQUESTS
+//==============
 
-router.get('/profile', function(req, res, next) {
-  console.log('Profile page requested!');
-  if(UserController.isLoggedIn(req))
-    res.render('mainPage');
-  else {
-    res.redirect('/');
-  }
-});
-
-router.get('/profileName', function(req, res, next){
-  UserController.getUserProfile(req, function(name){
-    res.send({thename: name});
-    console.log('Name sent: ' + name);
+// Get the user profile page and its related data
+router.get('/:userName', function(req, res, next){
+  var userName = req.params.userName;
+  UserController.loadProfile(req, userName, function(info){
+    res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6]});
   });
 });
 
+
+// request to logout the current user
 router.get('/logout', function(req, res, next){
   console.log('recieved logout request');
   var success = UserController.logout(req);
@@ -35,23 +33,31 @@ router.get('/logout', function(req, res, next){
 });
 
 
+
+
+
+
+
+//==============
 //POST REQUESTS
+//==============
 
 // Request for registering a user.
 router.post('/register', function(req, res, next){
+  console.log('Attempting to register new user.');
   UserController.registerUser(req, function(success){
-    if(success){
+    if(success == true){
       console.log('Succesfully registered. Redirecting to profile.');
       res.redirect('/users/profile');
     }
     else
-      res.redirect('/');
-
-
+      res.send(success);
   });
 
 });
 
+
+// Request to login
 router.post('/login', function(req, res, next){
   //secret way of getting in
   if(req.body.email == "paul"){
@@ -64,12 +70,11 @@ router.post('/login', function(req, res, next){
         res.redirect('/');
       }
       else{              //if credentials were incorrect
+        console.log("Could not log in. :(");
         res.redirect('/');
       }
     });
-
   }
-
 
 });
 

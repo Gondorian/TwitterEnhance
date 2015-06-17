@@ -7,15 +7,18 @@
     <meta name="viewport", content="width=device-width,initial-scale=1">
     <link rel='stylesheet' href='public/css/style.css' />
     <link rel='stylesheet' href='public/css/loginPage.css' />
+    <!--<link rel='stylesheet' href='../bower_components/materialize/bin/materialize.css' />-->
   </head>
   <body>
-    <div id='wrapper'>     
-      <div id = "frontpage">
-        <div class="textField">
-          <h2>Welcome to <h1>video45</h1></h2><br />
-          <h3> Bring Videos to life in 45 seconds </h3>
+    <div id='wrapper'>
+      <div id='wrapper2'>
+        <div id = "frontpage">
+          <div class="textField">
+            <h2>Welcome to <h1>video45</h1></h2><br />
+            <h3> Bring Videos to life in 45 seconds </h3>
+          </div>
+          <div id = 'register'>not working</div>
         </div>
-        <div id = 'register'>not working</div>
       </div>
     </div>
     <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
