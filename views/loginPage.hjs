@@ -6,25 +6,22 @@
     <meta name="author", contents="Sagar, Paul">
     <meta name="viewport", content="width=device-width,initial-scale=1">
     <link rel='stylesheet' href='public/css/style.css' />
+    <link rel='stylesheet' href='bower_components/materialize/bin/materialize.css' />
     <link rel='stylesheet' href='public/css/loginPage.css' />
-    <!--<link rel='stylesheet' href='../bower_components/materialize/bin/materialize.css' />-->
   </head>
   <body>
     <div id='wrapper'>
-      <div id='wrapper2'>
+      <div id='background1' class='visib'></div>
+      <div id='background2'></div>
         <div id = "frontpage">
-          <div class="textField">
-            <h2>Welcome to <h1>video45</h1></h2><br />
-            <h3> Bring Videos to life in 45 seconds </h3>
-          </div>
           <div id = 'register'>not working</div>
         </div>
-      </div>
     </div>
     <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script> 
     <script src="public/js/test1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
+    <script src="bower_components/materialize/bin/materialize.js"></script>
     <script src="bower_components/react/react.js"></script>
     <script type="text/jsx;harmony=true" src="public/js/loginPage.js"></script>
   </body>

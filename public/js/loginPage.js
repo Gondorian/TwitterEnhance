@@ -1,3 +1,4 @@
+//the react container for the navbar elements
 var Navbar = React.createClass({
   render:function(){
     return(
@@ -5,6 +6,7 @@ var Navbar = React.createClass({
         <form className="languageChoice">
         language:
           <select>
+            //the options for the dropdown are currently hardcoded
             <option value="English">English</option>
             <option value="French">French</option>
           </select>
@@ -14,17 +16,44 @@ var Navbar = React.createClass({
   }
 });
 
+//textbox react create
+var Textbox =React.createClass({
+  render: function(){
+    return(
+      <div className="col s6">
+        <div className="textField">
+          <h2>Welcome to <h1>video45</h1></h2><br />
+          <h3> Bring Videos to life in 45 seconds </h3>
+        </div>
+      </div>
+    );
+  }
+});
+
+//the login box
 var LoginBox =React.createClass({
   render: function(){
     return(
-      <div className="loginBox">
+      <div className="loginBox col s6">
         <form className ="form" action="http://localhost:3000/users/login" method="POST">
-          <input type="text" placeholder="Email" name="email"/><br/>
-          <input type="password" placeholder="Password" id="password" name="password"/>
-          <input type="submit" value="Log In" id="logButton" />
-          <input type="checkbox" value="remember" className="check" name="group" id="remember"/> 
-          <label htmlFor="remember">Remember me</label>
-          <a href="#">Forgot Password? </a>
+          <div className="row">
+            <div className="input-field col s12">
+              <input type="text" name="email" id="logEmail" className="validate"/><br/>
+              <label htmlFor="logEmail"> Email </label>
+            </div>
+          </div>
+          <div className="row valign-wrapper">
+            <div className="input-field col s8">
+              <input type="password" id="password" name="password" className="validate"/>
+              <label htmlFor="password">Password</label>
+            </div>
+            <button className="valign btn waves-effect waves-light" type="submit" name="action" id="logButton"> log in</button>
+          </div>
+          <div className="row">
+            <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/> 
+            <label htmlFor="remember" id="remLabel">Remember me</label>
+            <a href="#">Forgot Password? </a>
+          </div>
         </form>
       </div>
     );
@@ -34,15 +63,41 @@ var LoginBox =React.createClass({
 var RegisterBox = React.createClass({
   render: function() {
     return (
-      <div className="registerBox">
-      <form id = "registration" className="form" action="http://localhost:3000/users/register" method="POST">
-      <h3><b>New to Video45?</b> Sign up</h3><hr />
-          <input type="text" placeholder="Full Name" name="fullName" /><br/>
-          <input type="text" placeholder="Email" name="email"/><br/>
-          <input type="text" placeholder="Username" name="username" /><br/>
-          <input type="password" placeholder="Password" id="pass" name="password"/><br/>
-          <input type="submit" value="Sign up for Video45" id="regButton"/>
-        </form>
+      <div className="row">
+        <div className="registerBox  col s12">
+        <form id = "registration" className="form" action="http://localhost:3000/users/register" method="POST">
+        <h3><b>New to Video45?</b> Sign up</h3><hr />
+          <div className="row">
+            <div className="input-field col s12">
+              <input type="text" id="fullName" name="fullName" /><br/>
+              <label htmlFor="fullName">Full Name</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <input type="text" id="email" name="email"/><br/>
+              <label htmlFor="email">Email</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <input type="text" id="Username" name="username" /><br/>
+              <label htmlFor="Username">Username</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <input type="password" id="pass" name="password"/><br/>
+              <label htmlFor="pass">Password</label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col s12">
+              <button className="btn waves-effect waves-light" type="submit" name="action" id="regButton">Sign Up For vdeo45</button>
+            </div>
+          </div>
+          </form>
+        </div>
       </div>
     );
   }
@@ -54,7 +109,10 @@ var FrontPage = React.createClass({
       <div className="menus">
         <Navbar />
         <div className="content">
-          <LoginBox />
+          <div className ="row">
+            <Textbox />
+            <LoginBox />
+          </div>
           <RegisterBox />
         </div>
       </div>
@@ -67,17 +125,44 @@ React.render(
   document.getElementById('register')
 );
 
-var toggleHelp = -1;
 
+//list of urls that will cycle through on front page
+var backs = [
+  "url(http://www.best-free-wallpaper.org/wp-content/uploads/2014/09/super-high-resolution-nature-wallpaper.jpg)",
+  "url(http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg)"
+];
+
+var toggleHelp = -1;
+var currentBack = 0;
+//This controls the front page image change
 var imageToggle = function(){
-  if(toggleHelp==1){
-    $('#wrapper').css('background-image','url("http://www.best-free-wallpaper.org/wp-content/uploads/2014/09/super-high-resolution-nature-wallpaper.jpg")');
+  if(toggleHelp == -1){
+    //happens immedietly
+    console.log("background 1 change");
+    $("#background1").css("background-image",backs[currentBack]);
+    Materialize.fadeInImage('#background1');
+    setTimeout(function(){
+      $("#background2").css("opacity","0");
+      $("#background2").css("z-index","-1");
+      $("#background1").css("z-index","-2");
+      return;
+    },1200);
   }else{
-    $('#wrapper').css('background-image','url("http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg")');
+    $("#background2").css("background-image",backs[currentBack]);
+    Materialize.fadeInImage('#background2');
+    setTimeout(function(){
+      $("#background1").css("opacity","0");
+      $("#background1").css("z-index","-1");
+      $("#background2").css("z-index","-2");
+      return
+    },1200);
   }
+  currentBack = ( currentBack + 1 ) % backs.length;
+  console.log(currentBack);
+
   toggleHelp = toggleHelp*-1;
   setTimeout(function(){
-      imageToggle();
+    imageToggle();
   },10000);
 }
 
