@@ -107,7 +107,7 @@ var Navbar = React.createClass({
 							</li>
 							<li id="logoutBut">
 								<div className="input-field">
-									<form action="http://localhost:3000/users/logout" method="GET">
+									<form action="http://localhost:3000/users/logout" method="POST">
 										<button className="btn waves-effect waves-light" type="submit" name="action" id="logout">logout
 										</button>
 									</form>

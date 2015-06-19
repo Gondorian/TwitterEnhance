@@ -13,6 +13,7 @@ var UserController = require('../controllers/UserController');
 
 // Get the user profile page and its related data
 router.get('/:userName', function(req, res, next){
+  console.log('URL Parameter: ' + req.params.userName);
   if(UserController.isLoggedIn){
     var userName = req.params.userName;
     UserController.loadProfile(req, userName, function(info){ //pass the data to the view
@@ -25,19 +26,8 @@ router.get('/:userName', function(req, res, next){
 
 });
 
-
-// request to logout the current user
-router.get('/logout', function(req, res, next){
-  console.log('recieved logout request');
-  UserController.logout(req, function(success){
-    if(success){
-      console.log('logout succeded! redirecting to frontpage!');
-      res.redirect('/');
-    }
-    else{
-      res.send("you can't leave. video45 is love, video45 is life.");
-    }
-  });
+router.get('/test', function(req, res, next){
+  res.send('Test route is working!');
 });
 
 
@@ -83,6 +73,22 @@ router.post('/login', function(req, res, next){
     });
   }
 
+
+});
+
+
+// request to logout the current user
+router.post('/logout', function(req, res, next){
+  console.log('recieved logout request');
+  UserController.logout(req, function(success){
+    if(success){
+      console.log('logout succeded! redirecting to frontpage!');
+      res.redirect('/');
+    }
+    else{
+      res.send("you can't leave. video45 is love, video45 is life.");
+    }
+  });
 });
 
 module.exports = router;
