@@ -168,9 +168,6 @@ var imageToggle = function(){
 
 $(document).ready(function(){
   var width = parseInt($('#wrapper').css('width'));
-  $('#registration').ajaxForm(function(response) { 
-    alert("response accepted"+response); 
-  });
   if(width<860){
     $('.textField').addClass('largeScreen');
     $('#frontpage').css('margin-top','50px')

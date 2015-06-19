@@ -17,9 +17,8 @@ body {
   .nav-wrapper #logoutBut:hover {
     background-color: transparent; }
   .nav-wrapper #navSearch {
-    position: relative; }
-  .nav-wrapper #navSearch:focus {
-    width: 400px; }
+    float: right;
+    width: 300px; }
 
 .profileInfo {
   position: fixed;

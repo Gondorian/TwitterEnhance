@@ -94,7 +94,7 @@ var Navbar = React.createClass({
 			<div  className="navbar-fixed">
 				<nav>
 					<div className = "nav-wrapper">
-						<a href='#' className="brand-logo"> Hello, {this.props.cust} </a>
+						<a href='#' className="left"> Hello, {this.props.cust} </a>
 						<a href="#" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
 						<ul className="right hide-on-med-and-down">
 							<li>
