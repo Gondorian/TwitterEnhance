@@ -13,7 +13,7 @@ var Videos = React.createClass({
 	render: function(){
 		return(
 			<div className="row">
-				<div className="panel col s5 offset-s5">
+				<div className="panel col s6 offset-s5">
 					<div className="poster">
 						<img className="posterImg" src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m(01-32)_gr.jpg" />
 						<p>Posted by someone</p>
@@ -30,7 +30,7 @@ var Videos = React.createClass({
 								 <div className="row">
         							<div className="input-field col s12">
 										<textarea id='comment' className="materialize-textarea"/>
-										<label for="comment"> Enter something Nice </label>
+										<label htmlFor="comment"> Enter something Nice </label>
 									</div>
 								</div>
 							</form>
@@ -100,15 +100,15 @@ var Navbar = React.createClass({
 							<li>
 								<form>
 								<div className="input-field">
-									<input id="navSearch" type="search" placeholder="search" />
-									<label for="navsearch"><i className="mdi-action-search"></i></label>
+									<input id="navSearch" type="search" placeholder="search" onfocus="searchChange /"/>
+									<label htmlFor="navsearch"><i className="mdi-action-search"></i></label>
 								</div>
 								</form>
 							</li>
 							<li id="logoutBut">
 								<div className="input-field">
-									<form action="http://localhost:3000/users/logout" method="POST">
-										<button className="btn waves-effect waves-light" type="submit" name="action" id="logout">logout
+									<form action="http://localhost:3000/users/logout" method="GET">
+										<button className="btn waves-effect waves-light" type="submit" id="logout">logout
 										</button>
 									</form>
 								</div>
@@ -119,7 +119,7 @@ var Navbar = React.createClass({
 								<form>
 									<div className="input-field">
 										<input id="navSearch" type="search" placeholder="search" />
-										<label for="navsearch"><i className="mdi-action-search"></i></label>
+										<label htmlFor="navsearch"><i className="mdi-action-search"></i></label>
 									</div>
 								</form>
 							</li>
@@ -157,7 +157,7 @@ var Content = React.createClass({
 		return(
 			<div className = "profilePage">
 				<Navbar cust = {this.state.custName} />
-				<ProfileInfo cust = {this.state.custName} posts="2" followers="2" following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
+				<ProfileInfo cust = {this.state.custName} posts="2" followers={name[2]} following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
 				<VidList data={this.props.data} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
 		);
@@ -186,6 +186,11 @@ var handleResize = function(){
 		$(".panel").addClass("col s5 offset-s5")>
 		$(".pictures").removeClass("smallScreen");
 	}
+}
+
+var searchChange = function(){
+	console.log("sup");
+	$(logoutBut).css("display","none");
 }
 
 //monitors screen resize
