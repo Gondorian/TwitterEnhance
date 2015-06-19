@@ -9,7 +9,7 @@ var Account = require('../models/account');
 router.get('/', function(req, res, next) {
   console.log('requesting front page!');
   if(UserController.isLoggedIn(req))
-    res.redirect('/users/profile');
+    res.redirect('/users/' + req.session.userName);
   else
     res.render('loginPage');
 });

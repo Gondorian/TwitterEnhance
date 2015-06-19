@@ -13,23 +13,31 @@ var UserController = require('../controllers/UserController');
 
 // Get the user profile page and its related data
 router.get('/:userName', function(req, res, next){
-  var userName = req.params.userName;
-  UserController.loadProfile(req, userName, function(info){
-    res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6]});
-  });
+  if(UserController.isLoggedIn){
+    var userName = req.params.userName;
+    UserController.loadProfile(req, userName, function(info){ //pass the data to the view
+      res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6]});
+    });
+  }
+  else{
+    res.redirect('/');  //if not logged in, redirect to home
+  }
+
 });
 
 
 // request to logout the current user
 router.get('/logout', function(req, res, next){
   console.log('recieved logout request');
-  var success = UserController.logout(req);
-  if(success){
-    console.log('logout succeded! redirecting to frontpage!');
-    res.redirect('/');
-  }
-  else
-    res.send("you can't leave. video45 is love, video45 is life.")
+  UserController.logout(req, function(success){
+    if(success){
+      console.log('logout succeded! redirecting to frontpage!');
+      res.redirect('/');
+    }
+    else{
+      res.send("you can't leave. video45 is love, video45 is life.");
+    }
+  });
 });
 
 

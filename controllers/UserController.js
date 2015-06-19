@@ -53,16 +53,7 @@ exports.loadProfile = function(req, userName, callback){
   }
 }
 
-//get the profile details
-exports.getUserProfile = function(req, callback){
-  var session = req.session;
-  var userName = session.userName;          //get the session email
-  console.log('email for profilename request: ' + email);
-  Account.getProfileName(email, function(name){
-    callback(name);
-  });
 
-}
 
 exports.isLoggedIn = function(req){     //checks if logged in by seeing if the session.userName variable is set
   var session = req.session;
@@ -76,14 +67,14 @@ exports.isLoggedIn = function(req){     //checks if logged in by seeing if the s
   }
 }
 
-exports.logout = function(req){             //destroys the session. if there is an error, returns false, else true
-  return req.session.destroy(function(err){
+exports.logout = function(req, callback){             //destroys the session. if there is an error, returns false, else true
+  req.session.destroy(function(err){
     if(err){
       console.log(err);
-      return false;
+      callback(false);
     }
     else
-      return true;
+      callback(true);
   });
 
 
