@@ -59,7 +59,8 @@ body {
   background-position: 0px;
   background-image: url("http://i.imgur.com/2wC3FVJ.png");
   background-repeat: no-repeat;
-  background-size: cover; }
+  background-size: cover;
+  transition: none; }
   .fancyNavbar form {
     position: relative;
     top: 140px;

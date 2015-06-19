@@ -2,18 +2,26 @@ body {
   margin-right: 10%;
   margin-left: 10%; }
 
-#wrapper {
+#wrapper, #background1, #background2 {
+  z-index: -3;
+  background-color: transparent;
   position: fixed;
   top: 0px;
   left: 0px;
   right: 0px;
   bottom: 0px;
-  background-position: 0px 50px;
-  background-image: url("http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg");
-  -webkit-transition: background-image 1s ease-in-out;
-  transition: background-image 1s ease-in;
+  background-position: 0px 50px; }
+
+#background1, #background2 {
+  z-index: -1;
+  background-image: none;
+  background-color: transparent;
   background-repeat: no-repeat;
   background-size: cover; }
+
+#background2 {
+  z-index: 0;
+  opacity: 0; }
 
 .navbar {
   position: fixed;
@@ -27,35 +35,23 @@ body {
   float: right;
   border: none;
   margin-right: 30px;
-  margin-top: 15px;
-  cursor: pointer; }
+  cursor: pointer;
+  width: 180px; }
+  .languageChoice span {
+    position: relative;
+    top: 14px; }
   .languageChoice select {
-    border: none; }
+    width: 100px;
+    float: right;
+    border: none;
+    display: inline; }
 
 #frontpage {
   width: 100%;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-right: 500px; }
-
-.menus {
-  margin-left: auto;
-  margin-right: auto; }
-
-.content {
-  float: right;
-  display: inline-block;
-  margin-right: 15%;
-  width: 300px; }
+  margin-top: 100px; }
 
 .textField {
-  float: left;
-  display: inline-block;
-  text-align: right;
-  align-content: center;
-  width: 50%;
-  margin-bottom: 0px;
+  float: right;
   color: white;
   text-shadow: 2px 2px 4px #000000; }
   .textField h1, .textField h2, .textField h3 {
@@ -77,64 +73,59 @@ body {
     .textField.largeScreen h2, .textField.largeScreen h3 {
       display: none; }
 
-#remember {
-  cursor: pointer; }
-
-label {
-  cursor: pointer; }
-
 #logButton {
+  float: right;
+  margin-top: 3px;
   background-color: #4db8ff;
+  background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.05));
   border-color: #2f9ae1;
-  width: 70px;
   color: white;
   font-size: 15px;
-  font-weight: bold;
-  cursor: pointer; }
+  font-weight: bold; }
 
 #logButton:hover {
   background-color: #39a4eb; }
 
+#remLabel {
+  margin-top: 10px; }
+
 #regButton {
-  margin-left: 125px;
-  padding: 10px;
-  background-color: #e8bf19;
-  border-color: #caa100;
-  color: black;
-  width: auto;
-  font-size: 15px;
-  font-weight: 600;
+  float: right;
   cursor: pointer;
-  color: white; }
+  color: black;
+  background-color: #ffac33;
+  background-image: linear-gradient(#ffcc4d, #ffac33);
+  border-color: #f1a02a;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 1px 0 #fff; }
 
 #regButton:hover {
   background-color: #caa100; }
 
 .form {
+  width: 320px;
+  margin-right: 50px;
+  float: right;
   background-color: white;
-  width: 100%;
   padding: 10px;
   border-radius: 6px;
-  margin-bottom: 20px; }
-  .form input {
-    width: 90%;
-    border-radius: 4px;
-    padding: 4px;
-    margin: 4px;
-    border: solid;
-    border-width: 1px;
-    border-color: grey; }
+  margin-bottom: 20px;
+  box-shadow: 2px 2px 15px #000; }
   .form h3 {
     margin-top: 5px;
     padding-left: 10px;
-    font-weight: 100; }
-  .form .check {
-    width: 20px; }
+    font-weight: 100;
+    font-size: 20px; }
   .form a {
     margin-left: 20px;
     text-decoration: none; }
+  .form input {
+    margin-bottom: 0px; }
+  .form .row {
+    margin-bottom: 0px; }
 
-#password {
-  width: 60%; }
+input[type=text], input[type=password] {
+  height: 2rem; }
 
 /*# sourceMappingURL=loginPage.css.map */

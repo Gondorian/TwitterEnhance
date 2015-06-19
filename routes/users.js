@@ -64,7 +64,6 @@ router.post('/register', function(req, res, next){
 
 });
 
-
 // Request to login
 router.post('/login', function(req, res, next){
   //secret way of getting in

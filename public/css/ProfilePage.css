@@ -8,10 +8,18 @@ body {
 .nav-wrapper {
   padding-left: 20px;
   overflow: hidden; }
-  .nav-wrapper li {
-    margin-right: 20px; }
+  .nav-wrapper #logout {
+    position: absolute;
+    margin-top: 15px;
+    right: 20px; }
+  .nav-wrapper #logoutBut {
+    width: 160px; }
   .nav-wrapper #logoutBut:hover {
     background-color: transparent; }
+  .nav-wrapper #navSearch {
+    position: relative; }
+  .nav-wrapper #navSearch:focus {
+    width: 400px; }
 
 .profileInfo {
   position: fixed;
@@ -79,13 +87,17 @@ body {
   .stats #lastCell {
     border-right: none; }
 
+.row .col {
+  padding: 0px; }
+
 .panel {
   width: 100%;
   background-color: white;
   border-radius: 1px;
-  max-width: 555px;
+  max-width: 600px;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  margin-bottom: 20px; }
 
 .pictures {
   display: block;
@@ -112,26 +124,24 @@ body {
 
 .vidImg {
   display: block;
-  padding: 10px;
-  max-width: 535px;
   width: 100%;
-  height: 535px;
-  margin-left: auto;
-  margin-right: auto; }
+  height: 535px; }
 
 .vidInfo {
   width: 100%;
-  padding-left: 20px;
   padding-bottom: 20px; }
   .vidInfo form {
     display: block;
-    margin: 50px auto 0px;
-    width: 90%; }
+    margin: 10px auto 0px;
+    width: 90%;
+    padding-left: 20px; }
   .vidInfo p {
     margin: 20px;
-    color: #A9B0C3; }
+    color: #A9B0C3;
+    padding-left: 20px; }
   .vidInfo hr {
-    width: 80%; }
+    width: 100%;
+    border-color: #ebebeb; }
   .vidInfo #commentText {
     color: black;
     font-size: 24px; }

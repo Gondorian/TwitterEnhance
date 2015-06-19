@@ -1,3 +1,4 @@
+var name = ["{{name}}","{{userName}}","{{numberOfFollowers}}","{{numberOfPosts}}","{{profilePic}}","{{profileColour}}", "{{isCurrentUser}}"];
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg"},
@@ -21,10 +22,10 @@ var Videos = React.createClass({
 					<div className="vidInfo">
 						<p id="commentText">check out this video</p>
 						<hr/>
-						<p>___ likes___ reposts ____ share </p>
+						<p>{this.props.likes} likes {this.props.reposts} reposts {this.props.shares} share </p>
 						<hr/>
 						<div className="comments">
-							<p>__ comments</p>
+							<p>{this.props.comments} comments</p>
 							<form>
 								 <div className="row">
         							<div className="input-field col s12">
@@ -48,7 +49,7 @@ var VidList = React.createClass({
 	render: function(){
 		var imageNodes = this.props.data.map(function(vidUrl){
 			return(
-				<Videos url={vidUrl.url} />
+				<Videos url={vidUrl.url} likes="2" reposts="2" shares="5" comments="2"/>
 			);
 		});
 		return(
@@ -71,9 +72,9 @@ var ProfileInfo = React.createClass({
 					<p className="description"> {this.props.desc} </p>
 					<table className = "stats">
 						<tr>
-							<td>___ <br />posts</td>
-							<td>___ <br />followers</td>
-							<td id="lastCell">___ <br />following</td>
+							<td>{this.props.posts} <br />posts</td>
+							<td>{this.props.followers}<br />followers</td>
+							<td id="lastCell">{this.props.following} <br />following</td>
 						</tr>
 					</table>
 					<form>
@@ -107,7 +108,7 @@ var Navbar = React.createClass({
 							<li id="logoutBut">
 								<div className="input-field">
 									<form action="http://localhost:3000/users/logout" method="GET">
-										<button className="btn waves-effect waves-light" type="submit" name="action">logout
+										<button className="btn waves-effect waves-light" type="submit" name="action" id="logout">logout
 										</button>
 									</form>
 								</div>
@@ -156,8 +157,8 @@ var Content = React.createClass({
 		return(
 			<div className = "profilePage">
 				<Navbar cust = {this.state.custName} />
-				<ProfileInfo cust = {this.state.custName} desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
-				<VidList data={this.props.data} />
+				<ProfileInfo cust = {this.state.custName} posts="2" followers="2" following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
+				<VidList data={this.props.data} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
 		);
 	}
