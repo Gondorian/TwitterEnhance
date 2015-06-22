@@ -13,10 +13,10 @@ var Videos = React.createClass({
 	render: function(){
 		return(
 			<div className="row">
-				<div className="card col s5 offset-s5">
+				<div className="card col s6 offset-s5">
 					<div className="card-content ">
 						<img className="posterImg" src="http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif" />
-						<p>Posted by someone</p>
+						<p className="posterName">Posted by someone</p>
 					</div>
 					<div className="card-image">
 						<img className="vidImg" src={this.props.url} />
@@ -24,9 +24,13 @@ var Videos = React.createClass({
 					<div className="card-content">
 						<p className="card-title">{this.props.text}</p>
 					</div>
-					<div className="card-content">
-						<p>{this.props.likes} likes {this.props.reposts} reposts {this.props.shares} share </p>
+					<hr />
+					<div className="card-content inline-text">
+						<a href="#"><i className="small mdi-action-thumb-up prefix" /> {this.props.likes} likes</a>
+						<a href="#"><i className="small mdi-av-repeat" /> {this.props.reposts} reposts </a>
+						<a href="#"><i className="small mdi-action-thumb-up prefix" />{this.props.shares} share </a>
 					</div>
+					<hr />
 					<div className="card-content">
 						<p>{this.props.comments} comments</p>
 						<form>
@@ -62,9 +66,43 @@ var VidList = React.createClass({
 	}
 });
 
+//make the follow button
+var Follow = React.createClass({
+	render: function(){
+		return(
+			<div>
+				<form  action="/users/follow" method="POST">
+					<button id="followBtn" className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
+					</button>
+				</form>
+			</div>
+		);
+	}
+});
+
+//make the edit profile button
+var Edit = React.createClass({
+	render: function(){
+		return(
+			<div>
+				<a id="editProfile" className="modal-trigger waves-effect waves-light btn" href="#modal1">Edit Profile</a>
+			</div>
+		);
+	}
+});
+
+
 //profileInfo is the information contained in the left pushpin, all
 // modifications can be done here
 var ProfileInfo = React.createClass({
+	getInitialState: function(){
+		console.log(info[6]);
+		if(info[6] === 'true'){
+			return({button: <Edit />});
+		}else{
+			return({button: <Follow />});
+		};
+	},
 	render: function(){
 		return(
 			<div id="profileRow" className="row">
@@ -79,11 +117,7 @@ var ProfileInfo = React.createClass({
 							<td id="lastCell">{this.props.following} <br />following</td>
 						</tr>
 					</table>
-					<form>
-						<button className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
-						</button>
-					</form>
-					<a id="editProfile" className="modal-trigger waves-effect waves-light btn" href="#modal1">Edit Profile</a>
+					{this.state.button}
 				</div>
 			</div>
 		);
@@ -109,7 +143,7 @@ var Navbar = React.createClass({
 								</form>
 							</li>
 							<li>
-								<a id="profileBut" className='dropdown-button btn-floating' data-beloworigin="true" data-gutter="-40" href='#' data-activates='dropdown1'><i className="mdi-action-perm-identity left" /></a>
+								<a id="profileBut" className='dropdown-button btn-floating' data-beloworigin="true" data-gutter="0" href='#' data-activates='dropdown1'><i className="mdi-action-perm-identity left" /></a>
 								<ul id="dropdown1" className='dropdown-content'>
 									<li><a href="#!">profilePage</a></li>
 									<li id="logoutBut">
@@ -121,7 +155,7 @@ var Navbar = React.createClass({
 										</div>
 									</li>
 								</ul>
-							</li>								
+							</li>
 						</ul>
 						<ul className="side-nav" id="mobile-demo">
 					     	<li>
@@ -153,12 +187,13 @@ var Navbar = React.createClass({
 var Content = React.createClass({
 	//getInitialState will run when the component first loads and will initialize part of its state
 	loadPostsFromServer: function(){
+		this.setState({logged: info[7]})
 		this.setState({custName: info[0]});
 		this.setState({dat:data});
+		console.log(info[7]);
 	},
 	getInitialState: function() {
 		cust = "ral";
-
     	return {dat: data};
   	},
   	//componentDidMount will run at every rerender and will read info from server
@@ -169,8 +204,8 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "profilePage">
-				<Navbar cust = {this.state.custName} />
-				<ProfileInfo cust = {this.state.custName} posts={info[3]} followers={info[2]} following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
+				<Navbar cust = {this.state.logged} />
+				<ProfileInfo myProfile={true} cust = {this.state.custName} posts={info[3]} followers={info[2]} following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
 		);
@@ -191,13 +226,15 @@ var handleResize = function(){
 		//This is for small screen organization
 		$(".profileInfo").addClass("smallScreen");
 		//recenter the panel if the screen is small
-		$(".panel").removeClass("col s5 offset-s5")>
-		$(".pictures").addClass("smallScreen");
+		$(".card").removeClass("s6 offset-s5");
+		$(".card").addClass("s12");
+		$(".card").addClass("centerd");
 	}else{
 		//return to a lare screen organization
 		$(".profileInfo").removeClass("smallScreen");
-		$(".panel").addClass("col s5 offset-s5")>
-		$(".pictures").removeClass("smallScreen");
+		$(".card").addClass("s6 offset-s5");
+		$(".card").removeClass("s12");
+		$(".card").removeClass("centerd");
 	}
 }
 
@@ -207,17 +244,17 @@ var handleResize = function(){
      outDuration: 225,
      constrain_width: false, // Does not change width of dropdown to that of the activator
      hover: true, // Activate on hover
-     gutter: 0, // Spacing from edge
+     gutter: 1000, // Spacing from edge
      belowOrigin: true // Displays dropdown below the button
    }
  );
- 
+
  //activates when the accept button is pressed on the modal screen
 function completeForm() {
 	//find post and modify data
 	var post = $('#modalPost').val();
 	var title = $('#modalTitle').val();
-	
+
 	if(post!==""){
 		data.unshift({url: post, text: title});
 	}
@@ -238,6 +275,15 @@ function completeForm() {
 	document.getElementById("modalForm").reset();
 	$('#modal1').closeModal();
 }
+
+//click event handlers
+$('#followBtn').click(function(){
+	//first argument is location, second is data, third is response data
+	$.post('http://localhost:3000/users/follow',info[1], function(data){
+		console.log("response was: " + data);
+	});
+	return false;
+});
 
 //monitors screen resize
 $(window).resize(function(){
