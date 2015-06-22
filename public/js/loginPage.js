@@ -138,7 +138,6 @@ var currentBack = 0;
 var imageToggle = function(){
   if(toggleHelp == -1){
     //happens immedietly
-    console.log("background 1 change");
     $("#background1").css("background-image",backs[currentBack]);
     Materialize.fadeInImage('#background1');
     setTimeout(function(){
@@ -158,7 +157,6 @@ var imageToggle = function(){
     },1200);
   }
   currentBack = ( currentBack + 1 ) % backs.length;
-  console.log(currentBack);
 
   toggleHelp = toggleHelp*-1;
   setTimeout(function(){

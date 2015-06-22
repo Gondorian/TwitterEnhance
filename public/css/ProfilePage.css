@@ -6,19 +6,27 @@ body {
   position: relative; }
 
 .nav-wrapper {
-  padding-left: 20px;
-  overflow: hidden; }
-  .nav-wrapper #logout {
-    position: absolute;
-    margin-top: 15px;
-    right: 20px; }
-  .nav-wrapper #logoutBut {
-    width: 160px; }
+  padding-left: 20px; }
   .nav-wrapper #logoutBut:hover {
     background-color: transparent; }
   .nav-wrapper #navSearch {
     float: right;
-    width: 300px; }
+    width: 200px; }
+  .nav-wrapper #navSearch:focus {
+    width: 600px; }
+  .nav-wrapper #searchHover {
+    height: 65px; }
+
+#profileBut {
+  width: 43px;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-left: 20px; }
+  #profileBut i {
+    line-height: 36px; }
+
+.brand-logo span {
+  font-size: 1.4rem; }
 
 .profileInfo {
   position: fixed;
@@ -86,10 +94,14 @@ body {
   .stats #lastCell {
     border-right: none; }
 
+#editProfile {
+  margin-top: 20px; }
+
 .row .col {
   padding: 0px; }
 
 .panel {
+  box-shadow: 4px 4px 10px #000;
   width: 100%;
   background-color: white;
   border-radius: 1px;
