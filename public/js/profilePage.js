@@ -13,28 +13,30 @@ var Videos = React.createClass({
 	render: function(){
 		return(
 			<div className="row">
-				<div className="panel col s6 offset-s5">
-					<div className="poster">
+				<div className="card col s5 offset-s5">
+					<div className="card-content ">
 						<img className="posterImg" src="http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif" />
 						<p>Posted by someone</p>
 					</div>
-					<img className="vidImg" src={this.props.url} />
-					<div className="vidInfo">
-						<p id="commentText">{this.props.text}</p>
-						<hr/>
+					<div className="card-image">
+						<img className="vidImg" src={this.props.url} />
+					</div>
+					<div className="card-content">
+						<p className="card-title">{this.props.text}</p>
+					</div>
+					<div className="card-content">
 						<p>{this.props.likes} likes {this.props.reposts} reposts {this.props.shares} share </p>
-						<hr/>
-						<div className="comments">
-							<p>{this.props.comments} comments</p>
-							<form>
-								 <div className="row">
-        							<div className="input-field col s12">
-										<textarea id='comment' className="materialize-textarea"/>
-										<label htmlFor="comment"> Enter something Nice </label>
-									</div>
+					</div>
+					<div className="card-content">
+						<p>{this.props.comments} comments</p>
+						<form>
+							 <div className="row">
+        						<div className="input-field col s12">
+									<textarea id='comment' className="materialize-textarea"/>
+									<label htmlFor="comment"> Enter something Nice </label>
 								</div>
-							</form>
-						</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -161,7 +163,6 @@ var Content = React.createClass({
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
-		console.log("data: "+ this.state.dat);
 		setInterval(this.loadPostsFromServer, this.props.pollInterval);
 	},
 	//render will recreate the components and everything thatis on the screen starts here
@@ -220,8 +221,6 @@ function completeForm() {
 	if(post!==""){
 		data.unshift({url: post, text: title});
 	}
-	console.log(data[3].title);
-
 
 	//change the profile picture
 	var image = $('#modalImg').val();

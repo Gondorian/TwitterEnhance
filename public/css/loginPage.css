@@ -2,7 +2,7 @@ body {
   margin-right: 10%;
   margin-left: 10%; }
 
-#wrapper, #background1, #background2 {
+#background1, #background2 {
   z-index: -3;
   background-color: transparent;
   position: fixed;
@@ -56,14 +56,13 @@ body {
   text-shadow: 2px 2px 4px #000000; }
   .textField h1, .textField h2, .textField h3 {
     display: inline;
-    font-weight: 500; }
+    font-weight: 500;
+    line-height: 1.2em; }
   .textField h1 {
     font-size: 50px;
-    font-weight: bold;
-    font-family: "Courier New", Courier, monospace; }
+    font-weight: bold; }
   .textField h2 {
-    font-size: 25px;
-    font-family: "Courier New", Courier, monospace; }
+    font-size: 25px; }
   .textField h3 {
     font-size: 17px; }
   .textField.largeScreen {

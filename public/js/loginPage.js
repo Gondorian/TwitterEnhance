@@ -20,10 +20,12 @@ var Navbar = React.createClass({
 var Textbox =React.createClass({
   render: function(){
     return(
-      <div className="col s6">
-        <div className="textField">
-          <h2>Welcome to <h1>video45</h1></h2><br />
-          <h3> Bring Videos to life in 45 seconds </h3>
+      <div classname="row">
+        <div className="text col s6">
+          <div className="textField">
+            <h2>Welcome to <h1>video45</h1></h2><br />
+            <h3> Bring Videos to life in 45 seconds </h3>
+          </div>
         </div>
       </div>
     );
@@ -164,27 +166,36 @@ var imageToggle = function(){
   },10000);
 }
 
-$(document).ready(function(){
+var resize = function(){
   var width = parseInt($('#wrapper').css('width'));
+  var login = $('.loginBox');
+  var register = $('.registerBox');
+  var text = $('.text');
   if(width<860){
+    //smallscreen
+    text.removeClass('s6');
+    text.addClass('s12');
+    login.removeClass('s6');
+    login.addClass('s12');
     $('.textField').addClass('largeScreen');
     $('#frontpage').css('margin-top','50px')
   }else{
+    //largeScreen
+    text.addClass('s6');
+    text.removeClass('s12');
+    login.addClass('s6');
+    login.removeClass('s12');
     $('.textField').removeClass('largeScreen');
     $('#frontpage').css('margin-top','100px')
   }
+};
+
+$(document).ready(function(){
+  resize();
   imageToggle();
 });
 
 
 $(window).resize(function(){
-  var width = parseInt($('#wrapper').css('width'));
-  if(width<860){
-    $('.textField').addClass('largeScreen');
-    $('#frontpage').css('margin-top','50px')
-  }else{
-    $('.textField').removeClass('largeScreen');
-    $('#frontpage').css('margin-top','100px')
-  }
-  console.log(width);
+  resize();
 });
