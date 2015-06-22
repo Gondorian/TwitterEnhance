@@ -177,6 +177,7 @@ var resize = function(){
     text.addClass('s12');
     login.removeClass('s6');
     login.addClass('s12');
+    $('.form').addClass('center');
     $('.textField').addClass('largeScreen');
     $('#frontpage').css('margin-top','50px')
   }else{
@@ -185,6 +186,7 @@ var resize = function(){
     text.removeClass('s12');
     login.addClass('s6');
     login.removeClass('s12');
+    $('.form').removeClass('center');
     $('.textField').removeClass('largeScreen');
     $('#frontpage').css('margin-top','100px')
   }

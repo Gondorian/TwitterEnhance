@@ -13,10 +13,10 @@ var Videos = React.createClass({
 	render: function(){
 		return(
 			<div className="row">
-				<div className="card col s5 offset-s5">
+				<div className="card col s6 offset-s5">
 					<div className="card-content ">
 						<img className="posterImg" src="http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif" />
-						<p>Posted by someone</p>
+						<p className="posterName">Posted by someone</p>
 					</div>
 					<div className="card-image">
 						<img className="vidImg" src={this.props.url} />
@@ -24,9 +24,13 @@ var Videos = React.createClass({
 					<div className="card-content">
 						<p className="card-title">{this.props.text}</p>
 					</div>
-					<div className="card-content">
-						<p>{this.props.likes} likes {this.props.reposts} reposts {this.props.shares} share </p>
+					<hr />
+					<div className="card-content inline-text">
+						<a href="#"><i className="small mdi-action-thumb-up prefix" /> {this.props.likes} likes</a> 
+						<a href="#"><i className="small mdi-av-repeat" /> {this.props.reposts} reposts </a> 
+						<a href="#"><i className="small mdi-action-thumb-up prefix" />{this.props.shares} share </a>
 					</div>
+					<hr />
 					<div className="card-content">
 						<p>{this.props.comments} comments</p>
 						<form>
@@ -79,7 +83,7 @@ var ProfileInfo = React.createClass({
 							<td id="lastCell">{this.props.following} <br />following</td>
 						</tr>
 					</table>
-					<form>
+					<form  action="" method="POST">
 						<button className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
 						</button>
 					</form>
@@ -109,7 +113,7 @@ var Navbar = React.createClass({
 								</form>
 							</li>
 							<li>
-								<a id="profileBut" className='dropdown-button btn-floating' data-beloworigin="true" data-gutter="-40" href='#' data-activates='dropdown1'><i className="mdi-action-perm-identity left" /></a>
+								<a id="profileBut" className='dropdown-button btn-floating' data-beloworigin="true" data-gutter="0" href='#' data-activates='dropdown1'><i className="mdi-action-perm-identity left" /></a>
 								<ul id="dropdown1" className='dropdown-content'>
 									<li><a href="#!">profilePage</a></li>
 									<li id="logoutBut">
@@ -191,13 +195,15 @@ var handleResize = function(){
 		//This is for small screen organization
 		$(".profileInfo").addClass("smallScreen");
 		//recenter the panel if the screen is small
-		$(".panel").removeClass("col s5 offset-s5")>
-		$(".pictures").addClass("smallScreen");
+		$(".card").removeClass("s6 offset-s5");
+		$(".card").addClass("s12");
+		$(".card").addClass("centerd");
 	}else{
 		//return to a lare screen organization
 		$(".profileInfo").removeClass("smallScreen");
-		$(".panel").addClass("col s5 offset-s5")>
-		$(".pictures").removeClass("smallScreen");
+		$(".card").addClass("s6 offset-s5");
+		$(".card").removeClass("s12");
+		$(".card").removeClass("centerd");
 	}
 }
 
@@ -207,7 +213,7 @@ var handleResize = function(){
      outDuration: 225,
      constrain_width: false, // Does not change width of dropdown to that of the activator
      hover: true, // Activate on hover
-     gutter: 0, // Spacing from edge
+     gutter: 1000, // Spacing from edge
      belowOrigin: true // Displays dropdown below the button
    }
  );
