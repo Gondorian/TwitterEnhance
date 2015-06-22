@@ -41,13 +41,14 @@ exports.login = function(req, callback){        //get the user's session and set
 exports.loadProfile = function(req, userName, callback){
   if(req.session.userName == userName){     //if request is for currently logged in user
     Account.getUserProfile(userName, function(data){
-        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, true, req.session.username];
+        console.log('Loading profile: ' + req.session.userName);
+        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'true', req.session.userName];
         callback(info);
     });
   }
   else{                                     //if request is for some other user's profile
     Account.getUserProfile(userName, function(data){
-      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, false, req.session.username];
+      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'false', req.session.userName];
       callback(info);
     });
   }
@@ -58,11 +59,11 @@ exports.loadProfile = function(req, userName, callback){
 exports.isLoggedIn = function(req){     //checks if logged in by seeing if the session.userName variable is set
   var session = req.session;
   if(session.userName){
-    console.log('The Session username: ' + session.userName);
+    console.log('Logged in username is: ' + session.userName);
     return true;
   }
   else {
-    console.log('No Session username found!');
+    console.log('Not logged in! (no session username)');
     false;
   }
 }
