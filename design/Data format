@@ -6,5 +6,6 @@ userName:		User name of the requested user.
 numberOfPosts:		The number of posts the requested user  has made.
 numberOfFollowers:	Number of followers the requested user has.
 profilePic: 		URL to the profile pic of the requested user
+profilePic:			the navbar color for the currently logged in user
 isCurrentUser: 		Whether the profile being requested is of the currently logged in User.
 currentUsername: 	The user name of the currently logged in user

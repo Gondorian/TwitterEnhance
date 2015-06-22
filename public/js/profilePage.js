@@ -66,9 +66,43 @@ var VidList = React.createClass({
 	}
 });
 
+//make the follow button
+var Follow = React.createClass({
+	render: function(){
+		return(
+			<div>
+				<form  action="/users/follow" method="POST">
+					<button id="followBtn" className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
+					</button>
+				</form>
+			</div>
+		);
+	}
+});
+
+//make the edit profile button
+var Edit = React.createClass({
+	render: function(){
+		return(
+			<div>
+				<a id="editProfile" className="modal-trigger waves-effect waves-light btn" href="#modal1">Edit Profile</a>
+			</div>
+		);
+	}
+});
+
+
 //profileInfo is the information contained in the left pushpin, all
 // modifications can be done here
 var ProfileInfo = React.createClass({
+	getInitialState: function(){
+		console.log(info[6]);
+		if(info[6] === 'true'){
+			return({button: <Edit />});
+		}else{
+			return({button: <Follow />});
+		};
+	},
 	render: function(){
 		return(
 			<div id="profileRow" className="row">
@@ -83,11 +117,7 @@ var ProfileInfo = React.createClass({
 							<td id="lastCell">{this.props.following} <br />following</td>
 						</tr>
 					</table>
-					<form  action="" method="POST">
-						<button className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
-						</button>
-					</form>
-					<a id="editProfile" className="modal-trigger waves-effect waves-light btn" href="#modal1">Edit Profile</a>
+					{this.state.button}
 				</div>
 			</div>
 		);
@@ -157,12 +187,12 @@ var Navbar = React.createClass({
 var Content = React.createClass({
 	//getInitialState will run when the component first loads and will initialize part of its state
 	loadPostsFromServer: function(){
+		this.setState({logged: info[7]})
 		this.setState({custName: info[0]});
 		this.setState({dat:data});
 	},
 	getInitialState: function() {
 		cust = "ral";
-
     	return {dat: data};
   	},
   	//componentDidMount will run at every rerender and will read info from server
@@ -174,7 +204,7 @@ var Content = React.createClass({
 		return(
 			<div className = "profilePage">
 				<Navbar cust = {this.state.custName} />
-				<ProfileInfo cust = {this.state.custName} posts={info[3]} followers={info[2]} following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
+				<ProfileInfo myProfile={true} cust = {this.state.custName} posts={info[3]} followers={info[2]} following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
 		);
@@ -244,6 +274,15 @@ function completeForm() {
 	document.getElementById("modalForm").reset();
 	$('#modal1').closeModal();
 }
+
+//click event handlers
+$('#followBtn').click(function(){
+	//first argument is location, second is data, third is response data
+	$.post('http://localhost:3000/users/follow',info[1], function(data){
+		console.log("response was: " + data);
+	});
+	return false;
+});
 
 //monitors screen resize
 $(window).resize(function(){
