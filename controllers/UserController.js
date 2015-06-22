@@ -41,13 +41,13 @@ exports.login = function(req, callback){        //get the user's session and set
 exports.loadProfile = function(req, userName, callback){
   if(req.session.userName == userName){     //if request is for currently logged in user
     Account.getUserProfile(userName, function(data){
-        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, true];
+        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, true, req.session.username];
         callback(info);
     });
   }
   else{                                     //if request is for some other user's profile
     Account.getUserProfile(userName, function(data){
-      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, false];
+      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, false, req.session.username];
       callback(info);
     });
   }
