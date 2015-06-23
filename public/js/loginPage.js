@@ -37,7 +37,7 @@ var LoginBox =React.createClass({
   render: function(){
     return(
       <div className="loginBox col s6">
-        <form id="loginForm" className ="form" action="http://localhost:3000/users/login" method="POST">
+        <form id="loginForm" className ="form">
           <div className="row">
             <div className="input-field col s12">
               <input type="text" name="email" id="logEmail" className="validate"/><br/>
@@ -127,8 +127,23 @@ React.render(
   document.getElementById('register')
 );
 
+//below is the ajax post for the login button form
+$('#loginForm').submit(function(){
+      $.ajax({
+      url: "http://localhost:3000/users/login",
+      type: 'POST',
+      data: $('#loginForm').serialize(),
+      success: function(response,as,res){
+        console.log(res);
+        alert("asdf");
+      },
+      error: function(response,as,res){
+        alert('not successful ' + {res});
+      }
+    });
 
-
+    return false;
+});
 
 //list of urls that will cycle through on front page
 var backs = [
