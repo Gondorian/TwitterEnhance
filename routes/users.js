@@ -56,22 +56,18 @@ router.post('/register', function(req, res, next){
 
 // Request to login
 router.post('/login', function(req, res, next){
-  //secret way of getting in
-  if(req.body.email == "paul"){
-    res.redirect('/users/profile');
-  }
-  else{
-    UserController.login(req, function(succcess){
-      if(succcess){       //if credentials were correct
-        console.log('Logged in succesfully!');
-        res.redirect('/');
-      }
-      else{              //if credentials were incorrect
-        console.log("Could not log in. :(");
-        res.redirect('/');
-      }
-    });
-  }
+
+  UserController.login(req, function(succcess){
+    if(succcess){       //if credentials were correct
+      console.log('Logged in succesfully!');
+      res.redirect('/');
+    }
+    else{              //if credentials were incorrect
+      console.log("Could not log in. :(");
+      res.send('Incorrect Email or Password.');
+    }
+  });
+
 
 
 });
