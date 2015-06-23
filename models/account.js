@@ -27,6 +27,7 @@ exports.insertNewUser= function(fullName, email, userName, password){
 //check if credentials match to ones in database
 exports.checkCredentials = function(email, password, callback){
   video45.view('user', 'credentials', function(err, body){          //key = email, value = password
+    var found = false;
     body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
       if(doc.key == email && doc.value == password){
         found = true;
@@ -38,6 +39,7 @@ exports.checkCredentials = function(email, password, callback){
     else {
       callback(false);  //else return false
     }
+
   });
 }
 
