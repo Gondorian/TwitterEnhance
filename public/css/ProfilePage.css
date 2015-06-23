@@ -137,17 +137,18 @@ body {
   height: 535px; }
 
 #comment {
-  padding: 0.6rem; }
+  padding: 0.6rem;
+  max-width: 90%; }
 
-.card .inline-text a {
+.card .card-content a {
   margin-right: 30px;
   color: #b2b2b2; }
-  .card .inline-text a i {
+  .card .card-content a i {
     position: relative;
     top: 7px;
     margin-right: 5px; }
 
-.card .inline-text a:hover {
+.card .card-content a:hover {
   color: #464646; }
 
 /*# sourceMappingURL=profilePage.css.map */

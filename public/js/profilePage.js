@@ -6,6 +6,53 @@ var data = [
 	{url: "http://thedailyfandom.com/wp-content/uploads/2015/01/Why_5d76e0_1095350.jpg", text: "Me and my dad at the park"}
 ];
 
+var comments=[
+	{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
+	{poster: "Paul Azevedo", text: "This anime wasn't too amazing"},
+	{poster: "Walter Cunningham", text: "This artist was rather skillful"}
+];
+
+var Comment = React.createClass({
+	render: function(){
+		return(
+			<div className="commentBox">
+				<p id="poster">{this.props.poster}</p>
+				<p id="comment">{this.props.comment}</p>
+				<hr />
+			</div>
+		);
+	}
+});
+
+//below is the comment modal react element
+var CommentModal = React.createClass({
+	getInitialState: function(){
+		return{comments:comments};
+	},
+	loadCommentsFromServer: function(){
+		this.setState({comments: comments});
+	},
+	componentDidMount: function(){
+		setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+	},
+	render:function(){
+		var commentNodes = this.state.comments.map(function(comm){
+			return(
+				<Comment poster={comm.poster} comment={comm.text} />
+			);
+		});
+		return(
+		    <div id="commentModal" className="modal modal-fixed-footer">
+		    	<div className="modal-content">
+		    		{commentNodes}
+		     	</div>
+		     	<div className="modal-footer">
+		        	<a href="#!" className="modal-action modal-close waves-effect waves-red btn-flat ">Cancel</a>
+		     	</div>
+		    </div>
+	    );
+	}
+});
 
 //edit the contents of the right panels here, note editing this will edit
 //all copies as this is the template used by vidList
@@ -32,11 +79,12 @@ var Videos = React.createClass({
 					</div>
 					<hr />
 					<div className="card-content">
-						<p>{this.props.comments} comments</p>
+						<a id="viewComments" className="modal-trigger" href="#commentModal">{this.props.comments} comments</a>
+
 						<form>
 							 <div className="row">
         						<div className="input-field col s12">
-									<textarea id='comment' className="materialize-textarea"/>
+									<textarea maxlength="255" id='comment' className="materialize-textarea"/>
 									<label htmlFor="comment"> Enter something Nice </label>
 								</div>
 							</div>
@@ -96,7 +144,6 @@ var Edit = React.createClass({
 // modifications can be done here
 var ProfileInfo = React.createClass({
 	getInitialState: function(){
-		console.log(info[6]);
 		if(info[6] === 'true'){
 			return({button: <Edit />});
 		}else{
@@ -190,7 +237,6 @@ var Content = React.createClass({
 		this.setState({logged: info[7]})
 		this.setState({custName: info[0]});
 		this.setState({dat:data});
-		console.log(info[7]);
 	},
 	getInitialState: function() {
 		cust = "ral";
@@ -214,8 +260,12 @@ var Content = React.createClass({
 
 //the root this calls the parent with some dummy data
 React.render(
-	<Content />,
+	<Content pollInterval={200}/>,
 	document.getElementById("content")
+);
+React.render(
+	<CommentModal pollInterval={200}/>,
+	document.getElementById("commentMod")
 );
 
 //allows for multi displays by monitoring screen size

@@ -37,7 +37,7 @@ var LoginBox =React.createClass({
   render: function(){
     return(
       <div className="loginBox col s6">
-        <form className ="form" action="http://localhost:3000/users/login" method="POST">
+        <form id="loginForm" className ="form" action="http://localhost:3000/users/login" method="POST">
           <div className="row">
             <div className="input-field col s12">
               <input type="text" name="email" id="logEmail" className="validate"/><br/>
@@ -126,6 +126,8 @@ React.render(
   <FrontPage />,
   document.getElementById('register')
 );
+
+
 
 
 //list of urls that will cycle through on front page

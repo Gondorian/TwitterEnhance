@@ -37,6 +37,9 @@
       </div>
     </div>
 
+    <!--Below is the modal for view comments-->
+    <div id="commentMod"></div>
+
 
     <!--Scripts-->
     <script>
