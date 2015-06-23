@@ -82,16 +82,16 @@ exports.getUserProfile = function(userName, callback){
 //check if user is in database
 exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
   video45.view('user', 'userNames', function(err, body){
-    var found = false;
+    var found = "";
     body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
       if(doc.key == email){
-        found = 'Email already exists!';
+        found = 'Email already exists! ';
       }
-      else if (doc.value == userName) {
-        found = 'Username is taken!';
+      if (doc.value == userName) {
+        found = found + 'Username is taken!';
       }
     });
-    if(found == false)    //if email or username wasnt found, callback false
+    if(found == "")    //if email or username wasnt found, callback false
       callback(false);
     else {
       callback(found);  //else return the err

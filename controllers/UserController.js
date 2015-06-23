@@ -25,6 +25,7 @@ exports.login = function(req, callback){        //get the user's session and set
   var password = req.body.password;
 
   Account.checkCredentials(email, password, function(exists){
+    console.log(email);
       if(exists){         //if user exists, set the session variable to username of the user
         var session = req.session;
         Account.getUserName(email, function(userName){    //get the username based on the email provided
