@@ -62,6 +62,26 @@ exports.registerUser = function(req, callback){
   });
 }
 
+
+exports.login = function(req, callback){        //get the user's session and set the session variable 'email' to the one supplied by the user
+  var email = req.body.email;
+  var password = req.body.password;
+
+  Account.checkCredentials(email, password, function(exists){
+    console.log(email);
+      if(exists){         //if user exists, set the session variable to username of the user
+        var session = req.session;
+        Account.getUserName(email, function(userName){    //get the username based on the email provided
+          session.userName = userName;
+          callback(true);
+        });
+      }
+      else{               //else callback with false
+        callback(false);
+      }
+  });
+}
+
 exports.loadProfile = function(req, userName, callback){
   if(req.session.userName == userName){     //if request is for currently logged in user
     Account.getUserProfile(userName, function(data){
@@ -82,7 +102,7 @@ exports.loadProfile = function(req, userName, callback){
 exports.followUser = function(req, callback){
   var followUser = req.body.userName;
   if (followUser == req.session.userName){    //if the user is trying to follow himself
-    
+
   }
   else{
 

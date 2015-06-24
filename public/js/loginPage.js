@@ -20,12 +20,10 @@ var Navbar = React.createClass({
 var Textbox =React.createClass({
   render: function(){
     return(
-      <div classname="row">
-        <div className="text col s6">
-          <div className="textField">
-            <h2>Welcome to <h1>video45</h1></h2><br />
-            <h3> Bring Videos to life in 45 seconds </h3>
-          </div>
+      <div className="text col s6">
+        <div className="textField">
+          <h2>Welcome to <h1>video45</h1></h2><br />
+          <h3> Bring Videos to life in 45 seconds </h3>
         </div>
       </div>
     );
@@ -37,7 +35,7 @@ var LoginBox =React.createClass({
   render: function(){
     return(
       <div className="loginBox col s6">
-        <form className ="form" action="http://localhost:3000/users/login" method="POST">
+        <form id="loginForm" className ="form">
           <div className="row">
             <div className="input-field col s12">
               <input type="text" name="email" id="logEmail" className="validate"/><br/>
@@ -67,7 +65,7 @@ var RegisterBox = React.createClass({
     return (
       <div className="row">
         <div className="registerBox  col s12">
-        <form id = "registration" className="form" action="http://localhost:3000/users/register" method="POST">
+        <form id = "registration" className="form">
         <h3><b>New to Video45?</b> Sign up</h3><hr />
           <div className="row">
             <div className="input-field col s12">
@@ -126,6 +124,56 @@ React.render(
   <FrontPage />,
   document.getElementById('register')
 );
+
+//below is the ajax post for the login button form
+$('#loginForm').submit(function(){
+      $.ajax({
+      url: "http://localhost:3000/users/login",
+      type: 'POST',
+      data: $('#loginForm').serialize(),
+      success: function(response){
+        if(response.length < 40){
+          Materialize.toast(response,10000);
+          $('#password').css("border-color","red");
+          $('#logEmail').css("border-color","red");
+        }else{
+          $(document).attr('location').href='/'
+        }
+      },
+      error: function(response){
+        //alert('not successful ' + {response});
+      }
+    });
+    return false;s
+});
+
+//below is the ajax post for the register box
+$('#registration').submit(function(){
+      $.ajax({
+      url: "http://localhost:3000/users/register",
+      type: 'POST',
+      data: $('#registration').serialize(),
+      success: function(response){
+        Materialize.toast(response,10000);
+        if(response.length < 100 && response.length > 30){//if both email and usrename fail
+          $('#email').css("border-color","red");
+          $('#Username').css("border-color","red");
+        }else if(response.substring(0,4) === "Emai"){//if only email is taken
+          $('#email').css("border-color","red");
+          $('#Username').css("border-color","#9E9E9E");
+        }else if(response.substring(0,4) === "User"){//if only user is taken
+          $('#email').css("border-color","#9E9E9E");
+          $('#Username').css("border-color","red");
+        }else{
+          $(document).attr('location').href='/' //if everything is fine
+        }
+      },
+      error: function(response){
+        alert('not successful ' + {response});
+      }
+    });
+    return false;
+});
 
 
 //list of urls that will cycle through on front page
