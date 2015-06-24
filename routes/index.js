@@ -21,5 +21,10 @@ router.get('/profilepage', function (req, res, next) {
   });
 });
 
+router.get('/test', function (req, res, next) {
+  Account.followUser('sonal.keshav', 'paul.azevedo');
+  res.send('The test has completed!');
+});
+
 
 module.exports = router;

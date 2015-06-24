@@ -26,15 +26,6 @@ router.get('/:userName', function(req, res, next){
 
 });
 
-router.get('/test', function(req, res, next){
-  res.send('Test route is working!');
-});
-
-
-
-
-
-
 
 //==============
 //POST REQUESTS
@@ -46,7 +37,7 @@ router.post('/register', function(req, res, next){
   UserController.registerUser(req, function(success){
     if(success == true){
       console.log('Succesfully registered. Redirecting to profile.');
-      res.redirect('/users/profile');
+      res.redirect('/');
     }
     else
       res.send(success);
@@ -85,6 +76,16 @@ router.post('/logout', function(req, res, next){
       res.send("you can't leave. video45 is love, video45 is life.");
     }
   });
+});
+
+router.post('/follow', function(req, res, next){
+  if(UserController.isLoggedIn(req)){
+    //follow that user
+  }
+  else{
+    res.redirect('/');
+  }
+
 });
 
 module.exports = router;

@@ -24,7 +24,7 @@ exports.insertNewUser= function(fullName, email, userName, password){
   });
 }
 
-//check if credentials match to ones in database
+//check if credentials match to ones in database (when loggin in)
 exports.checkCredentials = function(email, password, callback){
   video45.view('user', 'credentials', function(err, body){          //key = email, value = password
     var found = false;
@@ -43,8 +43,28 @@ exports.checkCredentials = function(email, password, callback){
   });
 }
 
+//check if user is in database (used when registering to prevent duplicate)
+exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
+  video45.view('user', 'userNames', function(err, body){
+    var found = "";
+    body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
+      if(doc.key == email){
+        found = 'Email already exists!';
+      }
+      if (doc.value == userName) {
+        found = found + ' Username is taken!';
+      }
+    });
+    if(found == "")    //if email or username wasnt found, callback false
+      callback(false);
+    else {
+      callback(found);  //else return the error
+    }
+  });
 
-//get the username of a user based on the email
+}
+
+//get the username of a user based on the email (used when loggin in)
 exports.getUserName = function(email, callback){
   video45.view('user', 'userNames', function(err, body){  //key = email, value = username
     body.rows.forEach(function(doc) {         //for each row in the view check for the email
@@ -56,6 +76,7 @@ exports.getUserName = function(email, callback){
   });
 }
 
+// get the details of a particular user
 exports.getUserProfile = function(userName, callback){
 
   video45.view('user', 'by_id', function(err, body){  //key = email, value = _id
@@ -78,24 +99,23 @@ exports.getUserProfile = function(userName, callback){
   });
 }
 
+exports.followUser = function(currentUser, followUser){
+  video45.view('user', 'by_id', function(err, body){  //key = useName, value = _id
+    body.rows.forEach(function(doc) {         //for each row in the view check for the userName
+      if(doc.key == currentUser){
+        var docID = doc.value;                 //if username is found, get the doc id
+        console.log('followUser ' + followUser);
+        video45.atomic('user', 'follow_user', docID, {user: followUser}, function(error, response){
+          if(!error){
+            console.log('The response from the update: ' + response);
+          }
+          else{
+            console.log('The error from the update: ' + error);
+          }
 
-//check if user is in database
-exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
-  video45.view('user', 'userNames', function(err, body){
-    var found = false;
-    body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
-      if(doc.key == email){
-        found = 'Email already exists!';
-      }
-      else if (doc.value == userName) {
-        found = 'Username is taken!';
+        });
+
       }
     });
-    if(found == false)    //if email or username wasnt found, callback false
-      callback(false);
-    else {
-      callback(found);  //else return the err
-    }
   });
-
 }
