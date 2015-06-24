@@ -21,7 +21,7 @@
 
     <!--Scripts-->
     <script>
-      var info = ["{{name}}","{{userName}}","{{numberOfFollowers}}","{{numberOfPosts}}","{{profilePic}}","{{profileColour}}", "{{isCurrentUser}}", "{{currentUserName}}"];
+      var info = ["{{name}}","{{userName}}","{{numberOfFollowers}}","{{numberOfPosts}}","{{profilePic}}","{{profileColour}}", "{{isCurrentUser}}", "{{currentUserName}}", "{{numberOfFollowing}}"];
     </script>
     <script src="../bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="../bower_components/react/JSXTransformer.js"></script>

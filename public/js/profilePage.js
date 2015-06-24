@@ -67,9 +67,9 @@ var Videos = React.createClass({
 	      	out_duration: 200, // Transition out duration
 	      	complete: function(){ //closes the modal and unmounts the react element
 				var result = React.unmountComponentAtNode(document.getElementById("commentMod"))
-	      	} 
+	      	}
     	});
-	},	
+	},
 	render: function(){
 		return(
 			<div className="row">
@@ -132,7 +132,7 @@ var Follow = React.createClass({
 	render: function(){
 		return(
 			<div>
-				<form  id="followForm" action="/users/follow" method="POST">
+				<form  id="followForm">
 					<button id="followBtn" className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
 					</button>
 				</form>
@@ -174,7 +174,7 @@ var Edit = React.createClass({
 	      	out_duration: 200, // Transition out duration
 	      	complete: function(){ //closes the modal and unmounts the react element
 				var result = React.unmountComponentAtNode(document.getElementById("editMod"))
-	      	} 
+	      	}
     	});
 	},
 	render: function(){
@@ -327,7 +327,7 @@ var Content = React.createClass({
 		return(
 			<div className = "profilePage">
 				<Navbar cust = {this.state.logged} />
-				<ProfileInfo myProfile={true} cust = {this.state.custName} posts={info[3]} followers={info[2]} following="3" desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
+				<ProfileInfo myProfile={true} cust = {this.state.custName} posts={info[3]} followers={info[2]} following={info[8]} desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
 		);
@@ -413,14 +413,7 @@ var handleResize = function(){
    }
  );
 
-//click event handlers
-$('#followBtn').click(function(){
-	//first argument is location, second is data, third is response data
-	$.post('http://localhost:3000/users/follow',info[1], function(data){
-		console.log("response was: " + data);
-	});
-	return false;
-});
+//click event handler
 
 
 //monitors screen resize

@@ -15,6 +15,7 @@ exports.insertNewUser= function(fullName, email, userName, password){
      "password": password,
      "numberOfPosts": 0,
      "numberOfFollowers": 0,
+     "numberOfFollowing": 0,
      "profilePic": "default",
      "profileColour": "red"
     }, function(err, body){
@@ -99,7 +100,7 @@ exports.getUserProfile = function(userName, callback){
   });
 }
 
-exports.followUser = function(currentUser, followUser){
+exports.followUser = function(currentUser, followUser, callback){
   video45.view('user', 'by_id', function(err, body){  //key = useName, value = _id
     body.rows.forEach(function(doc) {         //for each row in the view check for the userName
       if(doc.key == currentUser){
@@ -108,9 +109,11 @@ exports.followUser = function(currentUser, followUser){
         video45.atomic('user', 'follow_user', docID, {user: followUser}, function(error, response){
           if(!error){
             console.log('The response from the update: ' + response);
+            callback('Added to following!');
           }
           else{
             console.log('The error from the update: ' + error);
+            callback('Could not add to following');
           }
 
         });
@@ -118,6 +121,8 @@ exports.followUser = function(currentUser, followUser){
 
       }
     });
+  });
+}
 
 //check if user is in database
 exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)

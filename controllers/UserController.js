@@ -86,14 +86,14 @@ exports.loadProfile = function(req, userName, callback){
   if(req.session.userName == userName){     //if request is for currently logged in user
     Account.getUserProfile(userName, function(data){
         console.log('Loading profile: ' + req.session.userName);
-        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'true', req.session.userName];
+        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'true', req.session.userName, data.numberOfFollowing];
         callback(info);
     });
   }
   else{                                     //if request is for some other user's profile
     Account.getUserProfile(userName, function(data){
       console.log('Loading profile: ' + req.session.userName);
-      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'false', req.session.userName];
+      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'false', req.session.userName, data.numberOfFollowing];
       callback(info);
     });
   }
@@ -105,6 +105,8 @@ exports.followUser = function(req, callback){
 
   }
   else{
-
+    Account.followUser(req.session.userName, followUser, function(msg){
+      callback(msg);
+    });
   }
 }
