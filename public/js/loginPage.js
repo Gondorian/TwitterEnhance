@@ -134,6 +134,8 @@ $('#loginForm').submit(function(){
       success: function(response){
         if(response.length < 40){
           Materialize.toast(response,10000);
+          $('#password').css("border-color","red");
+          $('#logEmail').css("border-color","red");
         }else{
           $(document).attr('location').href='/'
         }

@@ -14,6 +14,10 @@ router.get('/', function(req, res, next) {
     res.render('loginPage');
 });
 
+router.get('/mainpage', function(req, res, next) {
+  console.log('requesting front page!');
+  res.render('mainPage');
+});
 
 router.get('/profilepage', function (req, res, next) {
   UserController.loadProfile(req, 'paul.azevedo', function(info){

@@ -13,29 +13,7 @@
     <div id = 'content'></div>
 
     <!--This is the modal overlay for profile edit-->
-
-     <div id="modal1" class="modal modal-fixed-footer">
-      <div class="modal-content">
-        <h4> {{name}} </h4>
-          <form id="modalForm">
-            <input id="modalImg" type="text" placeholder="Profile Picture"/>
-            <input id="modalColor" type="text" placeholder="Profile Color" /><br />
-            <input id="modalPost" type="text" placeholder="Post" />
-            <input id="modalTitle" type="text" placeholder="Video Title" />
-            <div class="file-field input-field">
-              <input class="file-path validate" type="text"/>
-              <div class="btn">
-                <span>File</span>
-                <input type="file" />
-              </div>
-            </div>
-          </form>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" onClick="completeForm()" class="modal-action waves-effect waves-green btn-flat ">Agree</a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Cancel</a>
-      </div>
-    </div>
+    <div id="editMod"></div>
 
     <!--Below is the modal for view comments-->
     <div id="commentMod"></div>

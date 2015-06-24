@@ -18,7 +18,12 @@ body {
     height: 65px; }
 
 #logout {
-  height: 30px; }
+  font-size: 1.2rem;
+  color: #26a69a;
+  height: 40px; }
+
+#logout:hover {
+  background-color: #EEE; }
 
 #profileBut {
   width: 37px;

@@ -33,7 +33,7 @@ var CommentModal = React.createClass({
 		this.setState({comments: comments});
 	},
 	componentDidMount: function(){
-		setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+		this.loadCommentsFromServer
 	},
 	render:function(){
 		var commentNodes = this.state.comments.map(function(comm){
@@ -47,7 +47,7 @@ var CommentModal = React.createClass({
 		    		{commentNodes}
 		     	</div>
 		     	<div className="modal-footer">
-		        	<a href="#!" className="modal-action modal-close waves-effect waves-red btn-flat ">Cancel</a>
+		        	<a href="#!" className="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
 		     	</div>
 		    </div>
 	    );
@@ -57,6 +57,19 @@ var CommentModal = React.createClass({
 //edit the contents of the right panels here, note editing this will edit
 //all copies as this is the template used by vidList
 var Videos = React.createClass({
+	clickHandeler: function(){
+		React.render(<CommentModal />,document.getElementById("commentMod"));
+		//the options for the modal
+		$('#commentModal').openModal({
+	      	dismissible: false, // Modal can be dismissed by clicking outside of the modal
+	      	opacity: .5, // Opacity of modal background
+	      	in_duration: 300, // Transition in duration
+	      	out_duration: 200, // Transition out duration
+	      	complete: function(){ //closes the modal and unmounts the react element
+				var result = React.unmountComponentAtNode(document.getElementById("commentMod"))
+	      	} 
+    	});
+	},	
 	render: function(){
 		return(
 			<div className="row">
@@ -79,12 +92,11 @@ var Videos = React.createClass({
 					</div>
 					<hr />
 					<div className="card-content">
-						<a id="viewComments" className="modal-trigger" href="#commentModal">{this.props.comments} comments</a>
-
+						<a id="viewComments" onClick={this.clickHandeler}>{this.props.comments} comments</a>
 						<form>
 							 <div className="row">
         						<div className="input-field col s12">
-									<textarea maxlength="255" id='comment' className="materialize-textarea"/>
+									<textarea maxLength="255" id='comment' className="materialize-textarea"/>
 									<label htmlFor="comment"> Enter something Nice </label>
 								</div>
 							</div>
@@ -96,6 +108,7 @@ var Videos = React.createClass({
 	}
 });
 
+
 //vidList is the container for the growable list of panels, if the actual
 //panels must be edited use Video. if additional types of panels must be edited
 //do that here
@@ -103,7 +116,7 @@ var VidList = React.createClass({
 	render: function(){
 		var imageNodes = this.props.data.map(function(vidUrl){
 			return(
-				<Videos url={vidUrl.url} text={vidUrl.text} likes="2" reposts="2" shares="5" comments="2"/>
+				<Videos url={vidUrl.url} text={vidUrl.text} likes="2" reposts="2" shares="5" comments="2" />
 			);
 		});
 		return(
@@ -119,7 +132,7 @@ var Follow = React.createClass({
 	render: function(){
 		return(
 			<div>
-				<form  action="/users/follow" method="POST">
+				<form  id="followForm" action="/users/follow" method="POST">
 					<button id="followBtn" className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
 					</button>
 				</form>
@@ -130,11 +143,75 @@ var Follow = React.createClass({
 
 //make the edit profile button
 var Edit = React.createClass({
+	acceptChange: function(){
+		var post = $('#modalPost').val();
+		var title = $('#modalTitle').val();
+
+		if(post!==""){
+			data.unshift({url: post, text: title});
+		}
+		//change the profile picture
+		var image = $('#modalImg').val();
+		if(image!==""){
+			$('.profilePic').attr('src', image);
+		}
+		//change the profile color
+		var col = $('#modalColor').val();
+		if(col!==""){
+			$('nav').css("background-color",col);
+		}
+		//close the modal when done
+		document.getElementById("modalForm").reset();
+		$('#editModal').closeModal();
+	}.bind(this),
+	createModal: function(){
+		React.render(<EditModal accept={this.acceptChange}/>,document.getElementById("editMod"));
+		//the options for the modal
+		$('#editModal').openModal({
+	      	dismissible: false, // Modal can be dismissed by clicking outside of the modal
+	      	opacity: .5, // Opacity of modal background
+	      	in_duration: 300, // Transition in duration
+	      	out_duration: 200, // Transition out duration
+	      	complete: function(){ //closes the modal and unmounts the react element
+				var result = React.unmountComponentAtNode(document.getElementById("editMod"))
+	      	} 
+    	});
+	},
 	render: function(){
 		return(
 			<div>
-				<a id="editProfile" className="modal-trigger waves-effect waves-light btn" href="#modal1">Edit Profile</a>
+				<a id="editProfile" className="waves-effect waves-light btn"onClick={this.createModal}>Edit Profile</a>
 			</div>
+		);
+	}
+});
+
+//below is the modal for profile editing
+var EditModal = React.createClass({
+	render: function(){
+		return(
+		<div id="editModal" className="modal modal-fixed-footer">
+	      <div className="modal-content">
+	        <h4> {{name}} </h4>
+	          <form id="modalForm">
+	            <input id="modalImg" type="text" placeholder="Profile Picture"/>
+	            <input id="modalColor" type="text" placeholder="Profile Color" /><br />
+	            <input id="modalPost" type="text" placeholder="Post" />
+	            <input id="modalTitle" type="text" placeholder="Video Title" />
+	            <div className="file-field input-field">
+	              <input className="file-path validate" type="text"/>
+	              <div className="btn">
+	                <span>File</span>
+	                <input type="file" />
+	              </div>
+	            </div>
+	          </form>
+	      </div>
+	      <div className="modal-footer">
+	        <a href="#!" onClick={this.props.accept} className="modal-action waves-effect waves-green btn-flat ">Agree</a>
+	        <a href="#!" className="modal-action modal-close waves-effect waves-red btn-flat ">Cancel</a>
+	      </div>
+	    </div>
 		);
 	}
 });
@@ -189,15 +266,14 @@ var Navbar = React.createClass({
 								</div>
 								</form>
 							</li>
-							<li>
-								<a id="profileBut" className='dropdown-button btn-floating' data-beloworigin="true" data-gutter="0" href='#' data-activates='dropdown1'><i className="mdi-action-perm-identity left" /></a>
+							<li className='dropdown-button'data-beloworigin="true" data-outduration="1000000" data-gutter="30" href='#' data-activates='dropdown1'>
+								<a id="profileBut" className='btn-floating'><i className="mdi-action-perm-identity left" /></a>
 								<ul id="dropdown1" className='dropdown-content'>
 									<li><a href="#!">profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
 											<form action="http://localhost:3000/users/logout" method="POST">
-												<button className="btn waves-effect waves-light" type="submit" id="logout">logout
-												</button>
+												<button className="btn-flat" type="submit" id="logout">logout</button>
 											</form>
 										</div>
 									</li>
@@ -263,10 +339,48 @@ React.render(
 	<Content pollInterval={200}/>,
 	document.getElementById("content")
 );
-React.render(
-	<CommentModal pollInterval={200}/>,
-	document.getElementById("commentMod")
-);
+
+
+//below is the ajax post for the edit button form
+$('#modalForm').submit(function(){
+      $.ajax({
+      url: "http://localhost:3000/users/login",
+      type: 'POST',
+      data: $('#modalForm').serialize(),
+      success: function(response){
+        if(response.length < 40){
+          Materialize.toast(response,10000);
+        }else{
+          $(document).attr('location').href='/'
+        }
+      },
+      error: function(response){
+        //alert('not successful ' + {response});
+      }
+    });
+    return false;s
+});
+
+$('#followForm').submit(function(){
+	console.log(info[1]);
+	console.log(info[7]);
+      $.ajax({
+      url: "http://localhost:3000/users/follow",
+      type: 'POST',
+      data: {userName:info[1]},
+      success: function(response){
+        if(response.length < 40){
+          Materialize.toast(response,10000);
+        }else{
+          $(document).attr('location').href='/'
+        }
+      },
+      error: function(response){
+        //alert('not successful ' + {response});
+      }
+    });
+    return false;s
+});
 
 //allows for multi displays by monitoring screen size
 var handleResize = function(){
@@ -299,33 +413,6 @@ var handleResize = function(){
    }
  );
 
- //activates when the accept button is pressed on the modal screen
-function completeForm() {
-	//find post and modify data
-	var post = $('#modalPost').val();
-	var title = $('#modalTitle').val();
-
-	if(post!==""){
-		data.unshift({url: post, text: title});
-	}
-
-	//change the profile picture
-	var image = $('#modalImg').val();
-	if(image!==""){
-		$('.profilePic').attr('src', image);
-	}
-
-	//change the profile color
-	var col = $('#modalColor').val();
-	if(col!==""){
-		$('nav').css("background-color",col);
-	}
-
-	//close the modal when done
-	document.getElementById("modalForm").reset();
-	$('#modal1').closeModal();
-}
-
 //click event handlers
 $('#followBtn').click(function(){
 	//first argument is location, second is data, third is response data
@@ -334,6 +421,7 @@ $('#followBtn').click(function(){
 	});
 	return false;
 });
+
 
 //monitors screen resize
 $(window).resize(function(){
