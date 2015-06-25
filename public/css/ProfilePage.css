@@ -120,6 +120,10 @@ body {
     display: block;
     margin: auto; }
 
+.editable {
+  border: dotted;
+  border-color: orange; }
+
 .pictures {
   display: block;
   margin-top: 60px;

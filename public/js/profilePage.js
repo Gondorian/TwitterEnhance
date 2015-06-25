@@ -66,7 +66,7 @@ var Videos = React.createClass({
 	      	in_duration: 300, // Transition in duration
 	      	out_duration: 200, // Transition out duration
 	      	complete: function(){ //closes the modal and unmounts the react element
-				var result = React.unmountComponentAtNode(document.getElementById("commentMod"))
+				var result = React.unmountComponentAtNode(document.getElementById("commentMod"));
 	      	}
     	});
 	},
@@ -180,7 +180,7 @@ var Edit = React.createClass({
 	render: function(){
 		return(
 			<div>
-				<a id="editProfile" className="waves-effect waves-light btn"onClick={this.createModal}>Edit Profile</a>
+				<a id="editProfile" className="waves-effect waves-light btn"onClick={this.props.buttonClick}>Edit Profile</a>
 			</div>
 		);
 	}
@@ -188,6 +188,40 @@ var Edit = React.createClass({
 
 //below is the modal for profile editing
 var EditModal = React.createClass({
+	acceptChange: function(){
+		var post = $('#modalPost').val();
+		var title = $('#modalTitle').val();
+
+		if(post!==""){
+			data.unshift({url: post, text: title});
+		}
+		//change the profile picture
+		var image = $('#modalImg').val();
+		if(image!==""){
+			$('.profilePic').attr('src', image);
+		}
+		//change the profile color
+		var col = $('#modalColor').val();
+		if(col!==""){
+			$('nav').css("background-color",col);
+		}
+		//close the modal when done
+		document.getElementById("modalForm").reset();
+		$('#editModal').closeModal();
+	}.bind(this),
+	createModal: function(){
+		React.render(<EditModal accept={this.acceptChange}/>,document.getElementById("editMod"));
+		//the options for the modal
+		$('#editModal').openModal({
+	      	dismissible: false, // Modal can be dismissed by clicking outside of the modal
+	      	opacity: .5, // Opacity of modal background
+	      	in_duration: 300, // Transition in duration
+	      	out_duration: 200, // Transition out duration
+	      	complete: function(){ //closes the modal and unmounts the react element
+				var result = React.unmountComponentAtNode(document.getElementById("editMod"))
+	      	}
+    	});
+	},
 	render: function(){
 		return(
 		<div id="editModal" className="modal modal-fixed-footer">
@@ -222,7 +256,7 @@ var EditModal = React.createClass({
 var ProfileInfo = React.createClass({
 	getInitialState: function(){
 		if(info[6] === 'true'){
-			return({button: <Edit />});
+			return({button: <Edit buttonClick={this.props.buttonClick}/>});
 		}else{
 			return({button: <Follow />});
 		};
@@ -231,7 +265,7 @@ var ProfileInfo = React.createClass({
 		return(
 			<div id="profileRow" className="row">
 				<div className = "profileInfo">
-					<img className ="profilePic" src="http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif" /><br />
+					<img className ="profilePic" src={this.props.profileURL} /><br />
 					<p className="profileName"> {this.props.cust} </p>
 					<p className="description"> {this.props.desc} </p>
 					<table className = "stats">
@@ -242,6 +276,32 @@ var ProfileInfo = React.createClass({
 						</tr>
 					</table>
 					{this.state.button}
+				</div>
+			</div>
+		);
+	}
+});
+
+//the Component that will be shown when the profile is being edited
+var EditProfileInfo = React.createClass({
+	render: function(){
+		return(
+			<div id="profileRow" className="row">
+				<div className = "profileInfo">
+					<form id="profileForm">
+						<input id="profilePicInput" type="text" placeholder="Profile Picture URL" />
+						<img className ="profilePic editable" src={this.props.profileURL} /><br />
+						<input id="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Username"/>
+						<textarea id="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription"/>
+					</form>
+					<table className = "stats">
+						<tr>
+							<td>{this.props.posts} <br />posts</td>
+							<td>{this.props.followers}<br />followers</td>
+							<td id="lastCell">{this.props.following} <br />following</td>
+						</tr>
+					</table>
+					<a id="editProfile" className="waves-effect waves-light btn" onClick={this.props.buttonClick}> stop Edit</a>
 				</div>
 			</div>
 		);
@@ -305,34 +365,59 @@ var Navbar = React.createClass({
 	}
 });
 
+
 //the Parent of all elements below, this will handle any properties that
 //must be passed to the children
 var Content = React.createClass({
-	//getInitialState will run when the component first loads and will initialize part of its state
-	loadPostsFromServer: function(){
-		this.setState({logged: info[7]})
-		this.setState({custName: info[0]});
-		this.setState({dat:data});
+	//the doneEdit event triggers when the user hits done editing on the proile page
+	doneEdit: function(){
+		console.log("done editing");
+		if(document.getElementById('profilePicInput').value !== "")	this.setState({profileURL: document.getElementById('profilePicInput').value});
+		if(document.getElementById('profileName').value !== "") this.setState({custName: document.getElementById('profileName').value})
+		this.setState({description: document.getElementById('description').value},function(){
+			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={info[2]} following={info[8]} desc={this.state.description} />});
+		});
+	},//edit mode will activate the edit profile settings and allow for in line editing
+	editMode: function(){
+		//changes the aside to an editable version
+		console.log("entering edit mode");
+		this.setState({profileURL:info[4]}, function(){
+			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />});
+		});
 	},
+	loadPostsFromServer: function(){
+		this.setState({dat:data});
+	},//getInitialState will run when the component first loads and will initialize part of its state
 	getInitialState: function() {
 		cust = "ral";
-    	return {dat: data};
+		//change the profile picture to match the database
+		if(info[4]==="default"){
+			info[4] = "http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif";
+			console.log("was default: " + info[4]);
+		}
+    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />})
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
 		setInterval(this.loadPostsFromServer, this.props.pollInterval);
+	},
+	componentWillMount: function(){
+		this.setState({logged: info[7]})
+		this.setState({custName: info[0]});
+		this.setState({dat:data});
 	},
 	//render will recreate the components and everything thatis on the screen starts here
 	render: function(){
 		return(
 			<div className = "profilePage">
 				<Navbar cust = {this.state.logged} />
-				<ProfileInfo myProfile={true} cust = {this.state.custName} posts={info[3]} followers={info[2]} following={info[8]} desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />
+				{this.state.profileSection}
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
 		);
 	}
 });
+
 
 //the root this calls the parent with some dummy data
 React.render(
@@ -340,6 +425,38 @@ React.render(
 	document.getElementById("content")
 );
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//below is the update for profile information
+function submitForm(){
+    $.ajax({
+      url: "http://localhost:3000/users/updateProfile",
+      type: 'POST',
+      data: $('#profileForm').serialize(),
+      success: function(response){
+        if(response.length < 40){
+          Materialize.toast(response,10000);
+        }else{
+          $(document).attr('location').href='/'
+        }
+      },
+      error: function(response){
+        //alert('not successful ' + {response});
+      }
+    });
+    return false;
+};
 
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
@@ -358,7 +475,7 @@ $('#modalForm').submit(function(){
         //alert('not successful ' + {response});
       }
     });
-    return false;s
+    return false;
 });
 
 $('#followForm').submit(function(){
@@ -371,8 +488,6 @@ $('#followForm').submit(function(){
       success: function(response){
         if(response.length < 40){
           Materialize.toast(response,10000);
-        }else{
-          $(document).attr('location').href='/'
         }
       },
       error: function(response){
@@ -427,9 +542,6 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
 	$('nav').css("background-color",info[5]);
 
-	//change the profile picture to match the database
-	if(info[4]!=="default"){
-		$('.profilePic').attr("src",info[4]);
-	}
+
 	handleResize();
 })
