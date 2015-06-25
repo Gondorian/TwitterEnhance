@@ -102,11 +102,15 @@ exports.loadProfile = function(req, userName, callback){
 exports.followUser = function(req, callback){
   var followUser = req.body.userName;
   if (followUser == req.session.userName){    //if the user is trying to follow himself
-
+    callback('bruh. you are trying to follow urself', null);
   }
   else{
-    Account.followUser(req.session.userName, followUser, function(msg){
-      callback(msg);
+    Account.followUser(req.session.userName, followUser, function(msg, followers){
+      callback(msg, followers);
     });
   }
+}
+
+exports.updateProfile = function(req, callback){
+
 }

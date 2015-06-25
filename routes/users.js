@@ -83,14 +83,25 @@ router.post('/logout', function(req, res, next){
 router.post('/follow', function(req, res, next){
   if(UserController.isLoggedIn(req)){
     //follow that use
-    UserController.followUser(req, function(msg){
-      res.send(msg);
+    UserController.followUser(req, function(msg, numberOfFollowers){
+      res.send({message: msg, followers: numberOfFollowers});
     });
   }
   else{
     res.redirect('/');
   }
 
+});
+
+router.post('/updateProfile', function(req, res, next){
+  if(UserController.isLoggedIn(req)){
+    UserController.updateProfile(req, function(){
+
+    });
+  }
+  else{
+    res.redirect('/');
+  }
 });
 
 module.exports = router;
