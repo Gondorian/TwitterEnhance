@@ -17,7 +17,8 @@ exports.insertNewUser= function(fullName, email, userName, password){
      "numberOfFollowers": 0,
      "numberOfFollowing": 0,
      "profilePic": "default",
-     "profileColour": "red"
+     "profileColour": "red",
+     "profileDescription": "Welcome to my profile! Please follow me. I have stage 3 cancer and the doctor said if I get 10k followers he can do the operation. 1 follow = 1 prayer."
     }, function(err, body){
     if(err)
       console.log('Error: ' + err);
@@ -102,25 +103,53 @@ exports.getUserProfile = function(userName, callback){
 
 exports.followUser = function(currentUser, followUser, callback){
   video45.view('user', 'by_id', function(err, body){  //key = useName, value = _id
-    body.rows.forEach(function(doc) {         //for each row in the view check for the userName
+    var currentID;    //doc id for currentUser
+    var followID;     //doc id for followUser
+
+    body.rows.forEach(function(doc) {         //find the docID for the currentUser and followUser
       if(doc.key == currentUser){
-        var docID = doc.value;                 //if username is found, get the doc id
-        console.log('followUser ' + followUser);
-        video45.atomic('user', 'follow_user', docID, {user: followUser}, function(error, response){
-          if(!error){
-            console.log('The response from the update: ' + response);
-            callback('Added to following!');
-          }
-          else{
-            console.log('The error from the update: ' + error);
-            callback('Could not add to following');
-          }
-
-        });
-
-
+        currentID = doc.value;
+      }
+      else if (doc.key == followUser) {
+        followID = doc.value;
       }
     });
+
+
+    if (currentID != null && followID != null){     //If the docs for Current User and Follow User were found
+
+      video45.atomic('user', 'follow_user', currentID, {user: followUser}, function(error, response){
+        if(!error){
+          console.log('Response from follow_user: ' + response);
+
+          //if the followUser was successfully added to the currentUser's list of following
+          // update the followUser's numberOfFollowers
+
+          video45.atomic('user', 'update_numberOfFollowers', followID, function(error, response){
+            if(!error){ // if the followUser's number of followers was updated
+              console.log('Response from update_numberOfFollowers: ' + response);
+              callback('Added to following!');
+            }
+            else{ // numberOfFollowers not updated
+              console.log('Error from update_numberOfFollowers: ' + error);
+              callback('Could not updated numberOfFollowers!');
+            }
+          });
+
+        }
+        else{   //could not add followUser to list of following
+          console.log('Error from follow_user: ' + error);
+          callback('Could not add followUser to currentUsers list of following.');
+        }
+      });
+    }
+    else{ //docID's were not found
+      console.log("The docID's were not found!");
+      callback('currentUser or followUser was not found.');
+    }
+
+
+
   });
 }
 
