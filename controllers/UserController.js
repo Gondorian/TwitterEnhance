@@ -93,7 +93,7 @@ exports.loadProfile = function(req, userName, callback){
   else{                                     //if request is for some other user's profile
     Account.getUserProfile(userName, function(data){
       console.log('Loading profile: ' + req.session.userName);
-      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'false', req.session.userName, data.numberOfFollowing];
+      var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'false', req.session.userName, data.numberOfFollowing, data.profileDescription];
       callback(info);
     });
   }

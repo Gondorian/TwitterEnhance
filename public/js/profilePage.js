@@ -486,7 +486,7 @@ $('#followForm').submit(function(){
       type: 'POST',
       data: {userName:info[1]},
       success: function(response){
-        if(response.length < 40){
+        if(response == "Added to following!"){
           Materialize.toast(response,10000);
         }
       },
