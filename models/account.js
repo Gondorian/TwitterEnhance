@@ -125,14 +125,15 @@ exports.followUser = function(currentUser, followUser, callback){
           //if the followUser was successfully added to the currentUser's list of following
           // update the followUser's numberOfFollowers
 
-          video45.atomic('user', 'update_numberOfFollowers', followID, function(error, response){
-            if(!error){ // if the followUser's number of followers was updated
-              console.log('Response from update_numberOfFollowers: ' + response);
-              callback('Added to following!', response);
+          video45.atomic('user', 'update_numberOfFollowers', followID, null, function(err, res){
+            console.log("update_numberOfFollowers executed!");
+            if(!err){ // if the followUser's number of followers was updated
+              console.log('Response from update_numberOfFollowers: ' + res);
+              callback('Added to following!', res);
             }
             else{ // numberOfFollowers not updated
-              console.log('Error from update_numberOfFollowers: ' + error);
-              callback('Could not updated numberOfFollowers!', null);
+              console.log('Error from update_numberOfFollowers: ' + err);
+              callback('Could not update numberOfFollowers!', null);
             }
           });
 
