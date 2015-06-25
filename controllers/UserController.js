@@ -86,7 +86,7 @@ exports.loadProfile = function(req, userName, callback){
   if(req.session.userName == userName){     //if request is for currently logged in user
     Account.getUserProfile(userName, function(data){
         console.log('Loading profile: ' + req.session.userName);
-        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'true', req.session.userName, data.numberOfFollowing];
+        var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'true', req.session.userName, data.numberOfFollowing, data.profileDescription];
         callback(info);
     });
   }

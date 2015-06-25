@@ -327,9 +327,9 @@ var Navbar = React.createClass({
 								</form>
 							</li>
 							<li className='dropdown-button'data-beloworigin="true" data-outduration="1000000" data-gutter="30" href='#' data-activates='dropdown1'>
-								<a id="profileBut" className='btn-floating'><i className="mdi-action-perm-identity left" /></a>
+								<a id="profileBut" className='btn-floating' ><i className="mdi-action-perm-identity left" /></a>
 								<ul id="dropdown1" className='dropdown-content'>
-									<li><a href="#!">profilePage</a></li>
+									<li><a href={"/users/"+info[7]} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
 											<form action="http://localhost:3000/users/logout" method="POST">
@@ -374,18 +374,23 @@ var Content = React.createClass({
 		console.log("done editing");
 		if(document.getElementById('profilePicInput').value !== "")	this.setState({profileURL: document.getElementById('profilePicInput').value});
 		if(document.getElementById('profileName').value !== "") this.setState({custName: document.getElementById('profileName').value})
-		this.setState({description: document.getElementById('description').value},function(){
-			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={info[2]} following={info[8]} desc={this.state.description} />});
+		this.setState({desc: document.getElementById('description').value},function(){
+			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.des} />});
+			submitForm();
 		});
+
 	},//edit mode will activate the edit profile settings and allow for in line editing
 	editMode: function(){
 		//changes the aside to an editable version
 		console.log("entering edit mode");
 		this.setState({profileURL:info[4]}, function(){
-			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />});
+			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={thist.state.desc} />});
 		});
 	},
 	loadPostsFromServer: function(){
+		this.setState({followers: info[2]});
+		this.setState({following: info[8]});
+		this.setState({desc: info[9]});
 		this.setState({dat:data});
 	},//getInitialState will run when the component first loads and will initialize part of its state
 	getInitialState: function() {
@@ -395,7 +400,7 @@ var Content = React.createClass({
 			info[4] = "http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif";
 			console.log("was default: " + info[4]);
 		}
-    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={"welcome to my imstavine, I do photos and imgurs and vines and grams I currently have _ foloowers"} />})
+    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]} />})
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
@@ -439,7 +444,8 @@ React.render(
 
 
 //below is the update for profile information
-function submitForm(){
+var submitForm = function(){
+	console.log($('#profileForm').serialize());
     $.ajax({
       url: "http://localhost:3000/users/updateProfile",
       type: 'POST',
@@ -448,7 +454,7 @@ function submitForm(){
         if(response.length < 40){
           Materialize.toast(response,10000);
         }else{
-          $(document).attr('location').href='/'
+          $(document).attr('location').href='/';
         }
       },
       error: function(response){
@@ -479,16 +485,20 @@ $('#modalForm').submit(function(){
 });
 
 $('#followForm').submit(function(){
-	console.log(info[1]);
 	console.log(info[7]);
+	console.log(info[0]);
       $.ajax({
       url: "http://localhost:3000/users/follow",
       type: 'POST',
       data: {userName:info[1]},
       success: function(response){
-        if(response == "Added to following!"){
+      	console.log(response);
+      	console.log(response.message);
+      	console.log(response.follower)
+        if(response.message == "Added to following!"){
           Materialize.toast(response,10000);
         }
+
       },
       error: function(response){
         //alert('not successful ' + {response});
