@@ -254,6 +254,8 @@ var EditModal = React.createClass({
 //profileInfo is the information contained in the left pushpin, all
 // modifications can be done here
 var ProfileInfo = React.createClass({
+	componentDidMount: function(){
+	},
 	getInitialState: function(){
 		if(info[6] === 'true'){
 			return({button: <Edit buttonClick={this.props.buttonClick}/>});
@@ -284,6 +286,8 @@ var ProfileInfo = React.createClass({
 
 //the Component that will be shown when the profile is being edited
 var EditProfileInfo = React.createClass({
+	componentDidMount: function(){
+	},
 	render: function(){
 		return(
 			<div id="profileRow" className="row">
@@ -375,8 +379,8 @@ var Content = React.createClass({
 		if(document.getElementById('profilePicInput').value !== "")	this.setState({profileURL: document.getElementById('profilePicInput').value});
 		if(document.getElementById('profileName').value !== "") this.setState({custName: document.getElementById('profileName').value})
 		this.setState({desc: document.getElementById('description').value},function(){
-			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.des} />});
 			submitForm();
+			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.des} />});
 		});
 
 	},//edit mode will activate the edit profile settings and allow for in line editing
@@ -384,7 +388,7 @@ var Content = React.createClass({
 		//changes the aside to an editable version
 		console.log("entering edit mode");
 		this.setState({profileURL:info[4]}, function(){
-			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={thist.state.desc} />});
+			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		});
 	},
 	loadPostsFromServer: function(){
@@ -400,7 +404,7 @@ var Content = React.createClass({
 			info[4] = "http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif";
 			console.log("was default: " + info[4]);
 		}
-    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]} />})
+    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]} resize={this.props.resize}/>})
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
@@ -426,7 +430,7 @@ var Content = React.createClass({
 
 //the root this calls the parent with some dummy data
 React.render(
-	<Content pollInterval={200}/>,
+	<Content pollInterval={200} />,
 	document.getElementById("content")
 );
 
@@ -445,7 +449,6 @@ React.render(
 
 //below is the update for profile information
 var submitForm = function(){
-	console.log($('#profileForm').serialize());
     $.ajax({
       url: "http://localhost:3000/users/updateProfile",
       type: 'POST',
@@ -493,15 +496,13 @@ $('#followForm').submit(function(){
       data: {userName:info[1]},
       success: function(response){
       	console.log(response);
-      	console.log(response.message);
-      	console.log(response.follower)
-        if(response.message == "Added to following!"){
+        if(response == "Added to following!"){
           Materialize.toast(response,10000);
         }
 
       },
       error: function(response){
-        //alert('not successful ' + {response});
+        alert('not successful ' + {response});
       }
     });
     return false;s
