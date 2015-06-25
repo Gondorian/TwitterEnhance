@@ -19,7 +19,7 @@ router.get('/:userName', function(req, res, next){
     UserController.loadProfile(req, userName, function(info){ //pass the data to the view
       console.log('Number of Following ' + info[8]);
 
-      res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8]}, profileDescription: info[9]);
+      res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
     });
   }
   else{
