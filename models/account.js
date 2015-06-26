@@ -149,27 +149,9 @@ exports.followUser = function(currentUser, followUser, callback){
       callback('currentUser or followUser was not found.');
     }
 
-
-
   });
 }
 
-//check if user is in database
-exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
-  video45.view('user', 'userNames', function(err, body){
-    var found = "";
-    body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
-      if(doc.key == email){
-        found = 'Email already exists! ';
-      }
-      if (doc.value == userName) {
-        found = found + 'Username is taken!';
-      }
-    });
-    if(found == "")    //if email or username wasnt found, callback false
-      callback(false);
-    else {
-      callback(found);  //else return the err
-    }
-  });
+exports.updateProfile = function(description, profilePic, fullName){
+   
 }

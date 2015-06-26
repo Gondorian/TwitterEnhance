@@ -91,13 +91,50 @@ exports.loadProfile = function(req, userName, callback){
     });
   }
   else{                                     //if request is for some other user's profile
-    Account.getUserProfile(userName, function(data){
+    Account.getUserProfile(userName, function(data){//check if user is in database
+exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
+  video45.view('user', 'userNames', function(err, body){
+    var found = "";
+    body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
+      if(doc.key == email){
+        found = 'Email already exists! ';
+      }
+      if (doc.value == userName) {
+        found = found + 'Username is taken!';
+      }
+    });
+    if(found == "")    //if email or username wasnt found, callback false
+      callback(false);
+    else {
+      callback(found);  //else return the err
+    }
+  });
+}
       console.log('Loading profile: ' + req.session.userName);
       var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'false', req.session.userName, data.numberOfFollowing, data.profileDescription];
       callback(info);
     });
   }
+}//check if user is in database
+exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
+  video45.view('user', 'userNames', function(err, body){
+    var found = "";
+    body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
+      if(doc.key == email){
+        found = 'Email already exists! ';
+      }
+      if (doc.value == userName) {
+        found = found + 'Username is taken!';
+      }
+    });
+    if(found == "")    //if email or username wasnt found, callback false
+      callback(false);
+    else {
+      callback(found);  //else return the err
+    }
+  });
 }
+
 
 exports.followUser = function(req, callback){
   var followUser = req.body.userName;
@@ -112,5 +149,12 @@ exports.followUser = function(req, callback){
 }
 
 exports.updateProfile = function(req, callback){
+  var description = req.body.description;
+  var profilePic = req.body.profilePic;
+  var name = req.body.fullName;
+
+  Account.updateProfile(description, profilePic, name, function(message){
+    callback(message);
+  });
 
 }
