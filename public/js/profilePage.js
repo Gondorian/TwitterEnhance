@@ -133,7 +133,7 @@ var Follow = React.createClass({
 		return(
 			<div>
 				<form  id="followForm">
-					<a id="followBtn" className="btn waves-effect waves-green" name="action" onClick={this.props.followClick}><i className="mdi-content-add"></i>following
+					<a id="followBtn" className="btn waves-effect waves-green" name="action" onClick={this.props.followClick}><i className="mdi-content-add"></i>follow
 					</a>
 				</form>
 			</div>
@@ -454,7 +454,23 @@ React.render(
 
 
 
-
+//refresh page information
+function refreshInfo(){
+	console.log(info[7]);
+	console.log(info[0]);
+      $.ajax({
+      url: "http://localhost:3000/users/as",
+      type: 'GET',
+      success: function(response){
+        console.log(response);
+      },
+      error: function(response){
+      	console.log(response);
+        alert('not successful ' + {response});
+      }
+    });
+    return false;
+};
 
 //below is the update for follow press
 function submitfollow(){
@@ -466,7 +482,7 @@ function submitfollow(){
       data: {userName:info[1]},
       success: function(response){
       console.log(info[2]);
-        if(response.message == "Added to following!"){
+        if(response.length < 40){
           Materialize.toast(response.message,10000);
           info[2] = response.followers;
         }
@@ -482,9 +498,6 @@ function submitfollow(){
 
 //below is the update for profile information
 var submitForm = function(){
-console.log("pic input"+document.getElementById('profilePicInput').value);
-console.log("Name" + document.getElementById('profileName').value);
-console.log("description" + document.getElementById('description').value);
     $.ajax({
       url: "http://localhost:3000/users/updateProfile",
       type: 'POST',
@@ -559,8 +572,8 @@ var handleResize = function(){
 //monitors screen resize
 $(window).resize(function(){
 	//testing color thief
-	var colorThief=new ColorThief();
-	console.log("color is" + colorThief.getColor(document.getElementById("profilePic")));
+	console.log("refreshing");
+	refreshInfo();
 });
 
 //checks for document loading

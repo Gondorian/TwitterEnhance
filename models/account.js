@@ -17,7 +17,7 @@ exports.insertNewUser= function(fullName, email, userName, password){
      "numberOfFollowers": 0,
      "numberOfFollowing": 0,
      "profilePic": "default",
-     "profileColour": "red",
+     "profileColour": "rgb(255,0,0)",
      "profileDescription": "Welcome to my profile! Please follow me. I have stage 3 cancer and the doctor said if I get 10k followers he can do the operation. 1 follow = 1 prayer."
     }, function(err, body){
     if(err)
