@@ -157,6 +157,7 @@ exports.followUser = function(currentUser, followUser, callback){
   });
 }
 
+
 exports.updateProfile = function(userName, description, profilePic, fullName, callback){
   console.log('The profile info: ' + userName + ' description: ' + description + ' fullName' + fullName + ' profilePic: ' + profilePic );
    video45.view('user', 'by_id', function(err, body){
