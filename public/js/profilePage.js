@@ -133,8 +133,8 @@ var Follow = React.createClass({
 		return(
 			<div>
 				<form  id="followForm">
-					<button id="followBtn" className="btn waves-effect waves-green" type="submit" name="action"><i className="mdi-content-add"></i>following
-					</button>
+					<a id="followBtn" className="btn waves-effect waves-green" name="action" onClick={this.props.followClick}><i className="mdi-content-add"></i>following
+					</a>
 				</form>
 			</div>
 		);
@@ -260,7 +260,7 @@ var ProfileInfo = React.createClass({
 		if(info[6] === 'true'){
 			return({button: <Edit buttonClick={this.props.buttonClick}/>});
 		}else{
-			return({button: <Follow />});
+			return({button: <Follow followClick={this.props.followClick} />});
 		};
 	},
 	render: function(){
@@ -286,8 +286,6 @@ var ProfileInfo = React.createClass({
 
 //the Component that will be shown when the profile is being edited
 var EditProfileInfo = React.createClass({
-	componentDidMount: function(){
-	},
 	render: function(){
 		return(
 			<div id="profileRow" className="row">
@@ -377,43 +375,59 @@ var Content = React.createClass({
 	doneEdit: function(){
 		console.log("done editing");
 		if(document.getElementById('profilePicInput').value !== "")	this.setState({profileURL: document.getElementById('profilePicInput').value});
+		else document.getElementById('profilePicInput').value = "default";
 		if(document.getElementById('profileName').value !== "") this.setState({custName: document.getElementById('profileName').value})
+		else document.getElementById('profileName').value = this.state.custName;
 		this.setState({desc: document.getElementById('description').value},function(){
-			submitForm();
-			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.des} />});
+			//puts the original panel on the left with the new vaues
+			submitForm(); 
+			this.setState({mode: "standard"});
 		});
-
 	},//edit mode will activate the edit profile settings and allow for in line editing
 	editMode: function(){
 		//changes the aside to an editable version
 		console.log("entering edit mode");
-		this.setState({profileURL:info[4]}, function(){
-			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
-		});
+		this.setState({profileURL:info[4]});
+		this.setState({mode: "edit"});
+	},
+	followEvent: function(){
+		submitfollow();
 	},
 	loadPostsFromServer: function(){
 		this.setState({followers: info[2]});
 		this.setState({following: info[8]});
-		this.setState({desc: info[9]});
 		this.setState({dat:data});
+		if(this.state.mode === "standard"){
+			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
+		}else if(this.state.mode === "edit"){
+			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
+		}
+		handleResize();
 	},//getInitialState will run when the component first loads and will initialize part of its state
 	getInitialState: function() {
 		cust = "ral";
 		//change the profile picture to match the database
 		if(info[4]==="default"){
 			info[4] = "http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif";
-			console.log("was default: " + info[4]);
 		}
-    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]} resize={this.props.resize}/>})
+    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]}/>})
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
 		setInterval(this.loadPostsFromServer, this.props.pollInterval);
 	},
 	componentWillMount: function(){
-		this.setState({logged: info[7]})
+		//remap the data from the server to react states
 		this.setState({custName: info[0]});
-		this.setState({dat:data});
+		this.setState({followers: info[2]});
+		this.setState({profileURL: info[4]});
+		this.setState({logged: info[7]})
+		this.setState({following: info[8]});
+		this.setState({desc: info[9]});
+
+		//maintain none server variables
+		this.setState({dat:data}); //this is the post data, it is currently just a stand-in
+		this.setState({mode: "standard"}); //this is the aside type(standard is normal, edit is for edit mode)
 	},
 	//render will recreate the components and everything thatis on the screen starts here
 	render: function(){
@@ -442,13 +456,35 @@ React.render(
 
 
 
-
-
-
-
+//below is the update for follow press
+function submitfollow(){
+	console.log(info[7]);
+	console.log(info[0]);
+      $.ajax({
+      url: "http://localhost:3000/users/follow",
+      type: 'POST',
+      data: {userName:info[1]},
+      success: function(response){
+      console.log(info[2]);
+        if(response.message == "Added to following!"){
+          Materialize.toast(response.message,10000);
+          info[2] = response.followers;
+        }
+        console.log(info[2])
+      },
+      error: function(response){
+      	console.log(response);
+        alert('not successful ' + {response});
+      }
+    });
+    return false;
+};
 
 //below is the update for profile information
 var submitForm = function(){
+console.log("pic input"+document.getElementById('profilePicInput').value);
+console.log("Name" + document.getElementById('profileName').value);
+console.log("description" + document.getElementById('description').value);
     $.ajax({
       url: "http://localhost:3000/users/updateProfile",
       type: 'POST',
@@ -487,27 +523,6 @@ $('#modalForm').submit(function(){
     return false;
 });
 
-$('#followForm').submit(function(){
-	console.log(info[7]);
-	console.log(info[0]);
-      $.ajax({
-      url: "http://localhost:3000/users/follow",
-      type: 'POST',
-      data: {userName:info[1]},
-      success: function(response){
-      	console.log(response);
-        if(response == "Added to following!"){
-          Materialize.toast(response,10000);
-        }
-
-      },
-      error: function(response){
-        alert('not successful ' + {response});
-      }
-    });
-    return false;s
-});
-
 //allows for multi displays by monitoring screen size
 var handleResize = function(){
 	var windWidth = parseInt($("body").css("width"));
@@ -544,7 +559,7 @@ var handleResize = function(){
 
 //monitors screen resize
 $(window).resize(function(){
-	handleResize();
+	//handleResize();
 });
 
 //checks for document loading
@@ -552,7 +567,6 @@ $(document).ready(function(){
 	$(".button-collapse").sideNav();
 	$('.modal-trigger').leanModal();
 	$('nav').css("background-color",info[5]);
-
 
 	handleResize();
 })
