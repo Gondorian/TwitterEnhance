@@ -143,6 +143,7 @@ exports.followUser = function(req, callback){
   }
   else{
     Account.followUser(req.session.userName, followUser, function(msg, followers){
+      console.log(msg);
       callback(msg, followers);
     });
   }
