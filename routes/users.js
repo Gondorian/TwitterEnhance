@@ -84,18 +84,16 @@ router.post('/follow', function(req, res, next){
     UserController.followUser(req, function(msg, numberOfFollowers){
       res.send({message: msg, followers: numberOfFollowers});         //send back message, and updated number of followers
     });
-
   }
   else{
     res.redirect('/');
   }
-
 });
 
 router.post('/updateProfile', function(req, res, next){
   if(UserController.isLoggedIn(req)){
-    UserController.updateProfile(req, function(){
-
+    UserController.updateProfile(req, function(msg){
+      res.send(msg);
     });
   }
   else{

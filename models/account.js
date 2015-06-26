@@ -117,26 +117,31 @@ exports.followUser = function(currentUser, followUser, callback){
 
 
     if (currentID != null && followID != null){     //If the docs for Current User and Follow User were found
-
+      //call follow_user update function in db
       video45.atomic('user', 'follow_user', currentID, {user: followUser}, function(error, response){
         if(!error){
           console.log('Response from follow_user: ' + response);
 
-          //if the followUser was successfully added to the currentUser's list of following
-          // update the followUser's numberOfFollowers
+          // check to see that the user is not already followed
+          if(response != 'User already followed!'){
 
-          video45.atomic('user', 'update_numberOfFollowers', followID, null, function(err, res){
-            console.log("update_numberOfFollowers executed!");
-            if(!err){ // if the followUser's number of followers was updated
-              console.log('Response from update_numberOfFollowers: ' + res);
-              callback('Added to following!', res);
-            }
-            else{ // numberOfFollowers not updated
-              console.log('Error from update_numberOfFollowers: ' + err);
-              callback('Could not update numberOfFollowers!', null);
-            }
-          });
-
+            // if not followed(i.e the followUser was added to the list of following), update the followUser's numberOfFollowers
+            video45.atomic('user', 'update_numberOfFollowers', followID, null, function(err, res){
+              console.log("update_numberOfFollowers executed!");
+              if(!err){ // if the followUser's number of followers was updated
+                console.log('Response from update_numberOfFollowers: ' + res);
+                callback('Added to following!', res);
+              }
+              else{ // numberOfFollowers not updated
+                console.log('Error from update_numberOfFollowers: ' + err);
+                callback('Could not update numberOfFollowers!', null);
+              }
+            });
+          }
+          else{ //user already being followed
+            console.log('User already being followed!');
+            callback('User is already being followed!');
+          }
         }
         else{   //could not add followUser to list of following
           console.log('Error from follow_user: ' + error);
@@ -152,6 +157,29 @@ exports.followUser = function(currentUser, followUser, callback){
   });
 }
 
-exports.updateProfile = function(description, profilePic, fullName){
-   
+exports.updateProfile = function(userName, description, profilePic, fullName, callback){
+  console.log('The profile info: ' + userName + ' description: ' + description + ' fullName' + fullName + ' profilePic: ' + profilePic );
+   video45.view('user', 'by_id', function(err, body){
+     var docID;
+     body.rows.forEach(function(doc) {         //find the docID for the user whose profile is being updated
+       if(doc.key == userName){
+         docID = doc.value;
+       }
+     });
+
+     if(docID != null){                       //if the doc is found
+
+       video45.atomic('user', 'update_profile', docID, {desc: description, name: fullName, pic: profilePic}, function(err, res){
+         if(!err){
+           console.log('Response from update_profile: ' + res);
+           callback('Success!');
+         }
+         else{
+           console.log('Error from update_profile: ' + err);
+           callback('fail!');
+         }
+       });
+     }
+
+   });
 }

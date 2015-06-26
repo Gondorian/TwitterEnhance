@@ -291,10 +291,10 @@ var EditProfileInfo = React.createClass({
 			<div id="profileRow" className="row">
 				<div className = "profileInfo">
 					<form id="profileForm">
-						<input id="profilePicInput" type="text" placeholder="Profile Picture URL" />
+						<input id="profilePicInput" type="text" placeholder="Profile Picture URL" name="picURL" />
 						<img className ="profilePic editable" src={this.props.profileURL} /><br />
-						<input id="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Username"/>
-						<textarea id="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription"/>
+						<input id="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Username" name="profileName"/>
+						<textarea id="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription" name="description"/>
 					</form>
 					<table className = "stats">
 						<tr>
@@ -380,7 +380,7 @@ var Content = React.createClass({
 		else document.getElementById('profileName').value = this.state.custName;
 		this.setState({desc: document.getElementById('description').value},function(){
 			//puts the original panel on the left with the new vaues
-			submitForm(); 
+			submitForm();
 			this.setState({mode: "standard"});
 		});
 	},//edit mode will activate the edit profile settings and allow for in line editing

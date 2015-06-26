@@ -151,10 +151,10 @@ exports.followUser = function(req, callback){
 
 exports.updateProfile = function(req, callback){
   var description = req.body.description;
-  var profilePic = req.body.profilePic;
-  var name = req.body.fullName;
-
-  Account.updateProfile(description, profilePic, name, function(message){
+  var profilePic = req.body.picURL;
+  var fullName = req.body.profileName;
+  var userName = req.session.userName;
+  Account.updateProfile(userName, description, profilePic, fullName, function(message){
     callback(message);
   });
 
