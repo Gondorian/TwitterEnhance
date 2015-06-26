@@ -267,7 +267,7 @@ var ProfileInfo = React.createClass({
 		return(
 			<div id="profileRow" className="row">
 				<div className = "profileInfo">
-					<img className ="profilePic" src={this.props.profileURL} /><br />
+					<img id="profilePic" className ="profilePic" src={this.props.profileURL} /><br />
 					<p className="profileName"> {this.props.cust} </p>
 					<p className="description"> {this.props.desc} </p>
 					<table className = "stats">
@@ -291,10 +291,10 @@ var EditProfileInfo = React.createClass({
 			<div id="profileRow" className="row">
 				<div className = "profileInfo">
 					<form id="profileForm">
-						<input id="profilePicInput" type="text" placeholder="Profile Picture URL" />
-						<img className ="profilePic editable" src={this.props.profileURL} /><br />
-						<input id="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Username"/>
-						<textarea id="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription"/>
+						<input id="profilePicInput" name="picURL" type="text" placeholder="Profile Picture URL" />
+						<img className ="profilePic editable" src={this.props.profileURL} crossorigin="anonymous"/><br />
+						<input id="profileName" name="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Full Name"/>
+						<textarea id="description" name="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription"/>
 					</form>
 					<table className = "stats">
 						<tr>
@@ -303,7 +303,7 @@ var EditProfileInfo = React.createClass({
 							<td id="lastCell">{this.props.following} <br />following</td>
 						</tr>
 					</table>
-					<a id="editProfile" className="waves-effect waves-light btn" onClick={this.props.buttonClick}> stop Edit</a>
+					<a id="editProfile" className="waves-effect waves-light btn" onClick={this.props.buttonClick}> Done Editing</a>
 				</div>
 			</div>
 		);
@@ -408,7 +408,7 @@ var Content = React.createClass({
 		cust = "ral";
 		//change the profile picture to match the database
 		if(info[4]==="default"){
-			info[4] = "http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif";
+			info[4] = "../design/no-profile-img.gif";
 		}
     	return ({profileSection:<ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]}/>})
   	},
@@ -493,7 +493,7 @@ console.log("description" + document.getElementById('description').value);
         if(response.length < 40){
           Materialize.toast(response,10000);
         }else{
-          $(document).attr('location').href='/';
+
         }
       },
       error: function(response){
@@ -513,7 +513,6 @@ $('#modalForm').submit(function(){
         if(response.length < 40){
           Materialize.toast(response,10000);
         }else{
-          $(document).attr('location').href='/'
         }
       },
       error: function(response){
@@ -559,7 +558,9 @@ var handleResize = function(){
 
 //monitors screen resize
 $(window).resize(function(){
-	//handleResize();
+	//testing color thief
+	var colorThief=new ColorThief();
+	console.log("color is" + colorThief.getColor(document.getElementById("profilePic")));
 });
 
 //checks for document loading

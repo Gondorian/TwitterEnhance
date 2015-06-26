@@ -23,6 +23,7 @@
     <script>
       var info = ["{{name}}","{{userName}}","{{numberOfFollowers}}","{{numberOfPosts}}","{{profilePic}}","{{profileColour}}", "{{isCurrentUser}}", "{{currentUserName}}", "{{numberOfFollowing}}","{{profileDescription}}"];
     </script>
+    <script src="../bower_components/color-thief/src/color-thief.js" ></script>
     <script src="../bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="../bower_components/react/JSXTransformer.js"></script>
     <script src="../bower_components/react/react.js"></script>
