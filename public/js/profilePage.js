@@ -291,11 +291,11 @@ var EditProfileInfo = React.createClass({
 			<div id="profileRow" className="row">
 				<div className = "profileInfo">
 					<form id="profileForm">
-						<input id="profilePicInput" type="text" placeholder="Profile Picture URL" name="picURL" />
-						<img className ="profilePic editable" src={this.props.profileURL} /><br />
-						<input id="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Username" name="profileName"/>
-						<textarea id="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription" name="description"/>
-
+						<input id="profilePicInput" name="picURL" type="text" placeholder="Profile Picture URL" />
+						<input id="color" name="color" type="text"  />
+						<img id="profilePic" className ="profilePic editable" src={this.props.profileURL} crossOrigin="anonymous"/><br />
+						<input id="profileName" name="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Full Name"/>
+						<textarea id="description" name="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription"/>
 					</form>
 					<table className = "stats">
 						<tr>
@@ -330,7 +330,7 @@ var Navbar = React.createClass({
 								</form>
 							</li>
 							<li className='dropdown-button'data-beloworigin="true" data-outduration="1000000" data-gutter="30" href='#' data-activates='dropdown1'>
-								<a id="profileBut" className='btn-floating' ><i className="mdi-action-perm-identity left" /></a>
+								<a id="profileBut" className='btn-floating' href={"/users/"+info[7]}><i className="mdi-action-perm-identity left" /></a>
 								<ul id="dropdown1" className='dropdown-content'>
 									<li><a href={"/users/"+info[7]} >profilePage</a></li>
 									<li id="logoutBut">
@@ -375,13 +375,17 @@ var Content = React.createClass({
 	//the doneEdit event triggers when the user hits done editing on the proile page
 	doneEdit: function(){
 		console.log("done editing");
-		if(document.getElementById('profilePicInput').value !== "")	this.setState({profileURL: document.getElementById('profilePicInput').value});
+		if(document.getElementById('profilePicInput').value !== "")	{
+			this.setState({profileURL: document.getElementById('profilePicInput').value});
+			var myImage = new Image(100,100);
+			myImage.src = document.getElementById('profilePicInput').value;
+		}
 		else document.getElementById('profilePicInput').value = "default";
 		if(document.getElementById('profileName').value !== "") this.setState({custName: document.getElementById('profileName').value})
 		else document.getElementById('profileName').value = this.state.custName;
 		this.setState({desc: document.getElementById('description').value},function(){
 			//puts the original panel on the left with the new vaues
-			submitForm();
+			submitForm(myImage); 
 			this.setState({mode: "standard"});
 		});
 	},//edit mode will activate the edit profile settings and allow for in line editing
@@ -390,6 +394,8 @@ var Content = React.createClass({
 		console.log("entering edit mode");
 		this.setState({profileURL:info[4]});
 		this.setState({mode: "edit"});
+		var myImage = new Image(100,100);
+		myImage.src = "../design/MaleFace1.jpg";
 	},
 	followEvent: function(){
 		submitfollow();
@@ -498,23 +504,38 @@ function submitfollow(){
 };
 
 //below is the update for profile information
-var submitForm = function(){
-    $.ajax({
-      url: "http://localhost:3000/users/updateProfile",
-      type: 'POST',
-      data: $('#profileForm').serialize(),
-      success: function(response){
-        if(response.length < 40){
-          Materialize.toast(response,10000);
-        }else{
+var submitForm = function(myImage){
+	var data =  $('#profileForm').serialize();
+	console.log(data);
+	setTimeout(function(){
+		console.log("started Submition");
+		try{
+			console.log(myImage);
+			var colorThief= new ColorThief();
+			var mainColor = colorThief.getColor(myImage);
+			console.log("main Color: "+mainColor);
+			data = data+'&color=('+mainColor+')';
+		}catch(err){
 
-        }
-      },
-      error: function(response){
-        //alert('not successful ' + {response});
-      }
-    });
-    return false;
+		}
+		console.log(data);
+	    $.ajax({
+	      url: "http://localhost:3000/users/updateProfile",
+	      type: 'POST',
+	      data: data,
+	      success: function(response){
+	        if(response.length < 40){
+	          Materialize.toast(response,10000);
+	        }else{
+
+	        }
+	      },
+	      error: function(response){
+	        //alert('not successful ' + {response});
+	      }
+	    });
+	    return false;
+	},100);
 };
 
 //below is the ajax post for the edit button form
@@ -567,14 +588,12 @@ var handleResize = function(){
    }
  );
 
-//click event handler
-
 
 //monitors screen resize
 $(window).resize(function(){
 	//testing color thief
-	console.log("refreshing");
-	refreshInfo();
+
+
 });
 
 //checks for document loading
