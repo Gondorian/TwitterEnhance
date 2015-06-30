@@ -82,11 +82,7 @@ router.post('/follow', function(req, res, next){
   if(UserController.isLoggedIn(req)){
     //follow that use
     UserController.followUser(req, function(msg, numberOfFollowers){
-<<<<<<< HEAD
       res.send({message: msg, followers: numberOfFollowers});         //send back message, and updated number of followers
-=======
-      res.send({message: msg, followers: numberOfFollowers});
->>>>>>> 6db8cdd1b933b35903e79b6f9b39aae560669031
     });
   }
   else{
