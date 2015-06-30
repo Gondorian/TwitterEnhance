@@ -25,7 +25,7 @@
 var CanvasImage = function (image) {
     this.canvas  = document.createElement('canvas');
     this.context = this.canvas.getContext('2d');
-    image.crossOrigin="Anonymous";
+    
     document.body.appendChild(this.canvas);
 
     this.width  = this.canvas.width  = image.width;
@@ -108,7 +108,6 @@ ColorThief.prototype.getPalette = function(sourceImage, colorCount, quality) {
     var imageData  = image.getImageData();
     var pixels     = imageData.data;
     var pixelCount = image.getPixelCount();
-
     // Store the RGB values in an array format suitable for quantize function
     var pixelArray = [];
     for (var i = 0, offset, r, g, b, a; i < pixelCount; i = i + quality) {
