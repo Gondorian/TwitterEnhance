@@ -292,7 +292,6 @@ var EditProfileInfo = React.createClass({
 				<div className = "profileInfo">
 					<form id="profileForm">
 						<input id="profilePicInput" name="picURL" type="text" placeholder="Profile Picture URL" />
-						<input id="color" name="color" type="text"  />
 						<img id="profilePic" className ="profilePic editable" src={this.props.profileURL} crossOrigin="anonymous"/><br />
 						<input id="profileName" name="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Full Name"/>
 						<textarea id="description" name="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription"/>
@@ -394,8 +393,6 @@ var Content = React.createClass({
 		console.log("entering edit mode");
 		this.setState({profileURL:info[4]});
 		this.setState({mode: "edit"});
-		var myImage = new Image(100,100);
-		myImage.src = "../design/MaleFace1.jpg";
 	},
 	followEvent: function(){
 		submitfollow();
@@ -505,7 +502,7 @@ function submitfollow(){
 
 //below is the update for profile information
 var submitForm = function(myImage){
-	var data =  $('#profileForm').serialize();
+	var data =  $(".profileForm").serialize
 	console.log(data);
 	setTimeout(function(){
 		console.log("started Submition");
@@ -514,7 +511,7 @@ var submitForm = function(myImage){
 			var colorThief= new ColorThief();
 			var mainColor = colorThief.getColor(myImage);
 			console.log("main Color: "+mainColor);
-			data = data+'&color=('+mainColor+')';
+			data = "picURL=default&colour=&profileName=sivart&description=Welcome+to+my+profile!+Please+follow+me.+I+have+stage+3+cancer+and+the+doctor+said+if+I+get+10k+followers+he+can+do+the+operation.+1+follow+%3D+1+prayer."
 		}catch(err){
 
 		}
@@ -600,6 +597,7 @@ $(window).resize(function(){
 $(document).ready(function(){
 	$(".button-collapse").sideNav();
 	$('.modal-trigger').leanModal();
+	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
 
 	handleResize();
