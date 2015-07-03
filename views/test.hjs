@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{ title }}</title>
+    <title>Hello!</title>
     <meta name="description",contents="">
     <meta name="author", contents="Sagar, Paul">
     <meta name="viewport", content="width=device-width,initial-scale=1">
   </head>
   <body>
-    {{name}}
-    <script src="/public/js/test1.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      var name = "{{userName}}";
-    </script>
+    Hello! This is working!
   </body>
 </html>
