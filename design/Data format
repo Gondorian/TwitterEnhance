@@ -1,11 +1,13 @@
 Route: /users/:username
 - Passes the following data to the view:
 
-name:			Full name of the requested user.
-userName:		User name of the requested user.
-numberOfPosts:		The number of posts the requested user  has made.
-numberOfFollowers:	Number of followers the requested user has.
-profilePic: 		URL to the profile pic of the requested user
-profilePic:			the navbar color for the currently logged in user
-isCurrentUser: 		Whether the profile being requested is of the currently logged in User.
-currentUsername: 	The user name of the currently logged in user
+0) name:			Full name of the requested user.
+1) userName:		User name of the requested user.
+2) numberOfFollowers:	Number of followers the requested user has.
+3) numberOfPosts:		The number of posts the requested user  has made.
+4) profilePic: 		URL to the profile pic of the requested user
+5) profileColor:		the navbar color for the currently logged in user
+6) isCurrentUser: 		Whether the profile being requested is of the currently logged in User.
+7) currentUsername: 	The user name of the currently logged in user
+8) numberOfFollowing:	the number of users following the viewed profile
+9) profileDescription: The description of the viewed profile.
