@@ -158,8 +158,8 @@ exports.followUser = function(currentUser, followUser, callback){
 }
 
 
-exports.updateProfile = function(userName, description, profilePic, fullName, callback){
-  console.log('The profile info: ' + userName + ' description: ' + description + ' fullName' + fullName + ' profilePic: ' + profilePic );
+exports.updateProfile = function(userName, description, profilePic, fullName, profileColour, callback){
+  console.log('The profile info: ' + userName + ' description: ' + description + ' fullName: ' + fullName + ' profilePic: ' + profilePic +  ' profileColour: ' + profileColour);
    video45.view('user', 'by_id', function(err, body){
      var docID;
      body.rows.forEach(function(doc) {         //find the docID for the user whose profile is being updated
@@ -170,7 +170,7 @@ exports.updateProfile = function(userName, description, profilePic, fullName, ca
 
      if(docID != null){                       //if the doc is found
 
-       video45.atomic('user', 'update_profile', docID, {desc: description, name: fullName, pic: profilePic}, function(err, res){
+       video45.atomic('user', 'update_profile', docID, {desc: description, name: fullName, pic: profilePic, colour: profileColour}, function(err, res){
          if(!err){
            console.log('Response from update_profile: ' + res);
            callback('Success!');

@@ -154,7 +154,8 @@ exports.updateProfile = function(req, callback){
   var profilePic = req.body.picURL;
   var fullName = req.body.profileName;
   var userName = req.session.userName;
-  Account.updateProfile(userName, description, profilePic, fullName, function(message){
+  var profileColour = req.body.colour;
+  Account.updateProfile(userName, description, profilePic, fullName, profileColour, function(message){
     callback(message);
   });
 

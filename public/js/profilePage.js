@@ -292,7 +292,7 @@ var EditProfileInfo = React.createClass({
 				<div className = "profileInfo">
 					<form id="profileForm">
 						<input id="profilePicInput" name="picURL" type="text" placeholder="Profile Picture URL" />
-						<img id="profilePic" className ="profilePic editable" src={this.props.profileURL} crossOrigin="anonymous"/><br />
+						<img id="profilePic" className ="profilePic editable" src={this.props.profileURL} /><br />
 						<input id="profileName" name="profileName" type="text" className="profileName editable" defaultValue={this.props.cust} placeholder="Full Name"/>
 						<textarea id="description" name="description" className="materialize-textarea description editable" defaultValue={this.props.desc}  placeholder="ProfileDescription"/>
 					</form>
@@ -331,7 +331,7 @@ var Navbar = React.createClass({
 							<li className='dropdown-button'data-beloworigin="true" data-outduration="1000000" data-gutter="30" href='#' data-activates='dropdown1'>
 								<a id="profileBut" className='btn-floating' href={"/users/"+info[7]}><i className="mdi-action-perm-identity left" /></a>
 								<ul id="dropdown1" className='dropdown-content'>
-									<li><a href={"/users/"+info[7]} >profilePage</a></li>
+									<li><a href={"/users/"+info[7]+'/post'} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
 											<form action="http://localhost:3000/users/logout" method="POST">
@@ -384,14 +384,13 @@ var Content = React.createClass({
 		else document.getElementById('profileName').value = this.state.custName;
 		this.setState({desc: document.getElementById('description').value},function(){
 			//puts the original panel on the left with the new vaues
-			submitForm(myImage); 
+			submitForm(myImage);
 			this.setState({mode: "standard"});
 		});
 	},//edit mode will activate the edit profile settings and allow for in line editing
 	editMode: function(){
 		//changes the aside to an editable version
 		console.log("entering edit mode");
-		this.setState({profileURL:info[4]});
 		this.setState({mode: "edit"});
 	},
 	followEvent: function(){
@@ -404,7 +403,7 @@ var Content = React.createClass({
 		if(this.state.mode === "standard"){
 			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		}else if(this.state.mode === "edit"){
-			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust={info[0]} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
+			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust={this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		}
 		handleResize();
 	},//getInitialState will run when the component first loads and will initialize part of its state
@@ -485,12 +484,18 @@ function submitfollow(){
       type: 'POST',
       data: {userName:info[1]},
       success: function(response){
-      console.log(info[2]);
-        if(response.length < 40){
-          Materialize.toast(response.message,10000);
-          info[2] = response.followers;
+      	//ensure the user is logged in
+      	if(response === "not logged in!"){
+	    	$(document).attr('location').href='/';
+	    }else{
+	    	//if they are logged in finish recieving data
+      		console.log(info[2]);
+        	if(response.length < 40){
+          	Materialize.toast(response.message,10000);
+          	info[2] = response.followers;
+        	}
+        	console.log(info[2])
         }
-        console.log(info[2])
       },
       error: function(response){
       	console.log(response);
@@ -502,18 +507,18 @@ function submitfollow(){
 
 //below is the update for profile information
 var submitForm = function(myImage){
-	var data =  $(".profileForm").serialize
-	console.log(data);
+	var data =  $("#profileForm").serialize();
+
 	setTimeout(function(){
 		console.log("started Submition");
 		try{
-			console.log(myImage);
+			//attampt to recieve the image color
 			var colorThief= new ColorThief();
 			var mainColor = colorThief.getColor(myImage);
-			console.log("main Color: "+mainColor);
-			data = "picURL=default&colour=&profileName=sivart&description=Welcome+to+my+profile!+Please+follow+me.+I+have+stage+3+cancer+and+the+doctor+said+if+I+get+10k+followers+he+can+do+the+operation.+1+follow+%3D+1+prayer."
+			data = data+'&colour=rgb('+mainColor+')';
 		}catch(err){
-
+			console.log("could not load image");
+			data = data+'&colour='+info[5];
 		}
 		console.log(data);
 	    $.ajax({
@@ -521,18 +526,24 @@ var submitForm = function(myImage){
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
-	        if(response.length < 40){
-	          Materialize.toast(response,10000);
-	        }else{
+	      	//ensure the user is logged in
+	      	if(response === "not logged in!"){
+	      		$(document).attr('location').href='/';
+	      	}else{
+	        	if(response.length < 40){
+		          	Materialize.toast(response,5000);
+	        	}else{
 
+	        	}
 	        }
 	      },
 	      error: function(response){
 	        //alert('not successful ' + {response});
 	      }
 	    });
+	    $('nav').css("background-color",'rgb('+mainColor+')');
 	    return false;
-	},100);
+	},300);
 };
 
 //below is the ajax post for the edit button form
@@ -589,8 +600,6 @@ var handleResize = function(){
 //monitors screen resize
 $(window).resize(function(){
 	//testing color thief
-
-
 });
 
 //checks for document loading
