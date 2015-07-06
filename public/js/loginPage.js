@@ -247,7 +247,6 @@ $(document).ready(function(){
   imageToggle();
 });
 
-
 $(window).resize(function(){
   resize();
 });

@@ -485,14 +485,14 @@ function submitfollow(){
       data: {userName:info[1]},
       success: function(response){
       	//ensure the user is logged in
-      	if(response === "not logged in!"){
+      	if(response["message"] === "not logged in!"){
 	    	$(document).attr('location').href='/';
 	    }else{
 	    	//if they are logged in finish recieving data
       		console.log(info[2]);
-        	if(response.length < 40){
-          	Materialize.toast(response.message,10000);
-          	info[2] = response.followers;
+        	if(response["message"].length < 40){
+          		Materialize.toast(response.message,10000);
+          		info[2] = response["followers"];
         	}
         	console.log(info[2])
         }
@@ -508,7 +508,6 @@ function submitfollow(){
 //below is the update for profile information
 var submitForm = function(myImage){
 	var data =  $("#profileForm").serialize();
-
 	setTimeout(function(){
 		console.log("started Submition");
 		try{
@@ -599,7 +598,7 @@ var handleResize = function(){
 
 //monitors screen resize
 $(window).resize(function(){
-	//testing color thief
+	handleResize();
 });
 
 //checks for document loading
@@ -608,6 +607,6 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
-
+    console.log("cookie: " + document.cookie);
 	handleResize();
 })
