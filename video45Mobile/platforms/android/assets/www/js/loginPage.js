@@ -137,7 +137,7 @@ $('#loginForm').submit(function(){
           $('#password').css("border-color","red");
           $('#logEmail').css("border-color","red");
         }else{
-          $(document).attr('location').href='/'
+          $(document).attr('location').href='profilePage.html'
         }
       },
       error: function(response){
@@ -243,6 +243,7 @@ var resize = function(){
 $(document).ready(function(){
   resize();
   imageToggle();
+  document.cookie="username=John Smith; ";
 });
 
 

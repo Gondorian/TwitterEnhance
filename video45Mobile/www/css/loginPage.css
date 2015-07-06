@@ -1,6 +1,12 @@
+.preloader-wrapper{
+  position: fixed;
+  top: 45%;
+  right: 45%;
+}
+
 body {
-  margin-right: 10%;
-  margin-left: 10%; }
+  padding: 0px;
+}
 
 #background1, #background2 {
   z-index: -3;

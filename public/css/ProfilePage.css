@@ -1,3 +1,8 @@
+.preloader-wrapper {
+  position: fixed;
+  top: 50%;
+  right: 50%; }
+
 body {
   background-color: #F6F5F6;
   padding: 0px; }

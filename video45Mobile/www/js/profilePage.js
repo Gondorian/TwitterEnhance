@@ -5,6 +5,7 @@ var data = [
 	{url: "http://i.ytimg.com/vi/tHSA519vVvg/hqdefault.jpg", text: "Another comment was written here"},
 	{url: "http://thedailyfandom.com/wp-content/uploads/2015/01/Why_5d76e0_1095350.jpg", text: "Me and my dad at the park"}
 ];
+var info = ["Travis","Travis","0","5","profilePic","rgb(130,130,130)", "true", "travis", "2","This is the description of the current profile, I hope your eyes enjoy the view"];
 
 var comments=[
 	{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
@@ -462,7 +463,7 @@ function refreshInfo(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://localhost:3000/users/as",
+      url: "http://192.168.2.19:3000/users/as",
       type: 'GET',
       success: function(response){
         console.log(response);
@@ -480,7 +481,7 @@ function submitfollow(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://localhost:3000/users/follow",
+      url: "http://192.168.2.19:3000/users/follow",
       type: 'POST',
       data: {userName:info[1]},
       success: function(response){
@@ -522,7 +523,7 @@ var submitForm = function(myImage){
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://localhost:3000/users/updateProfile",
+	      url: "http://192.168.2.19:3000/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -549,7 +550,7 @@ var submitForm = function(myImage){
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/login",
+      url: "http://192.168.2.19:3000/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){
@@ -608,6 +609,5 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
-
 	handleResize();
 })

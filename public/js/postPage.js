@@ -2,7 +2,7 @@
 var filters = React.createClass({
 	render: function(){
 		return(
-
+			<Choice>
 		);
 	}
 });

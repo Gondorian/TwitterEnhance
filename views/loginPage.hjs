@@ -14,7 +14,19 @@
       <div id='background1' class='visib'></div>
       <div id='background2'></div>
         <div id = "frontpage">
-          <div id = 'register'>not working</div>
+          <div id = 'register'>
+            <div class="preloader-wrapper big active">
+              <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
     <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>

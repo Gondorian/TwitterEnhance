@@ -10,7 +10,19 @@
     <link rel='stylesheet' href='../public/css/ProfilePage.css' />
   </head>
   <body>
-    <div id = 'content'>Not working</div>
+    <div id = 'content'>
+        <div class="preloader-wrapper big active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+    </div>
 
     <!--This is the modal overlay for profile edit-->
     <div id="editMod"></div>

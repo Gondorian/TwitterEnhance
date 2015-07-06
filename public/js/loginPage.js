@@ -128,7 +128,7 @@ React.render(
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
       $.ajax({
-      url: "http://192.168.2.19:3000/users/login",
+      url: "http://localhost:3000/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
@@ -244,7 +244,6 @@ $(document).ready(function(){
   resize();
   imageToggle();
 });
-
 
 $(window).resize(function(){
   resize();

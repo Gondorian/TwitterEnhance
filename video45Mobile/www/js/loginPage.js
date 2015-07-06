@@ -137,7 +137,7 @@ $('#loginForm').submit(function(){
           $('#password').css("border-color","red");
           $('#logEmail').css("border-color","red");
         }else{
-          $(document).attr('location').href='/'
+          $(document).attr('location').href='profilePage.html'
         }
       },
       error: function(response){
@@ -150,7 +150,7 @@ $('#loginForm').submit(function(){
 //below is the ajax post for the register box
 $('#registration').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/register",
+      url: "http://192.168.2.19:3000/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
