@@ -521,7 +521,7 @@ var submitForm = function(myImage){
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://node.missingplatform.com/users/updateProfile",
+	      url: "http://localhost:3000/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -548,7 +548,7 @@ var submitForm = function(myImage){
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
       $.ajax({
-      url: "http://node.missingplatform.com/users/login",
+      url: "http:/localhost:3000/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){

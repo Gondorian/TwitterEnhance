@@ -127,16 +127,18 @@ React.render(
 
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
+      var loginName = $('#logEmail').val();
       $.ajax({
-      url: "http://192.168.2.19:3000/users/login",
+      url: "http://192.168.56.1:3000/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
-        if(response.length < 40){
+        if(response = "Incorrect Email or Password."){
           Materialize.toast(response,10000);
           $('#password').css("border-color","red");
           $('#logEmail').css("border-color","red");
         }else{
+          //local storage is used to maintain the userlogin gained from the server
           $(document).attr('location').href='profilePage.html'
         }
       },
@@ -150,7 +152,7 @@ $('#loginForm').submit(function(){
 //below is the ajax post for the register box
 $('#registration').submit(function(){
       $.ajax({
-      url: "http://192.168.2.19:3000/users/register",
+      url: "http://192.168.2.1:3000/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){

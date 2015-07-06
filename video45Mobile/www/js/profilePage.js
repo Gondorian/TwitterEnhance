@@ -459,14 +459,15 @@ React.render(
 
 
 //refresh page information
-function refreshInfo(){
+function refreshInfo(userName){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://192.168.2.19:3000/users/as",
+      url: "http://192.168.2.19:3000/users/getProfile?userName="+userName,
       type: 'GET',
       success: function(response){
-        console.log(response);
+      	info = [response[0],response[1],response[2],response[3],response[4],response[5],response[6],response[7],response[8],response[9]]
+        console.log(info);
       },
       error: function(response){
       	console.log(response);
@@ -481,19 +482,19 @@ function submitfollow(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://192.168.2.19:3000/users/follow",
+      url: "http://192.168.56.1:3000/users/follow",
       type: 'POST',
       data: {userName:info[1]},
-      success: function(response){
+       success: function(response){
       	//ensure the user is logged in
-      	if(response === "not logged in!"){
+      	if(response["message"] === "not logged in!"){
 	    	$(document).attr('location').href='/';
 	    }else{
 	    	//if they are logged in finish recieving data
       		console.log(info[2]);
-        	if(response.length < 40){
-          	Materialize.toast(response.message,10000);
-          	info[2] = response.followers;
+        	if(response["message"].length < 40){
+          		Materialize.toast(response.message,10000);
+          		info[2] = response["followers"];
         	}
         	console.log(info[2])
         }
@@ -523,7 +524,7 @@ var submitForm = function(myImage){
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://192.168.2.19:3000/users/updateProfile",
+	      url: "http://192.168.56.1:3000/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -550,7 +551,7 @@ var submitForm = function(myImage){
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
       $.ajax({
-      url: "http://192.168.2.19:3000/users/login",
+      url: "http://192.168.56.1:3000/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){
@@ -609,5 +610,6 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
+	refreshInfo('refSessionID');
 	handleResize();
 })

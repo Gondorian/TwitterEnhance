@@ -94,6 +94,7 @@ router.post('/follow', function(req, res, next){
 router.post('/updateProfile', function(req, res, next){
   if(UserController.isLoggedIn(req)){
     UserController.updateProfile(req, function(msg){
+      console.log("sesssion: "+req.session.userName);
       res.send(msg);
     });
   }
