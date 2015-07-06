@@ -129,7 +129,7 @@ React.render(
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
       $.ajax({
-      url: "http://192.168.2.19:3000/users/login",
+      url: "http://node.missingplatform.com/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
@@ -152,7 +152,7 @@ $('#loginForm').submit(function(){
 
 $('#registration').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/register",
+      url: "http://node.missingplatform.com/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
