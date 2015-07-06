@@ -334,7 +334,7 @@ var Navbar = React.createClass({
 									<li><a href={"/users/"+info[7]+'/post'} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
-											<form action="http://node.missingplatform.com/users/logout" method="POST">
+											<form action="http://localhost:3000/users/logout" method="POST">
 												<button className="btn-flat" type="submit" id="logout">logout</button>
 											</form>
 										</div>
@@ -353,7 +353,7 @@ var Navbar = React.createClass({
 							</li>
 							<li id="logoutBut">
 								<div className="input-field">
-									<form action="http://node.missingplatform.com/users/logout" method="POST">
+									<form action="http://localhost:3000/users/logout" method="POST">
 										<button className="btn waves-effect waves-light" type="submit">logout
 										</button>
 									</form>
@@ -462,7 +462,7 @@ function refreshInfo(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://node.missingplatform.com/users/as",
+      url: "http://localhost:3000/users/as",
       type: 'GET',
       success: function(response){
         console.log(response);
@@ -480,7 +480,7 @@ function submitfollow(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://node.missingplatform.com/users/follow",
+      url: "http://localhost:3000/users/follow",
       type: 'POST',
       data: {userName:info[1]},
       success: function(response){
@@ -522,7 +522,7 @@ var submitForm = function(myImage){
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://node.missingplatform.com/users/updateProfile",
+	      url: "http://localhost:3000/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -549,7 +549,7 @@ var submitForm = function(myImage){
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
       $.ajax({
-      url: "http://node.missingplatform.com/users/login",
+      url: "http://localhost:3000/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){

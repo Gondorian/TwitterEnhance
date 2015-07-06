@@ -129,11 +129,11 @@ React.render(
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
       $.ajax({
-      url: "http://node.missingplatform.com/users/login",
+      url: "http://localhost:3000/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
-        if(response.length < 40){
+        if(response.length < 40){       //if the login fails, response is less than 40
           Materialize.toast(response,10000);
           $('#password').css("border-color","red");
           $('#logEmail').css("border-color","red");
@@ -152,7 +152,7 @@ $('#loginForm').submit(function(){
 
 $('#registration').submit(function(){
       $.ajax({
-      url: "http://node.missingplatform.com/users/register",
+      url: "http://localhost:3000/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
