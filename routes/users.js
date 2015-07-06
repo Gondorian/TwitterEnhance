@@ -47,7 +47,6 @@ router.post('/register', function(req, res, next){
 
 // Request to login
 router.post('/login', function(req, res, next){
-
   UserController.login(req, function(succcess){
     if(succcess){       //if credentials were correct
       console.log('Logged in succesfully!');
@@ -88,7 +87,7 @@ router.post('/follow', function(req, res, next){
     });
   }
   else{
-    res.redirect('/');
+    res.send('Not logged in!');
   }
 });
 
@@ -99,8 +98,18 @@ router.post('/updateProfile', function(req, res, next){
     });
   }
   else{
-    res.redirect('/');
+    res.send('Not logged in!');
   }
+});
+
+router.post('/createPost', function(req, res, next){
+  if(UserController.isLoggedIn(req)){
+
+  }
+  else{
+    res.send('Not logged in!');
+  }
+
 });
 
 module.exports = router;

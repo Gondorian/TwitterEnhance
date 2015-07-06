@@ -24,6 +24,7 @@
         </div>
     </div>
 
+
     <!--This is the modal overlay for profile edit-->
     <div id="editMod"></div>
 

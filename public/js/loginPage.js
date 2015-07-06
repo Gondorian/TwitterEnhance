@@ -50,7 +50,7 @@ var LoginBox =React.createClass({
             <button className="valign btn waves-effect waves-light" type="submit" name="action" id="logButton"> log in</button>
           </div>
           <div className="row">
-            <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/> 
+            <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
             <label htmlFor="remember" id="remLabel">Remember me</label>
             <a href="#">Forgot Password? </a>
           </div>
@@ -125,6 +125,7 @@ React.render(
   document.getElementById('register')
 );
 
+
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
       $.ajax({
@@ -148,6 +149,7 @@ $('#loginForm').submit(function(){
 });
 
 //below is the ajax post for the register box
+
 $('#registration').submit(function(){
       $.ajax({
       url: "http://localhost:3000/users/register",
