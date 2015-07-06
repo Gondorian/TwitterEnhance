@@ -129,7 +129,7 @@ React.render(
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/login",
+      url: "http://192.168.2.19:3000/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
@@ -167,7 +167,7 @@ $('#registration').submit(function(){
           $('#email').css("border-color","#9E9E9E");
           $('#Username').css("border-color","red");
         }else{
-          $(document).attr('location').href='/' //if everything is fine
+          $(document).attr('location').href='/'; //if everything is fine
         }
       },
       error: function(response){

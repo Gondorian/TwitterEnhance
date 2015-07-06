@@ -10,7 +10,8 @@
     <link rel='stylesheet' href='../public/css/ProfilePage.css' />
   </head>
   <body>
-    <div id = 'content'>not working</div>
+    <div id = 'content'>Not working</div>
+
 
     <!--This is the modal overlay for profile edit-->
     <div id="editMod"></div>
