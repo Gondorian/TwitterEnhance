@@ -461,13 +461,13 @@ React.render(
 
 //refresh page information
 function refreshInfo(userName){
- console.log(info[7]);
  console.log(info[0]);
+ console.log(info[7]);
       $.ajax({
       url: "http://"+ip+":3000/users/getProfile?userName="+userName,
       type: 'GET',
       success: function(response){
-       info = [response[0],response[1],response[2],response[3],response[4],response[5],response[6],response[7],response[8],response[9]]
+				info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
         console.log('Success: ' + info);
       },
       error: function(response){

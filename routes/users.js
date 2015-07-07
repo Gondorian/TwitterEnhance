@@ -59,7 +59,7 @@ router.post('/login', function(req, res, next){
       res.redirect('/');
     }
     else{              //if credentials were incorrect
-      console.log("Could not log in. :(");
+      console.log("Could not log in.");
       res.send('Incorrect Email or Password.');
     }
   });
