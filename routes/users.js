@@ -14,6 +14,7 @@ var UserController = require('../controllers/UserController');
 // Get the user profile page and its related data
 router.get('/getProfile', function(req, res, next){
   console.log('Requesting /getProfile for: ' + req.query.userName);
+  console.log("session: "+req.session.userName);
   if(UserController.isLoggedIn(req)){
     var userName = req.query.userName;
     if(userName == 'refSessionID'){ //if request is for currently logged in user
@@ -64,6 +65,19 @@ router.post('/login', function(req, res, next){
   });
 });
 
+router.post('/m/login', function(req, res, next){
+  UserController.login(req, function(succcess){
+    if(succcess){       //if credentials were correct
+      console.log('Logged in succesfully on mobile!');
+      res.send('Success!');
+    }
+    else{     //if credentials were incorrect
+      console.log("Could not log in on mobile. :(");
+      res.send('Incorrect Email or Password.');
+    }
+  });
+});
+
 
 
 // request to logout the current user
@@ -97,6 +111,7 @@ router.post('/follow', function(req, res, next){
 router.post('/updateProfile', function(req, res, next){
   if(UserController.isLoggedIn(req)){
     UserController.updateProfile(req, function(msg){
+      console.log("sesssion: "+req.session.userName);
       res.send(msg);
     });
   }
