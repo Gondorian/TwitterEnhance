@@ -1,3 +1,4 @@
+var ip = "192.168.0.146";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},
@@ -335,7 +336,7 @@ var Navbar = React.createClass({
 									<li><a href={"/users/"+info[7]+'/post'} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
-											<form action="http://localhost:3000/users/logout" method="POST">
+											<form action="http://192.168.0.146:3000/users/logout" method="POST">
 												<button className="btn-flat" type="submit" id="logout">logout</button>
 											</form>
 										</div>
@@ -354,7 +355,7 @@ var Navbar = React.createClass({
 							</li>
 							<li id="logoutBut">
 								<div className="input-field">
-									<form action="http://localhost:3000/users/logout" method="POST">
+									<form action="http://192.168.0.146:3000/users/logout" method="POST">
 										<button className="btn waves-effect waves-light" type="submit">logout
 										</button>
 									</form>
@@ -398,9 +399,19 @@ var Content = React.createClass({
 		submitfollow();
 	},
 	loadPostsFromServer: function(){
+		this.setState({custName: info[0]});
+		this.setState({userName: info[1]});
 		this.setState({followers: info[2]});
+		this.setState({posts: info[3]});
+		this.setState({profileURL: info[4]});
+		this.setState({profileURL: info[5]});
+		this.setState({navColor: info[6]});
+		this.setState({logged: info[7]})
 		this.setState({following: info[8]});
-		this.setState({dat:data});
+		this.setState({desc: info[9]});
+
+		//maintain none server variables
+		this.setState({dat:data})
 		if(this.state.mode === "standard"){
 			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		}else if(this.state.mode === "edit"){
@@ -425,7 +436,7 @@ var Content = React.createClass({
 		this.setState({custName: info[0]});
 		this.setState({followers: info[2]});
 		this.setState({profileURL: info[4]});
-		this.setState({logged: info[7]})
+		this.setState({logged: info[7]});
 		this.setState({following: info[8]});
 		this.setState({desc: info[9]});
 
@@ -437,7 +448,7 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "profilePage">
-				<Navbar cust = {this.state.logged} />
+				<Navbar navColor = {this.state.navColor} cust = {this.state.logged} />
 				{this.state.profileSection}
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
@@ -448,7 +459,7 @@ var Content = React.createClass({
 
 //the root this calls the parent with some dummy data
 React.render(
-	<Content pollInterval={200} />,
+	<Content pollInterval={20} />,
 	document.getElementById("content")
 );
 
@@ -460,29 +471,32 @@ React.render(
 
 //refresh page information
 function refreshInfo(userName){
-	console.log(info[7]);
-	console.log(info[0]);
+ console.log(info[7]);
+ console.log(info[0]);
       $.ajax({
       url: "http://192.168.2.19:3000/users/getProfile?userName="+userName,
       type: 'GET',
       success: function(response){
-      	info = [response[0],response[1],response[2],response[3],response[4],response[5],response[6],response[7],response[8],response[9]]
-        console.log(info);
+       info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
+       console.log("reponse");
+       console.log(response);
+       console.log("success");
+       console.log(info);
       },
       error: function(response){
-      	console.log(response);
+       console.log('Error: ' + response);
         alert('not successful ' + {response});
       }
     });
     return false;
-};
+}
 
 //below is the update for follow press
 function submitfollow(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://192.168.56.1:3000/users/follow",
+      url: "http://192.168.2.19:3000/users/follow",
       type: 'POST',
       data: {userName:info[1]},
        success: function(response){
@@ -524,7 +538,7 @@ var submitForm = function(myImage){
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://192.168.56.1:3000/users/updateProfile",
+	      url: "http://192.168.2.19:3000/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -550,8 +564,8 @@ var submitForm = function(myImage){
 
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
-      $.ajax({
-      url: "http://192.168.56.1:3000/users/login",
+			$.ajax({
+      url: "http://192.168.2.19:3000/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){
@@ -610,8 +624,6 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
-	setTimeout(function(){
-		refreshInfo('refSessionID');
-	},10000);
+	refreshInfo('refSessionID');
 	handleResize();
 })

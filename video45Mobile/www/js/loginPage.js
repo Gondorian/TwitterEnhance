@@ -1,4 +1,5 @@
 //the react container for the navbar elements
+var ip = "192.168.2.19";
 var Navbar = React.createClass({
   render:function(){
     return(
@@ -50,7 +51,7 @@ var LoginBox =React.createClass({
             <button className="valign btn waves-effect waves-light" type="submit" name="action" id="logButton"> log in</button>
           </div>
           <div className="row">
-            <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/> 
+            <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
             <label htmlFor="remember" id="remLabel">Remember me</label>
             <a href="#">Forgot Password? </a>
           </div>
@@ -129,7 +130,7 @@ React.render(
 $('#loginForm').submit(function(){
       var loginName = $('#logEmail').val();
       $.ajax({
-      url: "http://192.168.56.1:3000/users/m/login",
+      url: "http://"+ ip +":3000/users/m/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
@@ -147,13 +148,13 @@ $('#loginForm').submit(function(){
         //alert('not successful ' + {response});
       }
     });
-    return false;s
+    return false;
 });
 
 //below is the ajax post for the register box
 $('#registration').submit(function(){
       $.ajax({
-      url: "http://192.168.2.1:3000/users/register",
+      url: "http://" + ip +":3000/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){

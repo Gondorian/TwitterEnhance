@@ -8,14 +8,18 @@ var Account = require('../models/account');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   console.log('Requesting /!');
-  if(UserController.isLoggedIn(req))
+  if(UserController.isLoggedIn(req)){
+    console.log('User is logged in! Redirecting to /' + req.session.userName);
     res.redirect('/' + req.session.userName);
-  else
+  }
+  else{
+    console.log('User is not logged in! Rendering loginPage!');
     res.render('loginPage');
+  }
 });
 
 router.get('/:userName', function(req, res, next){
-  console.log('requesting /username');
+  console.log('Requesting /username');
   if(UserController.isLoggedIn(req)){
     var userName = req.params.userName;
     UserController.loadProfile(req, userName, function(info){ //pass the data to the view

@@ -17,22 +17,21 @@ router.get('/getProfile', function(req, res, next){
   console.log("sesssion: "+req.session.userName);
   if(UserController.isLoggedIn(req)){
     var userName = req.query.userName;
-    if(userName == refSessionID){
+    if(userName == 'refSessionID'){ //if request is for currently logged in user
       UserController.loadProfile(req, req.session.userName, function(info){ //pass the data to the view
         res.send({name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
       });
     }else{
       UserController.loadProfile(req, userName, function(info){ //pass the data to the view
-        res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
+        res.send({name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
       });
     }
   }
   else{
     res.send('You are not logged in!');
   }
-
-
 });
+
 
 //==============
 //POST REQUESTS
@@ -61,6 +60,19 @@ router.post('/login', function(req, res, next){
     }
     else{              //if credentials were incorrect
       console.log("Could not log in. :(");
+      res.send('Incorrect Email or Password.');
+    }
+  });
+});
+
+router.post('/m/login', function(req, res, next){
+  UserController.login(req, function(succcess){
+    if(succcess){       //if credentials were correct
+      console.log('Logged in succesfully on mobile!');
+      res.send('Success!');
+    }
+    else{     //if credentials were incorrect
+      console.log("Could not log in on mobile. :(");
       res.send('Incorrect Email or Password.');
     }
   });
