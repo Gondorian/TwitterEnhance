@@ -34,7 +34,6 @@ exports.logout = function(req, callback){             //destroys the session. if
 
 exports.isLoggedIn = function(req){     //checks if logged in by seeing if the session.userName variable is set
   var session = req.session;
-  console.log(req.session.userName);
   if(session.userName){
     console.log('Logged in username is: ' + session.userName);
     return true;

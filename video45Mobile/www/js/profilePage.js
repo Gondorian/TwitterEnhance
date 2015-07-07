@@ -610,6 +610,8 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
-	refreshInfo('refSessionID');
+	setTimeout(function(){
+		refreshInfo('refSessionID');
+	},10000);
 	handleResize();
 })

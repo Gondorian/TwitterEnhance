@@ -129,7 +129,7 @@ React.render(
 $('#loginForm').submit(function(){
       var loginName = $('#logEmail').val();
       $.ajax({
-      url: "http://192.168.56.1:3000/users/login",
+      url: "http://192.168.56.1:3000/users/m/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){

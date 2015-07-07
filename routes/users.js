@@ -14,7 +14,7 @@ var UserController = require('../controllers/UserController');
 // Get the user profile page and its related data
 router.get('/getProfile', function(req, res, next){
   console.log('Requesting /getProfile for: ' + req.query.userName);
-  console.log("session: "+req.session.userName);
+  console.log("sesssion: "+req.session.userName);
   if(UserController.isLoggedIn(req)){
     var userName = req.query.userName;
     if(userName == refSessionID){
