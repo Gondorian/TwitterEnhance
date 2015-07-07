@@ -12,20 +12,27 @@ var UserController = require('../controllers/UserController');
 //==============
 
 // Get the user profile page and its related data
-router.get('/:userName', function(req, res, next){
-  console.log('URL Parameter: ' + req.params.userName);
+router.get('/getProfile', function(req, res, next){
+  console.log('Requesting /getProfile for: ' + req.query.userName);
+  console.log("session: "+req.session.userName);
   if(UserController.isLoggedIn(req)){
-    var userName = req.params.userName;
-    UserController.loadProfile(req, userName, function(info){ //pass the data to the view
-      res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
-    });
+    var userName = req.query.userName;
+    if(userName == refSessionID){
+      UserController.loadProfile(req, req.session.userName, function(info){ //pass the data to the view
+        res.send({name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
+      });
+    }else{
+      UserController.loadProfile(req, userName, function(info){ //pass the data to the view
+        res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
+      });
+    }
   }
   else{
-    res.redirect('/');  //if not logged in, redirect to home
+    res.send('You are not logged in!');
   }
 
-});
 
+});
 
 //==============
 //POST REQUESTS
@@ -57,10 +64,8 @@ router.post('/login', function(req, res, next){
       res.send('Incorrect Email or Password.');
     }
   });
-
-
-
 });
+
 
 
 // request to logout the current user

@@ -34,6 +34,7 @@ exports.logout = function(req, callback){             //destroys the session. if
 
 exports.isLoggedIn = function(req){     //checks if logged in by seeing if the session.userName variable is set
   var session = req.session;
+  console.log(req.session.userName);
   if(session.userName){
     console.log('Logged in username is: ' + session.userName);
     return true;
@@ -73,11 +74,11 @@ exports.login = function(req, callback){        //get the user's session and set
         var session = req.session;
         Account.getUserName(email, function(userName){    //get the username based on the email provided
           session.userName = userName;
-          callback(true);
+          callback(true, userName);
         });
       }
       else{               //else callback with false
-        callback(false);
+        callback(false, userName);
       }
   });
 }

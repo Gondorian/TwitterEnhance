@@ -7,16 +7,25 @@ var Account = require('../models/account');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log('requesting front page!');
+  console.log('Requesting /!');
   if(UserController.isLoggedIn(req))
-    res.redirect('/users/' + req.session.userName);
+    res.redirect('/' + req.session.userName);
   else
     res.render('loginPage');
 });
 
-router.get('/mainpage', function(req, res, next) {
-  console.log('requesting front page!');
-  res.render('mainPage');
+router.get('/:userName', function(req, res, next){
+  console.log('requesting /username');
+  if(UserController.isLoggedIn(req)){
+    var userName = req.params.userName;
+    UserController.loadProfile(req, userName, function(info){ //pass the data to the view
+      res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], numberOfFollowing: info[4], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUserName: info[7], numberOfFollowing: info[8], profileDescription: info[9]});
+    });
+  }
+  else{
+    res.redirect('/');  //if not logged in, redirect to home
+  }
+
 });
 
 router.get('/profilepage', function (req, res, next) {
@@ -26,6 +35,7 @@ router.get('/profilepage', function (req, res, next) {
 });
 
 router.get('/test', function (req, res, next) {
+  console.log(req.session.userName);
   res.send('The test has completed!');
 });
 

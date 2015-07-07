@@ -133,7 +133,7 @@ $('#loginForm').submit(function(){
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
-        if(response.length < 40){
+        if(response.length < 40){       //if the login fails, response is less than 40
           Materialize.toast(response,10000);
           $('#password').css("border-color","red");
           $('#logEmail').css("border-color","red");

@@ -133,7 +133,8 @@ $('#loginForm').submit(function(){
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
-        if(response = "Incorrect Email or Password."){
+        console.log(response);
+        if(response == "Incorrect Email or Password."){
           Materialize.toast(response,10000);
           $('#password').css("border-color","red");
           $('#logEmail').css("border-color","red");
