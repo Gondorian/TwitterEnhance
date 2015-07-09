@@ -1,4 +1,4 @@
-var ip = "192.168.0.146";
+var ip = "192.168.2.19";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},
@@ -355,9 +355,8 @@ var Navbar = React.createClass({
 							</li>
 							<li id="logoutBut">
 								<div className="input-field">
-									<form action="http://192.168.0.146:3000/users/logout" method="POST">
-										<button className="btn waves-effect waves-light" type="submit">logout
-										</button>
+									<form action="http://localhost:3000/users/logout" method="POST">
+										<button className="btn-flat" type="submit" id="logout">logout</button>
 									</form>
 								</div>
 							</li>
@@ -482,8 +481,12 @@ function refreshInfo(userName){
        console.log(response);
        console.log("success");
        console.log(info);
+<<<<<<< HEAD
 			$('nav').css("background-color",info[5]);
 
+=======
+       $('nav').css("background-color",info[5]);
+>>>>>>> ff27c64f54f5035065fa6b10b158560f6a105c5c
       },
       error: function(response){
        console.log('Error: ' + response);

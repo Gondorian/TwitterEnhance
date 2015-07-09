@@ -1,0 +1,83 @@
+body {
+  padding: 0px;
+  margin: 0px; }
+
+.nav-wrapper {
+  padding-left: 20px; }
+  .nav-wrapper #logoutBut:hover {
+    background-color: transparent; }
+  .nav-wrapper #navSearch {
+    float: right;
+    width: 200px; }
+  .nav-wrapper #navSearch:focus {
+    width: 600px; }
+  .nav-wrapper #searchHover {
+    height: 65px; }
+
+#logout {
+  font-size: 1.2rem;
+  color: #26a69a;
+  height: 40px;
+  width: 100%; }
+
+#logout:hover {
+  background-color: #EEE; }
+
+#profileBut {
+  width: 37px;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-left: 20px; }
+  #profileBut i {
+    line-height: 36px; }
+
+.tabs {
+  cursor: pointer; }
+
+.profileList {
+  margin-top: 10px; }
+
+.profilePanel {
+  display: block;
+  margin: 10px auto 0px;
+  height: 100px;
+  max-width: 600px;
+  min-width: 100px;
+  padding-left: 110px;
+  padding-right: 200px;
+  padding-top: 10px;
+  opacity: 0;
+  transform: translate(20px);
+  transition: all 0.3s ease-in-out; }
+  .profilePanel.shown {
+    opacity: 1; }
+
+.profileImg {
+  float: left;
+  margin-left: -110px;
+  margin-top: -10px;
+  border-radius: 2px;
+  height: 100px;
+  width: 100px; }
+
+.profileName {
+  display: inline;
+  text-decoration: none;
+  font-size: 30px;
+  color: black; }
+
+.icon {
+  margin-top: 5px;
+  padding: 12px 10px 7px 5px;
+  height: 60px;
+  float: right;
+  margin-right: -150px;
+  color: gray;
+  border-radius: 20px;
+  background-color: white; }
+
+.btn i {
+  font-size: 3rem;
+  color: blue; }
+
+/*# sourceMappingURL=mobileSearch.css.map */

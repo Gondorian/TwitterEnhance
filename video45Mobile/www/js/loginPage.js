@@ -169,7 +169,7 @@ $('#registration').submit(function(){
           $('#email').css("border-color","#9E9E9E");
           $('#Username').css("border-color","red");
         }else{
-          $(document).attr('location').href='/'; //if everything is fine
+          $(document).attr('location').href='profilePage.html'; //if everything is fine
         }
       },
       error: function(response){

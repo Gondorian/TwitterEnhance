@@ -6,6 +6,11 @@ var account = require('../models/account');
 var UserController = require('../controllers/UserController');
 
 
+router.get('/test', function (req, res, next) {
+  res.render('mobileSearch');
+  //console.log(req.session.userName);
+  //res.send('The test has completed!');
+});
 
 //==============
 // GET REQUESTS
