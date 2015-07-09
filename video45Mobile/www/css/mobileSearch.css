@@ -2,6 +2,12 @@ body {
   padding: 0px;
   margin: 0px; }
 
+.preloader-wrapper{
+  position: fixed;
+  top: 43%;
+  right: 39%;
+}
+
 .nav-wrapper {
   padding-left: 20px; }
   .nav-wrapper #logoutBut:hover {

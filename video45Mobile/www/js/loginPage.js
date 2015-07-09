@@ -1,5 +1,5 @@
 //the react container for the navbar elements
-var ip = "192.168.0.146";
+var ip = "192.168.2.19";
 var Navbar = React.createClass({
   render:function(){
     return(
@@ -141,6 +141,7 @@ $('#loginForm').submit(function(){
           $('#logEmail').css("border-color","red");
         }else{
           //local storage is used to maintain the userlogin gained from the server
+          sessionStorage.viewedUser = "refSessionID";
           $(document).attr('location').href='profilePage.html'
         }
       },
