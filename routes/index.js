@@ -7,7 +7,7 @@ var Account = require('../models/account');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log('Requesting /!');
+  console.log('Requesting /');
   if(UserController.isLoggedIn(req)){
     console.log('User is logged in! Redirecting to /' + req.session.userName);
     res.redirect('/' + req.session.userName);
@@ -30,12 +30,6 @@ router.get('/:userName', function(req, res, next){
     res.redirect('/');  //if not logged in, redirect to home
   }
 
-});
-
-router.get('/profilepage', function (req, res, next) {
-  UserController.loadProfile(req, 'paul.azevedo', function(info){
-    res.render('profilePage', {name: info[0], userName: info[1], numberOfPosts: info[2], numberOfFollowers: info[3], profilePic: info[4], profileColour: info[5], isCurrentUser: info[6], currentUsername: info[7]});
-  });
 });
 
 module.exports = router;

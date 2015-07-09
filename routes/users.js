@@ -6,7 +6,7 @@ var account = require('../models/account');
 var UserController = require('../controllers/UserController');
 
 
-router.get('/test', function (req, res, next) {
+router.get('/test1', function (req, res, next) {
   res.render('mobileSearch');
   //console.log(req.session.userName);
   //res.send('The test has completed!');
@@ -33,9 +33,29 @@ router.get('/getProfile', function(req, res, next){
     }
   }
   else{
-    res.send('You are not logged in!');
+    res.send('Not logged in!');
   }
 });
+
+router.get('/searchName', function(req, res, next){
+  console.log('Requesting /search for: ' + req.query.name);
+  if(UserController.isLoggedIn(req)){
+    UserController.searchName(req, function(data){
+      res.send(data);
+    });
+  }
+  else{
+    res.send('Not logged in!');
+  }
+});
+
+router.get('/test', function (req, res, next) {
+  console.log('Requesting /users/test');
+  UserController.searchName(req, function(data){
+    res.send(data);
+  });
+});
+
 
 
 //==============
@@ -53,7 +73,6 @@ router.post('/register', function(req, res, next){
     else
       res.send(success);
   });
-
 });
 
 // Request to login
@@ -64,7 +83,7 @@ router.post('/login', function(req, res, next){
       res.redirect('/');
     }
     else{              //if credentials were incorrect
-      console.log("Could not log in. :(");
+      console.log("Could not log in.");
       res.send('Incorrect Email or Password.');
     }
   });
@@ -104,8 +123,7 @@ router.post('/follow', function(req, res, next){
     //follow that use
     UserController.followUser(req, function(msg, numberOfFollowers){
 
-      res.send({message: msg, followers: numberOfFollowers});         //send back message, and updated number of followers
-
+      res.send({message: msg, followers: numberOfFollowers});        //send back message, and updated number of followers
     });
   }
   else{
@@ -127,12 +145,11 @@ router.post('/updateProfile', function(req, res, next){
 
 router.post('/createPost', function(req, res, next){
   if(UserController.isLoggedIn(req)){
-
+    UserController.createPost(req);
   }
   else{
     res.send('Not logged in!');
   }
-
 });
 
 module.exports = router;

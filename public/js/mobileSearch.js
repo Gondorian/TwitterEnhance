@@ -1,32 +1,20 @@
-var ip = "192.168.2.19";
-var info;
+var ip = "localhost";
+var info = ["","","","","design/balloons.png","", "true", "", "",""];
 var mode = 'name';//default is name, used for tab selection
 //all profiles taken from the server
 var profile = [
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"},
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"},
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"},
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"},
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"},
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"},
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"},
-	{url:"/design/balloons.png", name:"Sivart"},
-	{url:"/design/sunset.jpg", name:"Rastiv"},
-	{url:"/design/MaleFace1.jpg", name:"Virast"}
+	{profilePic:"/design/balloons.png", userName:"Sivart"},
+	{profilePic:"/design/sunset.jpg", userName:"Rastiv"},
+	{profilePic:"/design/MaleFace1.jpg", userName:"Virast"},
+	{profilePic:"/design/balloons.png", userName:"Sivart"},
+	{profilePic:"/design/sunset.jpg", userName:"Rastiv"},
+	{profilePic:"/design/MaleFace1.jpg", userName:"Virast"},
+	{profilePic:"/design/balloons.png", userName:"Sivart"},
+	{profilePic:"/design/sunset.jpg", userName:"Rastiv"},
+	{profilePic:"/design/MaleFace1.jpg", userName:"Virast"},
+	{profilePic:"/design/balloons.png", userName:"Sivart"},
+	{profilePic:"/design/sunset.jpg", userName:"Rastiv"},
+	{profilePic:"/design/MaleFace1.jpg", userName:"Virast"},
 ];
 //the profiles that are currently shown to the user
 var shownName = [
@@ -58,7 +46,7 @@ var ProfileList = React.createClass({
 	render: function(){
 		var profileNodes = this.props.profile.map(function(prof){
 			return(
-				<ProfileInfo profileURL={prof.url} profileName={prof.name} />
+				<ProfileInfo profileURL={prof.profilePic} profileName={prof.userName} />
 			);
 		});
 		return(
@@ -85,7 +73,7 @@ var Selector = React.createClass({
 	}
 });
 
-//navbar elements are located here
+//this will edit the content of the navbar
 var Navbar = React.createClass({
 	render: function(){
 		return(
@@ -104,12 +92,12 @@ var Navbar = React.createClass({
 								</form>
 							</li>
 							<li className='dropdown-button'data-beloworigin="true" data-outduration="1000000" data-gutter="30" href='#' data-activates='dropdown1'>
-								<a id="profileBut" className='btn-floating' href="/users/"><i className="mdi-action-perm-identity left" /></a>
+								<a id="profileBut" className='btn-floating' href={"/users/"+info[7]}><i className="mdi-action-perm-identity left" /></a>
 								<ul id="dropdown1" className='dropdown-content'>
-									<li><a href={"/users//post"} >profilePage</a></li>
+									<li><a href={"/users/"+info[7]+'/post'} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
-											<form action="http://localhost:3000/users/logout" method="POST">
+											<form action={"http://"+ip+":3000/users/logout"} method="POST">
 												<button className="btn-flat" type="submit" id="logout">logout</button>
 											</form>
 										</div>
@@ -118,20 +106,11 @@ var Navbar = React.createClass({
 							</li>
 						</ul>
 						<ul className="side-nav" id="mobile-demo">
-					     	<li>
-								<form>
-									<div className="input-field">
-										<input id="navSearch" type="search" placeholder="search" />
-										<label htmlFor="navsearch"><i className="mdi-action-search"></i></label>
-									</div>
-								</form>
+					     	<li id="logoutBut">
+								<a href="searchPage.html" className="btn-flat waves-light"> Search </a>
 							</li>
 							<li id="logoutBut">
-								<div className="input-field">
-									<form action="http://localhost:3000/users/logout" method="POST">
-										<button className="btn-flat" type="submit" id="logout">logout</button>
-									</form>
-								</div>
+								<a className="btn-flat" onClick={logout}> logout </a>
 							</li>
 				     	</ul>
 					</div>
@@ -140,6 +119,7 @@ var Navbar = React.createClass({
 		);
 	}
 });
+
 
 //this is the father of all panels to follow
 var Content = React.createClass({
@@ -162,6 +142,7 @@ var Content = React.createClass({
 	loadProfile: function(){
 		$(".invis").addClass('shown');
 		$(".invis").removeClass('invis');
+		this.setState({custName:info[0]});
 		if(mode=="name"){
 			//display the results for names
 			this.setState({profile:shownName});
@@ -176,7 +157,7 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "content">
-				<Navbar />
+				<Navbar cust={this.state.custName}/>
 				<Selector tch={this.tagClickHandeler} nch={this.nameClickHandeler}/>
 				<ProfileList profile={this.state.profile}/>
 			</div>
@@ -186,7 +167,7 @@ var Content = React.createClass({
 
 //the root this calls the parent with some dummy data
 React.render(
-	<Content pollInterval={20} profile={profile}/>,
+	<Content pollInterval={200} profile={profile}/>,
 	document.getElementById("content")
 );
 
@@ -194,21 +175,66 @@ React.render(
 /************************
 *   Requests To Server  *
 ************************/
+function refreshInfo(userName){
+    $.ajax({
+      url: "http://"+ip+":3000/users/getProfile?userName="+userName,
+      type: 'GET',
+      success: function(response){
+       info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
+       $('nav').css("background-color",info[5]);
+      },
+      error: function(response){
+       console.log('Error: ' + response);
+        alert('Refresh not successful ' + {response});
+      }
+    });
+    return false;
+};
+
 //recieve the profile list from the server
 function getResults(name){
 	$.ajax({
       url: "http://"+ip+":3000/users/searchName?name="+name,
       type: 'GET',
       success: function(response){
+      	console.log("response from get Results was: ");
         console.log(response);
+        profile = response;
+        //handle the original panels that are place on the screen
+		var height = $(window).height();
+		console.log(height);
+		offset = parseInt(height/100)+1;
+		console.log("offset: "+offset);
+		console.log("profile size: "+profile.length);
+		for(var i = 0; i<offset&&i<profile.length; i++){
+			shownName.push(profile[i]);
+			shownTags.push(profile[i+1]);
+		}
+
       },
       error: function(response){
       	console.log(response);
-        alert('not successful ' + {response});
+        alert('getResults not successful ' + {response});
       }
     });
     return false;
 }
+
+//handel the logout
+var logout = function(){
+	console.log("exiting");
+	$.ajax({
+      url: "http://"+ip+":3000/users/logout",
+      type: 'POST',
+      success: function(response){
+	    $(document).attr('location').href='index.html';
+      },
+      error: function(response){
+		$(document).attr('location').href='index.html'
+      }
+    });
+    return false;
+};
 
 /************************
 *    Javascript Code    *
@@ -217,15 +243,9 @@ var offset = 7;
 
 $(document).ready(function(){
 	console.log("document is ready");
-	//handle the original panels that are place on the screen
-	var height = $(window).height();
-	console.log(height);
-	offset = parseInt(height/100)+1;
-	console.log(offset);
-	for(var i = 0; i<offset; i++){
-		shownName.push(profile[i]);
-		shownTags.push(profile[i+1]);
-	}
+	refreshInfo("refSessionID");
+	getResults('a');
+
 	$('ul.tabs').tabs();
 	$(".button-collapse").sideNav();
 });
@@ -237,7 +257,6 @@ var numTagShown = 0;
 $(window).scroll(function(){
 	//the value the screen has moved in pixels from the top
 	var wScroll = $(this).scrollTop();
-	console.log(mode);
 	//more is used to avoid errors with scrolling
 	var more = true; 
 	if(mode == "name"){

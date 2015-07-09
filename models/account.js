@@ -16,7 +16,7 @@ exports.insertNewUser= function(fullName, email, userName, password){
      "numberOfPosts": 0,
      "numberOfFollowers": 0,
      "numberOfFollowing": 0,
-     "profilePic": "default",
+     "profilePic": "design/no-profile-img",
      "profileColour": "rgb(255,0,0)",
      "profileDescription": "Welcome to my profile! Please follow me. I have stage 3 cancer and the doctor said if I get 10k followers he can do the operation. 1 follow = 1 prayer."
     }, function(err, body){
@@ -181,6 +181,30 @@ exports.updateProfile = function(userName, description, profilePic, fullName, pr
          }
        });
      }
-
    });
+}
+
+exports.createPost = function(){
+
+}
+
+exports.searchName = function(searchTerm, callback){
+  video45.view('user', 'search', function(err, body){
+    if(!err){
+      var items = [];
+
+      body.rows.forEach(function(doc) {
+        console.log('Found a similar user!');
+        if(doc.key.indexOf(searchTerm) > -1){   // if userName contains search term
+          items.push({userName: doc.key, profilePic: doc.value});
+        }
+      });
+      console.log('Items after going through view: ' + items);
+      callback(items);
+    }
+    else{
+      console.log('The error from the search view function: ' + err);
+    }
+
+  });
 }

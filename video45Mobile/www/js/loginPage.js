@@ -141,6 +141,7 @@ $('#loginForm').submit(function(){
           $('#logEmail').css("border-color","red");
         }else{
           //local storage is used to maintain the userlogin gained from the server
+          sessionStorage.viewedUser = "refSessionID";
           $(document).attr('location').href='profilePage.html'
         }
       },

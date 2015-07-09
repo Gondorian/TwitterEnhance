@@ -349,7 +349,7 @@ var Navbar = React.createClass({
 								<a href="searchPage.html" className="btn-flat waves-light"> Search </a>
 							</li>
 							<li id="logoutBut">
-								<a className="btn-flat" onClick=logout()>
+								<a className="btn-flat" onClick={logout}>logout</a>
 							</li>
 				     	</ul>
 					</div>
@@ -629,6 +629,12 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
-	refreshInfo('refSessionID');
+	if(sessionStorage.viewedUser !== null){
+		console.log("chosen user" + sessionStorage.viewedUser);
+		refreshInfo(sessionStorage.viewedUser);
+	}else{
+		console.log("standard user");
+		refreshInfo('refSessionID');
+	}
 	handleResize();
 })
