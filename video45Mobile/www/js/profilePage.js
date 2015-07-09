@@ -399,9 +399,19 @@ var Content = React.createClass({
 		submitfollow();
 	},
 	loadPostsFromServer: function(){
+		this.setState({custName: info[0]});
+		this.setState({userName: info[1]});
 		this.setState({followers: info[2]});
+		this.setState({posts: info[3]});
+		this.setState({profileURL: info[4]});
+		this.setState({profileURL: info[5]});
+		this.setState({navColor: info[6]});
+		this.setState({logged: info[7]})
 		this.setState({following: info[8]});
-		this.setState({dat:data});
+		this.setState({desc: info[9]});
+
+		//maintain none server variables
+		this.setState({dat:data})
 		if(this.state.mode === "standard"){
 			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		}else if(this.state.mode === "edit"){
@@ -426,7 +436,7 @@ var Content = React.createClass({
 		this.setState({custName: info[0]});
 		this.setState({followers: info[2]});
 		this.setState({profileURL: info[4]});
-		this.setState({logged: info[7]})
+		this.setState({logged: info[7]});
 		this.setState({following: info[8]});
 		this.setState({desc: info[9]});
 
@@ -438,7 +448,7 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "profilePage">
-				<Navbar cust = {this.state.logged} />
+				<Navbar navColor = {this.state.navColor} cust = {this.state.logged} />
 				{this.state.profileSection}
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>
@@ -449,7 +459,7 @@ var Content = React.createClass({
 
 //the root this calls the parent with some dummy data
 React.render(
-	<Content pollInterval={200} />,
+	<Content pollInterval={20} />,
 	document.getElementById("content")
 );
 
@@ -467,8 +477,13 @@ function refreshInfo(userName){
       url: "http://"+ip+":3000/users/getProfile?userName="+userName,
       type: 'GET',
       success: function(response){
-				info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
-        console.log('Success: ' + info);
+       info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
+       console.log("reponse");
+       console.log(response);
+       console.log("success");
+       console.log(info);
+			$('nav').css("background-color",info[5]);
+
       },
       error: function(response){
        console.log('Error: ' + response);

@@ -181,6 +181,30 @@ exports.updateProfile = function(userName, description, profilePic, fullName, pr
          }
        });
      }
-
    });
+}
+
+exports.createPost = function(){
+
+}
+
+exports.searchName = function(searchTerm, callback){
+  video45.view('user', 'search', function(err, body){
+    if(!err){
+      var items = [];
+
+      body.rows.forEach(function(doc) {
+        console.log('Found a similar user!');
+        if(doc.key.indexOf(searchTerm) > -1){   // if userName contains search term
+          items.push({userName: doc.key, profilePic: doc.value});
+        }
+      });
+      console.log('Items after going through view: ' + items);
+      callback(items);
+    }
+    else{
+      console.log('The error from the search view function: ' + err);
+    }
+
+  });
 }

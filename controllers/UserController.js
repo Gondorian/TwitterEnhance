@@ -34,7 +34,6 @@ exports.logout = function(req, callback){             //destroys the session. if
 
 exports.isLoggedIn = function(req){     //checks if logged in by seeing if the session.userName variable is set
   var session = req.session;
-  console.log(req.session.userName);
   if(session.userName){
     console.log('Logged in username is: ' + session.userName);
     return true;
@@ -92,50 +91,13 @@ exports.loadProfile = function(req, userName, callback){
     });
   }
   else{                                     //if request is for some other user's profile
-    Account.getUserProfile(userName, function(data){//check if user is in database
-exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
-  video45.view('user', 'userNames', function(err, body){
-    var found = "";
-    body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
-      if(doc.key == email){
-        found = 'Email already exists! ';
-      }
-      if (doc.value == userName) {
-        found = found + 'Username is taken!';
-      }
-    });
-    if(found == "")    //if email or username wasnt found, callback false
-      callback(false);
-    else {
-      callback(found);  //else return the err
-    }
-  });
-}
+    Account.getUserProfile(userName, function(data){
       console.log('Loading profile: ' + req.session.userName);
       var info = [data.fullName, data.userName, data.numberOfPosts, data.numberOfFollowers, data.profilePic, data.profileColour, 'false', req.session.userName, data.numberOfFollowing, data.profileDescription];
       callback(info);
     });
   }
-}//check if user is in database
-exports.checkIfUserExists = function(email, userName, callback){  //returns the userNames view (key = email, value = username)
-  video45.view('user', 'userNames', function(err, body){
-    var found = "";
-    body.rows.forEach(function(doc) {         //for each row in the view check for the email and username
-      if(doc.key == email){
-        found = 'Email already exists! ';
-      }
-      if (doc.value == userName) {
-        found = found + 'Username is taken!';
-      }
-    });
-    if(found == "")    //if email or username wasnt found, callback false
-      callback(false);
-    else {
-      callback(found);  //else return the err
-    }
-  });
 }
-
 
 exports.followUser = function(req, callback){
   var followUser = req.body.userName;
@@ -158,6 +120,19 @@ exports.updateProfile = function(req, callback){
   var profileColour = req.body.colour;
   Account.updateProfile(userName, description, profilePic, fullName, profileColour, function(message){
     callback(message);
+  });
+
+}
+
+exports.createPost = function(req, callback){
+  var postDescription = req.body.description;
+}
+
+exports.searchName = function(req, callback){
+  var name = req.query.name;  //search term taken from request
+  console.log('Search term in searchName: ' + name);
+  Account.searchName(name, function(data){
+    callback(data);
   });
 
 }

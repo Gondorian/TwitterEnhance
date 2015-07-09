@@ -14,7 +14,7 @@ var UserController = require('../controllers/UserController');
 // Get the user profile page and its related data
 router.get('/getProfile', function(req, res, next){
   console.log('Requesting /getProfile for: ' + req.query.userName);
-  console.log("session: "+req.session.userName);
+  console.log("sesssion: "+req.session.userName);
   if(UserController.isLoggedIn(req)){
     var userName = req.query.userName;
     if(userName == 'refSessionID'){ //if request is for currently logged in user
@@ -28,9 +28,29 @@ router.get('/getProfile', function(req, res, next){
     }
   }
   else{
-    res.send('You are not logged in!');
+    res.send('Not logged in!');
   }
 });
+
+router.get('/searchName', function(req, res, next){
+  console.log('Requesting /search for: ' + req.query.name);
+  if(UserController.isLoggedIn()){
+    UserController.searchName(req, function(data){
+      res.send(data);
+    });
+  }
+  else{
+    res.send('Not logged in!');
+  }
+});
+
+router.get('/test', function (req, res, next) {
+  console.log('Requesting /users/test');
+  UserController.searchName(req, function(data){
+    res.send(data);
+  });
+});
+
 
 
 //==============
@@ -48,7 +68,6 @@ router.post('/register', function(req, res, next){
     else
       res.send(success);
   });
-
 });
 
 // Request to login
@@ -99,8 +118,7 @@ router.post('/follow', function(req, res, next){
     //follow that use
     UserController.followUser(req, function(msg, numberOfFollowers){
 
-      res.send({message: msg, followers: numberOfFollowers});         //send back message, and updated number of followers
-
+      res.send({message: msg, followers: numberOfFollowers});        //send back message, and updated number of followers
     });
   }
   else{
@@ -122,12 +140,11 @@ router.post('/updateProfile', function(req, res, next){
 
 router.post('/createPost', function(req, res, next){
   if(UserController.isLoggedIn(req)){
-
+    UserController.createPost(req);
   }
   else{
     res.send('Not logged in!');
   }
-
 });
 
 module.exports = router;

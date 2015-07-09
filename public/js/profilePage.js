@@ -462,7 +462,7 @@ function refreshInfo(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://localhost:3000/users/as",
+      url: "http://localhost:3000/",
       type: 'GET',
       success: function(response){
         console.log(response);
