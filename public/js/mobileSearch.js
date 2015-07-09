@@ -197,7 +197,7 @@ React.render(
 //recieve the profile list from the server
 function getResults(name){
 	$.ajax({
-      url: "http://"+ip+":3000/users/search?name="+name,
+      url: "http://"+ip+":3000/users/searchName?name="+name,
       type: 'GET',
       success: function(response){
         console.log(response);

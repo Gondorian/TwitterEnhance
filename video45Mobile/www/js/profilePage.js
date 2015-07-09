@@ -6,7 +6,7 @@ var data = [
 	{url: "http://i.ytimg.com/vi/tHSA519vVvg/hqdefault.jpg", text: "Another comment was written here"},
 	{url: "http://thedailyfandom.com/wp-content/uploads/2015/01/Why_5d76e0_1095350.jpg", text: "Me and my dad at the park"}
 ];
-var info = ["Travis","Travis","0","5","profilePic","rgb(130,130,130)", "true", "travis", "2","This is the description of the current profile, I hope your eyes enjoy the view"];
+var info = ["","","","","design/balloons.png","", "true", "", "",""];
 
 var comments=[
 	{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
@@ -336,7 +336,7 @@ var Navbar = React.createClass({
 									<li><a href={"/users/"+info[7]+'/post'} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
-											<form action="http://192.168.0.146:3000/users/logout" method="POST">
+											<form action={"http://"+ip+":3000/users/logout"} method="POST">
 												<button className="btn-flat" type="submit" id="logout">logout</button>
 											</form>
 										</div>
@@ -345,20 +345,11 @@ var Navbar = React.createClass({
 							</li>
 						</ul>
 						<ul className="side-nav" id="mobile-demo">
-					     	<li>
-								<form>
-									<div className="input-field">
-										<input id="navSearch" type="search" placeholder="search" />
-										<label htmlFor="navsearch"><i className="mdi-action-search"></i></label>
-									</div>
-								</form>
+					     	<li id="logoutBut">
+								<a href="searchPage.html" className="btn-flat waves-light"> Search </a>
 							</li>
 							<li id="logoutBut">
-								<div className="input-field">
-									<form action="http://localhost:3000/users/logout" method="POST">
-										<button className="btn-flat" type="submit" id="logout">logout</button>
-									</form>
-								</div>
+								<a className="btn-flat" onClick=logout()>
 							</li>
 				     	</ul>
 					</div>
@@ -380,7 +371,7 @@ var Content = React.createClass({
 			var myImage = new Image(100,100);
 			myImage.src = document.getElementById('profilePicInput').value;
 		}
-		else document.getElementById('profilePicInput').value = "default";
+		else document.getElementById('profilePicInput').value = info[4];
 		if(document.getElementById('profileName').value !== "") this.setState({custName: document.getElementById('profileName').value})
 		else document.getElementById('profileName').value = this.state.custName;
 		this.setState({desc: document.getElementById('description').value},function(){
@@ -403,8 +394,7 @@ var Content = React.createClass({
 		this.setState({followers: info[2]});
 		this.setState({posts: info[3]});
 		this.setState({profileURL: info[4]});
-		this.setState({profileURL: info[5]});
-		this.setState({navColor: info[6]});
+		this.setState({navColor: info[5]});
 		this.setState({logged: info[7]})
 		this.setState({following: info[8]});
 		this.setState({desc: info[9]});
@@ -470,9 +460,7 @@ React.render(
 
 //refresh page information
 function refreshInfo(userName){
- console.log(info[7]);
- console.log(info[0]);
-      $.ajax({
+    $.ajax({
       url: "http://"+ip+":3000/users/getProfile?userName="+userName,
       type: 'GET',
       success: function(response){
@@ -502,7 +490,7 @@ function submitfollow(){
        success: function(response){
       	//ensure the user is logged in
       	if(response["message"] === "not logged in!"){
-	    	$(document).attr('location').href='/';
+	    	$(document).attr('location').href='index.html';
 	    }else{
 	    	//if they are logged in finish recieving data
       		console.log(info[2]);
@@ -518,6 +506,7 @@ function submitfollow(){
         alert('not successful ' + {response});
       }
     });
+    refreshInfo(info[0]);
     return false;
 };
 
@@ -533,7 +522,7 @@ var submitForm = function(myImage){
 			var mainColor = colorThief.getColor(myImage);
 			data = data+'&colour=rgb('+mainColor+')';
 		}catch(err){
-			console.log("could not load image");
+			console.log("could not load image: "+ err);
 			data = data+'&colour='+info[5];
 		}
 		console.log(data);
@@ -558,13 +547,29 @@ var submitForm = function(myImage){
 	      }
 	    });
 	    $('nav').css("background-color",'rgb('+mainColor+')');
+	    refreshInfo(info[0]);
 	    return false;
-	},300);
+	},1000);
+};
+
+var logout = function(){
+	console.log("exiting");
+	$.ajax({
+      url: "http://"+ip+":3000/users/logout",
+      type: 'POST',
+      success: function(response){
+	    $(document).attr('location').href='index.html';
+      },
+      error: function(response){
+		$(document).attr('location').href='index.html'
+      }
+    });
+    return false;
 };
 
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
-			$.ajax({
+	$.ajax({
       url: "http://"+ip+":3000/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),

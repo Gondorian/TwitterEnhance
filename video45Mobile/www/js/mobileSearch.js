@@ -172,6 +172,7 @@ var Content = React.createClass({
 	loadProfile: function(){
 		$(".invis").addClass('shown');
 		$(".invis").removeClass('invis');
+		this.setState({custName: info[0]});
 		if(this.state.mode=="name"){
 			//display the results for names
 			this.setState({profile:shownName});
@@ -186,7 +187,7 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "content">
-				<Navbar />
+				<Navbar cust={this.state.custName} />
 				<Selector tch={this.tagClickHandeler} nch={this.nameClickHandeler}/>
 				<ProfileList profile={this.state.profile}/>
 			</div>

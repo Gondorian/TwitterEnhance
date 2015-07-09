@@ -38,12 +38,4 @@ router.get('/profilepage', function (req, res, next) {
   });
 });
 
-router.get('/test', function (req, res, next) {
-  res.render('mobileSearch');
-  //console.log(req.session.userName);
-  //res.send('The test has completed!');
-});
-
-
-
 module.exports = router;
