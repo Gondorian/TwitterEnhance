@@ -39,8 +39,9 @@ router.get('/profilepage', function (req, res, next) {
 });
 
 router.get('/test', function (req, res, next) {
-  console.log(req.session.userName);
-  res.send('The test has completed!');
+  res.render('mobileSearch');
+  //console.log(req.session.userName);
+  //res.send('The test has completed!');
 });
 
 

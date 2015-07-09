@@ -1,4 +1,4 @@
-var ip = "192.168.0.146";
+var ip = "192.168.2.19";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},
@@ -355,9 +355,8 @@ var Navbar = React.createClass({
 							</li>
 							<li id="logoutBut">
 								<div className="input-field">
-									<form action="http://192.168.0.146:3000/users/logout" method="POST">
-										<button className="btn waves-effect waves-light" type="submit">logout
-										</button>
+									<form action="http://localhost:3000/users/logout" method="POST">
+										<button className="btn-flat" type="submit" id="logout">logout</button>
 									</form>
 								</div>
 							</li>
@@ -474,7 +473,7 @@ function refreshInfo(userName){
  console.log(info[7]);
  console.log(info[0]);
       $.ajax({
-      url: "http://192.168.2.19:3000/users/getProfile?userName="+userName,
+      url: "http://"+ip+":3000/users/getProfile?userName="+userName,
       type: 'GET',
       success: function(response){
        info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
@@ -482,6 +481,7 @@ function refreshInfo(userName){
        console.log(response);
        console.log("success");
        console.log(info);
+       $('nav').css("background-color",info[5]);
       },
       error: function(response){
        console.log('Error: ' + response);
@@ -496,7 +496,7 @@ function submitfollow(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://192.168.2.19:3000/users/follow",
+      url: "http://"+ip+":3000/users/follow",
       type: 'POST',
       data: {userName:info[1]},
        success: function(response){
@@ -538,7 +538,7 @@ var submitForm = function(myImage){
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://192.168.2.19:3000/users/updateProfile",
+	      url: "http://"+ip+":3000/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -565,7 +565,7 @@ var submitForm = function(myImage){
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
 			$.ajax({
-      url: "http://192.168.2.19:3000/users/login",
+      url: "http://"+ip+":3000/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){

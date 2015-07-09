@@ -25,7 +25,8 @@ body {
 #logout {
   font-size: 1.2rem;
   color: #26a69a;
-  height: 40px; }
+  height: 40px;
+  width: 100%; }
 
 #logout:hover {
   background-color: #EEE; }
