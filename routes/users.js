@@ -39,7 +39,7 @@ router.get('/getProfile', function(req, res, next){
 
 router.get('/searchName', function(req, res, next){
   console.log('Requesting /search for: ' + req.query.name);
-  if(UserController.isLoggedIn()){
+  if(UserController.isLoggedIn(req)){
     UserController.searchName(req, function(data){
       res.send(data);
     });
@@ -145,7 +145,9 @@ router.post('/updateProfile', function(req, res, next){
 
 router.post('/createPost', function(req, res, next){
   if(UserController.isLoggedIn(req)){
-    UserController.createPost(req);
+    UserController.createPost(req, function(){
+
+    });
   }
   else{
     res.send('Not logged in!');
