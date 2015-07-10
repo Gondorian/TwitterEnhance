@@ -6,11 +6,7 @@ var account = require('../models/account');
 var UserController = require('../controllers/UserController');
 
 
-router.get('/test1', function (req, res, next) {
-  res.render('mobileSearch');
-  //console.log(req.session.userName);
-  //res.send('The test has completed!');
-});
+
 
 //==============
 // GET REQUESTS
@@ -49,11 +45,19 @@ router.get('/searchName', function(req, res, next){
   }
 });
 
+
+
 router.get('/test', function (req, res, next) {
-  console.log('Requesting /users/test');
-  UserController.searchName(req, function(data){
-    res.send(data);
-  });
+  if(req.session.userName){
+    res.send('Logged in!');
+  }
+  else{
+    res.send('Not logged in!')
+  }
+});
+
+router.get('/test1', function (req, res, next) {
+  
 });
 
 

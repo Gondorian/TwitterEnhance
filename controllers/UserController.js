@@ -134,5 +134,4 @@ exports.searchName = function(req, callback){
   Account.searchName(name, function(data){
     callback(data);
   });
-
 }
