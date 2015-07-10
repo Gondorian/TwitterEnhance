@@ -1,4 +1,4 @@
-var ip = "192.168.2.19";
+var ip = "192.168.0.146";
 var info = ["","","","","design/balloons.png","", "true", "", "",""];
 var mode = 'name';//default is name, used for tab selection
 //all profiles taken from the server
@@ -277,7 +277,7 @@ $(window).scroll(function(){
 	//the value the screen has moved in pixels from the top
 	var wScroll = $(this).scrollTop();
 	//more is used to avoid errors with scrolling
-	var more = true; 
+	var more = true;
 	if(mode == "name"){
 		//fill shownName
 		while(more){

@@ -77,7 +77,7 @@ exports.login = function(req, callback){        //get the user's session and set
         });
       }
       else{               //else callback with false
-        callback(false, userName);
+        callback(false);
       }
   });
 }

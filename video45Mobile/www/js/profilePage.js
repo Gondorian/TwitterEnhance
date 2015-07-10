@@ -1,4 +1,4 @@
-var ip = "192.168.2.19";
+var ip = "192.168.0.146";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},

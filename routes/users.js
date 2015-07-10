@@ -68,10 +68,11 @@ router.post('/register', function(req, res, next){
   UserController.registerUser(req, function(success){
     if(success == true){
       console.log('Succesfully registered. Redirecting to profile.');
-      res.redirect('/');
+      res.send('Success!');
     }
-    else
+    else{
       res.send(success);
+    }
   });
 });
 
@@ -90,7 +91,7 @@ router.post('/login', function(req, res, next){
 });
 
 router.post('/m/login', function(req, res, next){
-  UserController.login(req, function(succcess){
+  UserController.login(req, function(succcess, userName){
     if(succcess){       //if credentials were correct
       console.log('Logged in succesfully on mobile!');
       res.send('Success!');
