@@ -92,6 +92,10 @@ var Search = React.createClass({
 
 //this will edit the content of the navbar
 var Navbar = React.createClass({
+	profileClick: function(){
+		sessionStorage.viewedUser = "refSessionID";
+		$(document).attr('location').href='profilePage.html'
+	},
 	render: function(){
 		return(
 			<div  className="navbar-fixed">
@@ -123,8 +127,9 @@ var Navbar = React.createClass({
 							</li>
 						</ul>
 						<ul className="side-nav" id="mobile-demo">
+							<li><a onClick={this.profileClick} >Profile Page</a></li>
 					     	<li id="logoutBut">
-								<a href="searchPage.html" className="btn-flat waves-light"> Search </a>
+								<a onClick={this.profileClick} className="btn-flat waves-light"> Search </a>
 							</li>
 							<li id="logoutBut">
 								<a className="btn-flat" onClick={logout}> logout </a>
@@ -185,7 +190,7 @@ var Content = React.createClass({
 
 //the root this calls the parent with some dummy data
 React.render(
-	<Content pollInterval={200} profile={profile}/>,
+	<Content pollInterval={20} profile={profile}/>,
 	document.getElementById("content")
 );
 
@@ -214,7 +219,7 @@ function refreshInfo(userName){
 //recieve the profile list from the server
 function getResults(name){
 	$.ajax({
-      url: "http://"+ip+":3000/users/test?name="+name,
+      url: "http://"+ip+":3000/users/searchName?name="+name,
       type: 'GET',
       success: function(response){
       	shownName=[];
@@ -249,9 +254,11 @@ var logout = function(){
       url: "http://"+ip+":3000/users/logout",
       type: 'POST',
       success: function(response){
+      	localStorage.Logged = "";
 	    $(document).attr('location').href='index.html';
       },
       error: function(response){
+      	localStorage.Logged = "";
 		$(document).attr('location').href='index.html'
       }
     });
