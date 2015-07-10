@@ -75,7 +75,7 @@ var Videos = React.createClass({
 	render: function(){
 		return(
 			<div className="row">
-				<div className="card col s6 offset-s5">
+				<div className="card col s12 centerd">
 					<div className="card-content ">
 						<img className="posterImg" src="http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif" />
 						<p className="posterName">Posted by someone</p>
@@ -274,7 +274,7 @@ var ProfileInfo = React.createClass({
 	render: function(){
 		return(
 			<div id="profileRow" className="row">
-				<div className = "profileInfo">
+				<div className = "profileInfo smallScreen">
 					<img id="profilePic" className ="profilePic" src={this.props.profileURL} /><br />
 					<p className="profileName"> {this.props.cust} </p>
 					<p className="description"> {this.props.desc} </p>
@@ -297,7 +297,7 @@ var EditProfileInfo = React.createClass({
 	render: function(){
 		return(
 			<div id="profileRow" className="row">
-				<div className = "profileInfo">
+				<div className = "profileInfo smallScreen">
 					<form id="profileForm">
 						<input id="profilePicInput" name="picURL" type="text" placeholder="Profile Picture URL" />
 						<img id="profilePic" className ="profilePic editable" src={this.props.profileURL} /><br />
@@ -320,6 +320,10 @@ var EditProfileInfo = React.createClass({
 
 //this will edit the content of the navbar
 var Navbar = React.createClass({
+	profileClick: function(){
+		sessionStorage.viewedUser = "refSessionID";
+		$(document).attr('location').href='profilePage.html'
+	},
 	render: function(){
 		return(
 			<div  className="navbar-fixed">
@@ -351,6 +355,7 @@ var Navbar = React.createClass({
 							</li>
 						</ul>
 						<ul className="side-nav" id="mobile-demo">
+							<li><a onClick={this.profileClick} >Profile Page</a></li>
 					     	<li id="logoutBut">
 								<a href="searchPage.html" className="btn-flat waves-light"> Search </a>
 							</li>
@@ -412,7 +417,6 @@ var Content = React.createClass({
 		}else if(this.state.mode === "edit"){
 			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust={this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		}
-		handleResize();
 	},//getInitialState will run when the component first loads and will initialize part of its state
 	getInitialState: function() {
 		cust = "ral";
@@ -468,16 +472,20 @@ function refreshInfo(userName){
        console.log("success");
        console.log(info);
        console.log("you are this pages owner: " + info[6]);
+       if(info[6]){
+       	console.log("account info saved");
+       	localStorage.logged = info[0];
+       	console.log(" localStorage.logged: " + localStorage.logged);
+       }
 		//the root this calls the parent with some dummy data
 		React.render(
 			<Content pollInterval={200} />,
 			document.getElementById("content")
 		);
-
 		setTimeout(function(){
+
 			$(".button-collapse").sideNav();
 			$('nav').css("background-color",info[5]);
-
 		},50);
 
       },
@@ -568,9 +576,11 @@ var logout = function(){
       url: "http://"+ip+":3000/users/logout",
       type: 'POST',
       success: function(response){
+      	localStorage.Logged = "";
 	    $(document).attr('location').href='index.html';
       },
       error: function(response){
+      	localStorage.Logged = "";
 		$(document).attr('location').href='index.html'
       }
     });
@@ -595,27 +605,6 @@ $('#modalForm').submit(function(){
     });
     return false;
 });
-
-//allows for multi displays by monitoring screen size
-var handleResize = function(){
-	var windWidth = parseInt($("body").css("width"));
-	//reorganize the page if the screen size is small
-	if(windWidth < 975){
-		//This is for small screen organization
-		$(".profileInfo").addClass("smallScreen");
-		//recenter the panel if the screen is small
-		$(".card").removeClass("s6 offset-s5");
-		$(".card").addClass("s12");
-		$(".card").addClass("centerd");
-	}else{
-		//return to a lare screen organization
-		$(".profileInfo").removeClass("smallScreen");
-		$(".card").addClass("s6 offset-s5");
-		$(".card").removeClass("s12");
-		$(".card").removeClass("centerd");
-	}
-}
-
 
  $('.dropdown-button').dropdown({
      inDuration: 300,
@@ -646,5 +635,4 @@ $(document).ready(function(){
 		console.log("standard user");
 		refreshInfo('refSessionID');
 	}
-	handleResize();
 })

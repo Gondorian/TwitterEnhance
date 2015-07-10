@@ -128,8 +128,8 @@ React.render(
 
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
-      var loginName = $('#logEmail').val();
-      $.ajax({
+    var loginName = $('#logEmail').val();
+    $.ajax({
       url: "http://"+ ip +":3000/users/m/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
@@ -141,6 +141,7 @@ $('#loginForm').submit(function(){
           $('#logEmail').css("border-color","red");
         }else{
           //local storage is used to maintain the userlogin gained from the server
+          localStorage.password = $('#password').val()
           sessionStorage.viewedUser = "refSessionID";
           $(document).attr('location').href='profilePage.html'
         }
@@ -248,8 +249,28 @@ var resize = function(){
 $(document).ready(function(){
   resize();
   imageToggle();
+  data = [
+    {'email':localStorage.logged, 'password':localStorage.password}
+  ];
+  console.log(localStorage.logged);
+  console.log(localStorage.password);
+  $.ajax({
+    url: "http://"+ip+":3000/users/test",
+      type: 'GET',
+      success: function(response){
+        console.log(response);
+        if(response == 'Logged in!'){
+          console.log('redirecting')
+          sessionStorage.viewedUser = "refSessionID";
+          $(document).attr('location').href='profilePage.html';
+        }
+      },
+      error: function(response){
+        alert('not successful ' + {response});
+      }
+    });
+    return false;
 });
-
 
 $(window).resize(function(){
   resize();
