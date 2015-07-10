@@ -320,10 +320,6 @@ var EditProfileInfo = React.createClass({
 
 //this will edit the content of the navbar
 var Navbar = React.createClass({
-	componentDidMount: function(){
- 		$('nav').css("background-color",this.props.navColor);
-
-	},
 	render: function(){
 		return(
 			<div  className="navbar-fixed">
