@@ -514,7 +514,9 @@ function submitfollow(){
       		console.log(info[2]);
         	if(response["message"].length < 40){
           		Materialize.toast(response.message,10000);
-          		info[2] = response["followers"];
+          		if(response["message"] == "Added to following!"){
+          			info[2] = response["followers"];
+          		}
         	}
         	console.log(info[2])
         }

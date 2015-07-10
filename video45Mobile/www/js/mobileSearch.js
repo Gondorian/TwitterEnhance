@@ -128,9 +128,6 @@ var Navbar = React.createClass({
 						</ul>
 						<ul className="side-nav" id="mobile-demo">
 							<li><a onClick={this.profileClick} >Profile Page</a></li>
-					     	<li id="logoutBut">
-								<a onClick={this.profileClick} className="btn-flat waves-light"> Search </a>
-							</li>
 							<li id="logoutBut">
 								<a className="btn-flat" onClick={logout}> logout </a>
 							</li>
