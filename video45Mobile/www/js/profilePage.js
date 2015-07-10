@@ -6,7 +6,7 @@ var data = [
 	{url: "http://i.ytimg.com/vi/tHSA519vVvg/hqdefault.jpg", text: "Another comment was written here"},
 	{url: "http://thedailyfandom.com/wp-content/uploads/2015/01/Why_5d76e0_1095350.jpg", text: "Me and my dad at the park"}
 ];
-var info = ["","","","","design/balloons.png","", "true", "", "",""];
+var info = ["","","","","design/balloons.png","", "false", "", "",""];
 
 var comments=[
 	{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
@@ -256,10 +256,16 @@ var EditModal = React.createClass({
 //profileInfo is the information contained in the left pushpin, all
 // modifications can be done here
 var ProfileInfo = React.createClass({
-	componentDidMount: function(){
+	componentWillMount: function(){
+		console.log("mine is: "+this.props.mine);
+		if(this.props.mine === 'true'){
+			return({button: <Edit buttonClick={this.props.buttonClick}/>});
+		}else{
+			return({button: <Follow followClick={this.props.followClick} />});
+		};
 	},
 	getInitialState: function(){
-		if(info[6] === 'true'){
+		if(this.props.mine === 'true'){
 			return({button: <Edit buttonClick={this.props.buttonClick}/>});
 		}else{
 			return({button: <Follow followClick={this.props.followClick} />});
@@ -395,14 +401,14 @@ var Content = React.createClass({
 		this.setState({posts: info[3]});
 		this.setState({profileURL: info[4]});
 		this.setState({navColor: info[5]});
+		this.setState({mine: info[6]});
 		this.setState({logged: info[7]})
 		this.setState({following: info[8]});
 		this.setState({desc: info[9]});
-
 		//maintain none server variables
 		this.setState({dat:data})
 		if(this.state.mode === "standard"){
-			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
+			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} mine={this.state.mine}/>});
 		}else if(this.state.mode === "edit"){
 			this.setState({profileSection: <EditProfileInfo buttonClick={this.doneEdit} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust={this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		}
@@ -414,7 +420,7 @@ var Content = React.createClass({
 		if(info[4]==="default"){
 			info[4] = "../design/no-profile-img.gif";
 		}
-    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]}/>})
+    	return ({profileSection:<ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]} mine={info[6]}/>})
   	},
   	//componentDidMount will run at every rerender and will read info from server
 	componentDidMount: function(){
@@ -425,6 +431,7 @@ var Content = React.createClass({
 		this.setState({custName: info[0]});
 		this.setState({followers: info[2]});
 		this.setState({profileURL: info[4]});
+		this.setState({mine: info[6]});
 		this.setState({logged: info[7]});
 		this.setState({following: info[8]});
 		this.setState({desc: info[9]});
@@ -446,15 +453,6 @@ var Content = React.createClass({
 });
 
 
-//the root this calls the parent with some dummy data
-React.render(
-	<Content pollInterval={20} />,
-	document.getElementById("content")
-);
-
-
-
-
 
 
 
@@ -469,7 +467,13 @@ function refreshInfo(userName){
        console.log(response);
        console.log("success");
        console.log(info);
-       $('nav').css("background-color",info[5]);
+       console.log("you are this pages owner: " + info[6]);
+		//the root this calls the parent with some dummy data
+		React.render(
+			<Content pollInterval={200} />,
+			document.getElementById("content")
+		);
+
       },
       error: function(response){
        console.log('Error: ' + response);

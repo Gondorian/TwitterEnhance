@@ -37,6 +37,10 @@ body {
   #profileBut i {
     line-height: 36px; }
 
+#btnSearch{
+  margin-top:17px;
+}
+
 .tabs {
   cursor: pointer; }
 
@@ -48,42 +52,33 @@ body {
   margin: 10px auto 0px;
   height: 100px;
   max-width: 600px;
-  min-width: 100px;
-  padding-left: 110px;
-  padding-right: 200px;
-  padding-top: 10px;
   opacity: 0;
-  transform: translate(20px);
   transition: all 0.3s ease-in-out; }
   .profilePanel.shown {
-    opacity: 1; }
+    opacity: 1; 
+  }
 
 .profileImg {
-  float: left;
-  margin-left: -110px;
   margin-top: -10px;
   border-radius: 2px;
   height: 100px;
-  width: 100px; }
+  }
 
 .profileName {
   display: inline;
   text-decoration: none;
-  font-size: 30px;
   color: black; }
 
 .icon {
   margin-top: 5px;
   padding: 12px 10px 7px 5px;
-  height: 60px;
-  float: right;
-  margin-right: -150px;
+  height: 30px;
   color: gray;
   border-radius: 20px;
   background-color: white; }
 
 .btn i {
-  font-size: 3rem;
+  font-size: 2rem;
   color: blue; }
 
 /*# sourceMappingURL=mobileSearch.css.map */

@@ -142,7 +142,7 @@ $('#loginForm').submit(function(){
         }
       },
       error: function(response){
-        //alert('not successful ' + {response});
+        alert('not successful ' + {response});
       }
     });
     return false;s
@@ -156,6 +156,7 @@ $('#registration').submit(function(){
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
+        console.log(response);
         Materialize.toast(response,10000);
         if(response.length < 100 && response.length > 30){//if both email and usrename fail
           $('#email').css("border-color","red");
@@ -166,7 +167,8 @@ $('#registration').submit(function(){
         }else if(response.substring(0,4) === "User"){//if only user is taken
           $('#email').css("border-color","#9E9E9E");
           $('#Username').css("border-color","red");
-        }else{
+        }else if(response == "Success!"){
+          console.log("changing location");
           $(document).attr('location').href='/'; //if everything is fine
         }
       },
