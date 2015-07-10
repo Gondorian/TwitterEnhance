@@ -32,10 +32,10 @@ var shownTags = [
 var ProfileInfo = React.createClass({
 	render: function(){
 		return(
-			<div className="profilePanel invis valign-wrapper">
-				<img className="profileImg valign" src={this.props.profileURL} />
-				<a className="icon waves-effect waves-light btn"><i className="large mdi-social-person-add"></i></a>
-				<a className="profileName" href={"http://"+ip+"/users/"}>{this.props.profileName}</a>
+			<div className="profilePanel invis row">
+				<img className="profileImg col s4" src={this.props.profileURL} />
+				<a className="flow-text profileName col s6" onClick={this.nameClick}>{this.props.profileName}</a>
+				<a className="icon waves-effect waves-light btn col s2"><i className="large mdi-social-person-add"></i></a>
 			</div>
 		);
 	}
@@ -244,7 +244,6 @@ var offset = 7;
 $(document).ready(function(){
 	console.log("document is ready");
 	refreshInfo("refSessionID");
-	getResults('a');
 
 	$('ul.tabs').tabs();
 	$(".button-collapse").sideNav();

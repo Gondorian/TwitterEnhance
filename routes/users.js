@@ -68,7 +68,7 @@ router.post('/register', function(req, res, next){
   UserController.registerUser(req, function(success){
     if(success == true){
       console.log('Succesfully registered. Redirecting to profile.');
-      res.redirect('/');
+      res.send('Success!');
     }
     else
       res.send(success);

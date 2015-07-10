@@ -25,10 +25,10 @@ var ProfileInfo = React.createClass({
 	},
 	render: function(){
 		return(
-			<div className="profilePanel invis valign-wrapper">
-				<img className="profileImg valign" src={this.props.profileURL} />
-				<a className="icon waves-effect waves-light btn"><i className="large mdi-social-person-add"></i></a>
-				<a className="profileName" onClick={this.nameClick}>{this.props.profileName}</a>
+			<div className="profilePanel invis row">
+				<img className="profileImg col s4" src={this.props.profileURL} />
+				<a className="flow-text profileName col s6" onClick={this.nameClick}>{this.props.profileName}</a>
+				<a className="icon waves-effect waves-light btn col s2"><i className="large mdi-social-person-add"></i></a>
 			</div>
 		);
 	}
@@ -74,14 +74,16 @@ var Search = React.createClass({
 	},
 	render: function(){
 		return(
-			<div className="search row">
+			<div id="searchArea" className="search row">
 				<div className="col s8">
-					<form>
-						<input type="text" id="searchField" placeholder="Search Here"/><br/>
-					</form>
+			      <form>
+			        <div className="input-field">
+			          <input id="searchField" type="search" required />
+			        </div>
+			      </form>
 				</div>
 				<div className="col s4">
-					<a className="btn waves-light" onClick={this.searchClick}> Search </a>
+					<a id="btnSearch" className="btn-flat waves-light" onClick={this.searchClick}> Search </a>
 				</div>
 			</div>
 		);
@@ -197,8 +199,9 @@ function refreshInfo(userName){
       type: 'GET',
       success: function(response){
        info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
+       console.log("you are this pages owner: " + info[6]);
        $('nav').css("background-color",info[5]);
-       $('.search').css("background-color"),info[5];
+       $("#searchArea").css("background-color",info[5]);
       },
       error: function(response){
        console.log('Error: ' + response);
@@ -263,7 +266,6 @@ var offset = 7;
 $(document).ready(function(){
 	console.log("document is ready");
 	refreshInfo("refSessionID");
-	getResults('a');
 
 	$('ul.tabs').tabs();
 	$(".button-collapse").sideNav();
