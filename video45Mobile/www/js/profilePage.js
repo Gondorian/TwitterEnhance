@@ -418,7 +418,7 @@ var Content = React.createClass({
 		cust = "ral";
 		//change the profile picture to match the database
 		if(info[4]==="default"){
-			info[4] = "../design/no-profile-img.gif";
+			info[4] = "design/no-profile-img.gif";
 		}
     	return ({profileSection:<ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={info[4]} cust={info[0]} posts={info[3]} followers={info[2]} following={info[8]} desc={info[9]} mine={info[6]}/>})
   	},
@@ -473,6 +473,12 @@ function refreshInfo(userName){
 			<Content pollInterval={200} />,
 			document.getElementById("content")
 		);
+
+		setTimeout(function(){
+			$(".button-collapse").sideNav();
+			$('nav').css("background-color",info[5]);
+
+		},50);
 
       },
       error: function(response){
@@ -629,7 +635,7 @@ $(window).resize(function(){
 
 //checks for document loading
 $(document).ready(function(){
-	$(".button-collapse").sideNav();
+
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
 	$('nav').css("background-color",info[5]);
