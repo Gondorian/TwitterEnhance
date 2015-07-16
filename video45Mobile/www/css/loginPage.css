@@ -79,6 +79,17 @@ body {
     .textField.largeScreen h2, .textField.largeScreen h3 {
       display: none; }
 
+.options{
+  position: fixed;
+  bottom: 20px;
+}
+
+#regButton{
+  padding-left: 40px;
+  color: black;
+}
+
+
 #logButton {
   float: right;
   margin-top: 3px;
@@ -110,12 +121,10 @@ body {
   background-color: #caa100; }
 
 .form {
-  width: 320px;
-  margin-right: 50px;
-  float: right;
-  background-color: white;
+  margin-top: 10px;
+  background-color: rgba(255,255,255,0.85);
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 1px;
   margin-bottom: 20px;
   box-shadow: 2px 2px 15px #000; }
   .form h3 {

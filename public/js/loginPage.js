@@ -145,7 +145,7 @@ $('#loginForm').submit(function(){
         alert('not successful ' + {response});
       }
     });
-    return false;s
+    return false;
 });
 
 //below is the ajax post for the register box
@@ -182,8 +182,8 @@ $('#registration').submit(function(){
 
 //list of urls that will cycle through on front page
 var backs = [
-  "url(http://www.best-free-wallpaper.org/wp-content/uploads/2014/09/super-high-resolution-nature-wallpaper.jpg)",
-  "url(http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg)"
+  "url(http://localhost:3000/design/super-high-resolution-nature-wallpaper.jpg)",
+  "url(http://localhost:3000/design/high-resolution-wallpapers-25.jpg)"
 ];
 
 var toggleHelp = -1;

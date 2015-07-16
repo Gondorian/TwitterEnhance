@@ -315,7 +315,7 @@ var Navbar = React.createClass({
 	render: function(){
 		return(
 			<div  className="navbar-fixed">
-				<nav>
+				<nav style={{"background-color": this.props.color}}>
 					<div className = "nav-wrapper">
 						<a href='#' className="brand-logo"> Hello, {this.props.cust} </a>
 						<a href="#" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
@@ -423,10 +423,10 @@ var Content = React.createClass({
 		this.setState({custName: info[0]});
 		this.setState({followers: info[2]});
 		this.setState({profileURL: info[4]});
-		this.setState({logged: info[7]})
+		this.setState({color: info[5]});
+		this.setState({logged: info[7]});
 		this.setState({following: info[8]});
 		this.setState({desc: info[9]});
-
 		//maintain none server variables
 		this.setState({dat:data}); //this is the post data, it is currently just a stand-in
 		this.setState({mode: "standard"}); //this is the aside type(standard is normal, edit is for edit mode)
@@ -435,9 +435,20 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "profilePage">
-				<Navbar cust = {this.state.logged} />
+				<Navbar cust = {this.state.logged} color={this.state.color}/>
 				{this.state.profileSection}
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
+				<div className="fixed-action-btn" id="buttonOptions">
+				    <a className="btn-floating btn-large red">
+				      <i className="large material-icons">navigation</i>
+				    </a>
+				    <ul>
+				      <li><a className="btn-floating red" onClick={this.editMode}><i className="material-icons">settings</i></a></li>
+				      <li><a className="btn-floating yellow darken-1"><i className="material-icons">videocam</i></a></li>
+				      <li><a href={"http://localhost:3000/"+info[7]}className="btn-floating green"><i className="material-icons">person_pin</i></a></li>
+				      <li><a href="#" className="btn-floating blue">Top</a></li>
+				    </ul>
+				</div>
 			</div>
 		);
 	}
@@ -452,8 +463,9 @@ React.render(
 
 
 
-
-
+/********************
+*     AJAX CALLS    *
+********************/
 
 
 //refresh page information
@@ -539,7 +551,6 @@ var submitForm = function(myImage){
 	        //alert('not successful ' + {response});
 	      }
 	    });
-	    $('nav').css("background-color",'rgb('+mainColor+')');
 	    return false;
 	},300);
 };
@@ -562,6 +573,10 @@ $('#modalForm').submit(function(){
     });
     return false;
 });
+
+/********************
+*     Javascript    *
+********************/
 
 //allows for multi displays by monitoring screen size
 var handleResize = function(){
@@ -605,7 +620,6 @@ $(document).ready(function(){
 	$(".button-collapse").sideNav();
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
-	$('nav').css("background-color",info[5]);
     console.log("cookie: " + document.cookie);
 	handleResize();
 })
