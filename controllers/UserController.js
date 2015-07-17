@@ -145,6 +145,7 @@ exports.elasticSearch = function(searchTerm, callback){
   client.search({
     index: 'video45',
     body: {
+      fields: ['userName', 'profilePic'],
       query: {
         wildcard: {
           userName: '*'+searchTerm+'*'

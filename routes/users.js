@@ -34,15 +34,9 @@ router.get('/getProfile', function(req, res, next){
 });
 
 router.get('/searchName', function(req, res, next){
-  console.log('Requesting /search for: ' + req.query.name);
-  if(UserController.isLoggedIn(req)){
-    UserController.searchName(req, function(data){
-      res.send(data);
-    });
-  }
-  else{
-    res.send('Not logged in!');
-  }
+  UserController.elasticSearch(req.query.search, function(response){
+    res.send(response);
+  });
 });
 
 
