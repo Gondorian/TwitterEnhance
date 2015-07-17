@@ -327,7 +327,7 @@ var Navbar = React.createClass({
 	render: function(){
 		return(
 			<div  className="navbar-fixed">
-				<nav>
+				<nav style={{"background-color": this.props.color}}>
 					<div className = "nav-wrapper">
 						<a href='#' className="brand-logo"> Hello, {this.props.cust} </a>
 						<a href="#" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
@@ -435,6 +435,7 @@ var Content = React.createClass({
 		this.setState({custName: info[0]});
 		this.setState({followers: info[2]});
 		this.setState({profileURL: info[4]});
+		this.setState({navColor: info[5]});
 		this.setState({mine: info[6]});
 		this.setState({logged: info[7]});
 		this.setState({following: info[8]});
@@ -448,7 +449,7 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "profilePage">
-				<Navbar navColor = {this.state.navColor} cust = {this.state.logged} />
+				<Navbar color = {this.state.navColor} cust = {this.state.logged} />
 				{this.state.profileSection}
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 			</div>

@@ -76,11 +76,11 @@ var Search = React.createClass({
 		return(
 			<div id="searchArea" className="search row">
 				<div className="col s8">
-			      <form>
-			        <div className="input-field">
-			          <input id="searchField" type="search" required />
-			        </div>
-			      </form>
+					<form id="contactForm">
+			        	<div className="input-field">
+			          		<input id="searchField" type="search" required />
+			        	</div>
+			        </form>
 				</div>
 				<div className="col s4">
 					<a id="btnSearch" className="btn-flat waves-light" onClick={this.searchClick}> Search </a>
@@ -195,6 +195,16 @@ React.render(
 /************************
 *   Requests To Server  *
 ************************/
+
+//allows the search button to be clicked on the soft keyboard
+$('#contactForm').submit(function () {
+	var param = document.getElementById("searchField").value;
+	console.log(param);
+	getResults(param);
+	console.log("reached submit");
+	return false;
+});
+
 function refreshInfo(userName){
     $.ajax({
       url: "http://"+ip+":3000/users/getProfile?userName="+userName,
@@ -265,6 +275,11 @@ var logout = function(){
 /************************
 *    Javascript Code    *
 ************************/
+
+
+
+//the offset is the number of searched items that must be loaded to fill the screen
+//and allow for scrolling
 var offset = 7;
 
 $(document).ready(function(){
@@ -275,6 +290,8 @@ $(document).ready(function(){
 	$(".button-collapse").sideNav();
 });
 
+//these two values indicate the number of shown items that have appeared so far
+//this allows for dynamic loading of the objects.
 var numNameShown = 0;
 var numTagShown = 0;
 

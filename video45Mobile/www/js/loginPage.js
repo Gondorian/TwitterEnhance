@@ -21,7 +21,7 @@ var Navbar = React.createClass({
 var Textbox =React.createClass({
   render: function(){
     return(
-      <div className="text col s6">
+      <div className="text col s12">
         <div className="textField">
           <h2>Welcome to <h1>video45</h1></h2><br />
           <h3> Bring Videos to life in 45 seconds </h3>
@@ -35,27 +35,29 @@ var Textbox =React.createClass({
 var LoginBox =React.createClass({
   render: function(){
     return(
-      <div className="loginBox col s6">
-        <form id="loginForm" className ="form">
-          <div className="row">
-            <div className="input-field col s12">
-              <input type="text" name="email" id="logEmail" className="validate"/><br/>
-              <label htmlFor="logEmail"> Email </label>
+      <div className="row">
+        <div className="loginBox col s12">
+          <form id="loginForm" className ="form">
+            <div className="row">
+              <div className="input-field col s12">
+                <input type="text" name="email" id="logEmail" className="validate"/><br/>
+                <label htmlFor="logEmail"> Email </label>
+              </div>
             </div>
-          </div>
-          <div className="row valign-wrapper">
-            <div className="input-field col s8">
-              <input type="password" id="password" name="password" className="validate"/>
-              <label htmlFor="password">Password</label>
+            <div className="row valign-wrapper">
+              <div className="input-field col s8">
+                <input type="password" id="password" name="password" className="validate"/>
+                <label htmlFor="password">Password</label>
+              </div>
+              <a className="btn waves-effect waves-light" onClick={login}>LogIn</a>
             </div>
-            <button className="valign btn waves-effect waves-light" type="submit" name="action" id="logButton"> log in</button>
-          </div>
-          <div className="row">
-            <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
-            <label htmlFor="remember" id="remLabel">Remember me</label>
-            <a href="#">Forgot Password? </a>
-          </div>
-        </form>
+            <div className="row">
+              <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
+              <label htmlFor="remember" id="remLabel">Remember me</label>
+              <a href="#">Forgot Password? </a>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
@@ -94,7 +96,7 @@ var RegisterBox = React.createClass({
           </div>
           <div className="row">
             <div className="input-field col s12">
-              <button className="btn waves-effect waves-light" type="submit" name="action" id="regButton">Sign Up For vdeo45</button>
+              <a id="regButton" className="btn waves-effect waves-light" onClick={register}>Sign Up For vdeo45</a>
             </div>
           </div>
           </form>
@@ -104,17 +106,44 @@ var RegisterBox = React.createClass({
   }
 });
 
+var ButtonChoice = React.createClass({
+  render: function(){
+    return(
+      <div>
+        <div className ="row">
+              <Textbox />
+        </div>
+        <div className ="row options">
+          <div className="col s6">
+            <a id="logChoice" className="btn waves-effect waves-light blue" onClick={this.props.logClick}>LOGIN</a>
+          </div>
+          <div className="col s1 offset-s4">
+            <a id="regChoice" className="btn waves-effect waves-light yellow" onClick={this.props.regClick}>REGISTER</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
 var FrontPage = React.createClass({
+  register: function(){
+    console.log("creating login page");
+    this.setState({page: <RegisterBox />});
+  },
+  login: function(){
+    console.log("creating login page");
+    this.setState({page: <LoginBox />});
+  },
+  getInitialState: function(){
+    return({page: <ButtonChoice logClick={this.login} regClick={this.register}/>});
+  },
   render: function(){
     return (
       <div className="menus">
         <Navbar />
-        <div className="content">
-          <div className ="row">
-            <Textbox />
-            <LoginBox />
-          </div>
-          <RegisterBox />
+        <div className="content" id="mainSection">
+          {this.state.page}
         </div>
       </div>
     );
@@ -126,8 +155,12 @@ React.render(
   document.getElementById('register')
 );
 
+/****************
+*  AJAX Calls   *
+****************/
+
 //below is the ajax post for the login button form
-$('#loginForm').submit(function(){
+function login(){
     var loginName = $('#logEmail').val();
     $.ajax({
       url: "http://"+ ip +":3000/users/m/login",
@@ -151,10 +184,10 @@ $('#loginForm').submit(function(){
       }
     });
     return false;
-});
+};
 
 //below is the ajax post for the register box
-$('#registration').submit(function(){
+function register(){
       $.ajax({
       url: "http://" + ip +":3000/users/register",
       type: 'POST',
@@ -179,13 +212,17 @@ $('#registration').submit(function(){
       }
     });
     return false;
-});
+};
 
+
+/*****************
+*    JavaScript  *
+*****************/
 
 //list of urls that will cycle through on front page
 var backs = [
-  "url(http://www.best-free-wallpaper.org/wp-content/uploads/2014/09/super-high-resolution-nature-wallpaper.jpg)",
-  "url(http://cdn.wonderfulengineering.com/wp-content/uploads/2014/03/high-resolution-wallpapers-25.jpg)"
+  "url(file:///android_asset/www/design/super-high-resolution-nature-wallpaper.jpg)",
+  "url(file:///android_asset/www/design/high-resolution-wallpapers-25.jpg)"
 ];
 
 var toggleHelp = -1;
