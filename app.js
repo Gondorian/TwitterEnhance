@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require ('express-session');
+var cors = require('cors');
 
 /*
 //Authentication
@@ -32,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
+app.use(cors());
 // passport stuff
 app.use(session({ secret: 'sagarisaboss' }));
 /*

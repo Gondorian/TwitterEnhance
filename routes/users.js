@@ -35,7 +35,7 @@ router.get('/getProfile', function(req, res, next){
 
 router.get('/searchName', function(req, res, next){
   UserController.elasticSearch(req.query.search, function(response){
-    res.send(response);
+    res.send(response.hits.hits);
   });
 });
 
@@ -43,7 +43,7 @@ router.get('/searchName', function(req, res, next){
 
 router.get('/test', function (req, res, next) {
   UserController.elasticSearch(req.query.search, function(response){
-    res.send(response);
+    res.send(response.hits.hits[0].fields.userName);
   });
 });
 
