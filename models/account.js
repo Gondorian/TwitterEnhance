@@ -69,35 +69,44 @@ exports.checkIfUserExists = function(email, userName, callback){  //returns the 
 //get the username of a user based on the email (used when loggin in)
 exports.getUserName = function(email, callback){
   video45.view('user', 'userNames', function(err, body){  //key = email, value = username
-    body.rows.forEach(function(doc) {         //for each row in the view check for the email
-      if(doc.key == email){
-        console.log('Found the email! Associated username is: ' + doc.value);
-        callback(doc.value);                     //if email is found, return the associated username
-      }
-    });
+    if(body.rows){
+      body.rows.forEach(function(doc) {         //for each row in the view check for the email
+        if(doc.key == email){
+          console.log('Found the email! Associated username is: ' + doc.value);
+          callback(doc.value);                     //if email is found, return the associated username
+        }
+      });
+    }
+    else{
+      console.log('Database query in getUserName returned no rows.');
+    }
+
   });
 }
 
 // get the details of a particular user
 exports.getUserProfile = function(userName, callback){
-
   video45.view('user', 'by_id', function(err, body){  //key = email, value = _id
-    body.rows.forEach(function(doc) {         //for each row in the view check for the userName
-      if(doc.key == userName){
-        var docID = doc.value;                 //if username is found, get the doc id
+    if(body.rows){
+      body.rows.forEach(function(doc) {         //for each row in the view check for the userName
+        if(doc.key == userName){
+          var docID = doc.value;                 //if username is found, get the doc id
 
-        video45.get(docID, function(err, body){
-          if(!err){
-            console.log('FOUND THE BODY');
-            callback(body);
-          }
-          else {
-            console.log(err);
-          }
-        });
-
-      }
-    });
+          video45.get(docID, function(err, body){
+            if(!err){
+              console.log('FOUND THE BODY');
+              callback(body);
+            }
+            else {
+              console.log(err);
+            }
+          });
+        }
+      });
+    }
+    else{
+      console.log('Database query in getUserProfile returned no rows.');
+    }
   });
 }
 

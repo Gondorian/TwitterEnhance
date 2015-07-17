@@ -48,12 +48,9 @@ router.get('/searchName', function(req, res, next){
 
 
 router.get('/test', function (req, res, next) {
-  if(req.session.userName){
-    res.send('Logged in!');
-  }
-  else{
-    res.send('Not logged in!')
-  }
+  UserController.elasticSearch(req.query.search, function(response){
+    res.send(response);
+  });
 });
 
 router.get('/test1', function (req, res, next) {

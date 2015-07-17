@@ -1,4 +1,9 @@
 var Account = require('../models/account');
+var elasticsearch = require('elasticsearch');
+var client = new elasticsearch.Client({
+  host: '104.131.218.159:9200',
+  log: 'trace'
+});
 
 
 exports.login = function(req, callback){        //get the user's session and set the session variable 'email' to the one supplied by the user
@@ -133,5 +138,27 @@ exports.searchName = function(req, callback){
   console.log('Search term in searchName: ' + name);
   Account.searchName(name, function(data){
     callback(data);
+  });
+}
+
+exports.elasticSearch = function(searchTerm, callback){
+  client.search({
+    index: 'video45',
+    body: {
+      query: {
+        wildcard: {
+          userName: '*'+searchTerm+'*'
+        }
+      }
+    }
+    }, function (error, response) {
+      if(!error){
+        console.log ('Response from the elastic search: ');
+        console.log(response);
+        callback(response);
+      }else{
+        console.log('Elastic search threw an error: ' + error);
+        callback('Could not complete search!');
+      }
   });
 }
