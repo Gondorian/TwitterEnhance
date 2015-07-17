@@ -1,3 +1,4 @@
+var ip = "104.131.218.159";
 //the react container for the navbar elements
 var Navbar = React.createClass({
   render:function(){
@@ -129,7 +130,7 @@ React.render(
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/login",
+      url: "http://"+ip+"/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
@@ -152,7 +153,7 @@ $('#loginForm').submit(function(){
 
 $('#registration').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/register",
+      url: "http://"+ip+"/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
@@ -182,8 +183,8 @@ $('#registration').submit(function(){
 
 //list of urls that will cycle through on front page
 var backs = [
-  "url(http://localhost:3000/design/super-high-resolution-nature-wallpaper.jpg)",
-  "url(http://localhost:3000/design/high-resolution-wallpapers-25.jpg)"
+  "url(http://"+ip+"/design/super-high-resolution-nature-wallpaper.jpg)",
+  "url(http://"+ip+"/design/high-resolution-wallpapers-25.jpg)"
 ];
 
 var toggleHelp = -1;

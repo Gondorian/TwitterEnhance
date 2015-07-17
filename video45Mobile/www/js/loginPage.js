@@ -1,5 +1,5 @@
 //the react container for the navbar elements
-var ip = "192.168.2.19";
+var ip = "104.131.218.159";
 var Navbar = React.createClass({
   render:function(){
     return(
@@ -35,6 +35,7 @@ var Textbox =React.createClass({
 var LoginBox =React.createClass({
   render: function(){
     return(
+      <div>
       <div className="row">
         <div className="loginBox col s12">
           <form id="loginForm" className ="form">
@@ -58,6 +59,11 @@ var LoginBox =React.createClass({
             </div>
           </form>
         </div>
+      </div>
+      </div>
+      <div className="row">
+        <a className="btn-flat" href="www.twitter.com" style={'background-image: design/twitter.png'}>
+        <a className="btn-flat" href="www.facebook.com" style={'background-image: design/twitter.png'}>
       </div>
     );
   }
@@ -163,7 +169,7 @@ React.render(
 function login(){
     var loginName = $('#logEmail').val();
     $.ajax({
-      url: "http://"+ ip +":3000/users/m/login",
+      url: "http://"+ ip +"/users/m/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
@@ -189,7 +195,7 @@ function login(){
 //below is the ajax post for the register box
 function register(){
       $.ajax({
-      url: "http://" + ip +":3000/users/register",
+      url: "http://" + ip +"/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
@@ -292,7 +298,7 @@ $(document).ready(function(){
   console.log(localStorage.logged);
   console.log(localStorage.password);
   $.ajax({
-    url: "http://"+ip+":3000/users/test",
+    url: "http://"+ip+"/users/test",
       type: 'GET',
       success: function(response){
         console.log(response);

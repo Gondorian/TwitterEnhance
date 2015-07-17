@@ -70,7 +70,9 @@ var Selector = React.createClass({
 var Search = React.createClass({
 	searchClick: function(){
 		console.log("search was clicked");
-		getResults($('#searchField').val());
+		if(document.getElementById('searchField')!==''){
+			getResults($('#searchField').val());
+		}
 	},
 	render: function(){
 		return(
@@ -78,7 +80,7 @@ var Search = React.createClass({
 				<div className="col s8">
 					<form id="contactForm">
 			        	<div className="input-field">
-			          		<input id="searchField" type="search" required />
+			          		<input id="searchField" onChange={this.searchClick} type="search" required />
 			        	</div>
 			        </form>
 				</div>
@@ -271,6 +273,7 @@ var logout = function(){
     });
     return false;
 };
+
 
 /************************
 *    Javascript Code    *
