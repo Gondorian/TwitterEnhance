@@ -6,11 +6,7 @@ var account = require('../models/account');
 var UserController = require('../controllers/UserController');
 
 
-router.get('/test1', function (req, res, next) {
-  res.render('mobileSearch');
-  //console.log(req.session.userName);
-  //res.send('The test has completed!');
-});
+
 
 //==============
 // GET REQUESTS
@@ -38,24 +34,22 @@ router.get('/getProfile', function(req, res, next){
 });
 
 router.get('/searchName', function(req, res, next){
-  console.log('Requesting /search for: ' + req.query.name);
-  if(UserController.isLoggedIn(req)){
-    UserController.searchName(req, function(data){
-      res.send(data);
-    });
-  }
-  else{
-    res.send('Not logged in!');
-  }
+  UserController.elasticSearch(req.query.search, function(response){
+    res.send(response.hits.hits);
+  });
 });
 
+
+
 router.get('/test', function (req, res, next) {
-  if(req.session.userName){
-    res.send('Logged in!');
-  }
-  else{
-    res.send('Not logged in!')
-  }
+  UserController.elasticSearch(req.query.search, function(response){
+    res.send(response.hits.hits[0].fields.userName);
+  });
+});
+
+router.get('/test1', function (req, res, next) {
+
+
 });
 
 
@@ -72,8 +66,9 @@ router.post('/register', function(req, res, next){
       console.log('Succesfully registered. Redirecting to profile.');
       res.send('Success!');
     }
-    else
+    else{
       res.send(success);
+    }
   });
 });
 
@@ -92,7 +87,7 @@ router.post('/login', function(req, res, next){
 });
 
 router.post('/m/login', function(req, res, next){
-  UserController.login(req, function(succcess){
+  UserController.login(req, function(succcess, userName){
     if(succcess){       //if credentials were correct
       console.log('Logged in succesfully on mobile!');
       res.send('Success!');
@@ -147,7 +142,9 @@ router.post('/updateProfile', function(req, res, next){
 
 router.post('/createPost', function(req, res, next){
   if(UserController.isLoggedIn(req)){
-    UserController.createPost(req);
+    UserController.createPost(req, function(){
+
+    });
   }
   else{
     res.send('Not logged in!');
