@@ -35,35 +35,35 @@ var Textbox =React.createClass({
 var LoginBox =React.createClass({
   render: function(){
     return(
-      <div>
-      <div className="row">
-        <div className="loginBox col s12">
-          <form id="loginForm" className ="form">
-            <div className="row">
-              <div className="input-field col s12">
-                <input type="text" name="email" id="logEmail" className="validate"/><br/>
-                <label htmlFor="logEmail"> Email </label>
+      <div className="loginBox">
+        <div className="row">
+          <div className="loginBox col s12">
+            <form id="loginForm" className ="form">
+              <div className="row">
+                <div className="input-field col s12">
+                  <input type="text" name="email" id="logEmail" className="validate"/><br/>
+                  <label htmlFor="logEmail"> Email </label>
+                </div>
               </div>
-            </div>
-            <div className="row valign-wrapper">
-              <div className="input-field col s8">
-                <input type="password" id="password" name="password" className="validate"/>
-                <label htmlFor="password">Password</label>
+              <div className="row valign-wrapper">
+                <div className="input-field col s8">
+                  <input type="password" id="password" name="password" className="validate"/>
+                  <label htmlFor="password">Password</label>
+                </div>
+                <a className="btn waves-effect waves-light" onClick={login}>LogIn</a>
               </div>
-              <a className="btn waves-effect waves-light" onClick={login}>LogIn</a>
-            </div>
-            <div className="row">
-              <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
-              <label htmlFor="remember" id="remLabel">Remember me</label>
-              <a href="#">Forgot Password? </a>
-            </div>
-          </form>
+              <div className="row">
+                <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
+                <label htmlFor="remember" id="remLabel">Remember me</label>
+                <a href="#">Forgot Password? </a>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-      </div>
       <div className="row">
-        <a className="btn-flat" href="www.twitter.com" style={'background-image: design/twitter.png'}>
-        <a className="btn-flat" href="www.facebook.com" style={'background-image: design/twitter.png'}>
+        <a className="btn btn-flat" href="www.twitter.com" style={'background-image: design/twitter.png'}>
+        <a className="btn btn-flat" href="www.facebook.com" style={'background-image: design/twitter.png'}>
       </div>
     );
   }
