@@ -1,5 +1,5 @@
-//var ip = "104.131.218.159";
-var ip = "localhost:3000";
+var ip = "104.131.218.159";
+//var ip = "localhost:3000";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},

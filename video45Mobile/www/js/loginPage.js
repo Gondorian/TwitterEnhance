@@ -1,5 +1,6 @@
 //the react container for the navbar elements
-var ip = "192.168.2.19:3000";
+//var ip = "192.168.2.19:3000";
+var ip = "104.131.218.159"
 var Navbar = React.createClass({
   render:function(){
     return(
