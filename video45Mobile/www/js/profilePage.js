@@ -1,4 +1,4 @@
-var ip = "192.168.0.146";
+var ip = "192.168.2.19:3000";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},
@@ -346,7 +346,7 @@ var Navbar = React.createClass({
 									<li><a href={"/users/"+info[7]+'/post'} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
-											<form action={"http://"+ip+":3000/users/logout"} method="POST">
+											<form action={"http://"+ip+"/users/logout"} method="POST">
 												<button className="btn-flat" type="submit" id="logout">logout</button>
 											</form>
 										</div>
@@ -464,7 +464,7 @@ var Content = React.createClass({
 //refresh page information
 function refreshInfo(userName){
     $.ajax({
-      url: "http://"+ip+":3000/users/getProfile?userName="+userName,
+      url: "http://"+ip+"/users/getProfile?userName="+userName,
       type: 'GET',
       success: function(response){
        info = [response["name"],response["userName"],response["numberOfFollowers"],response["numberOfPosts"],response["profilePic"],response["profileColour"],response["isCurrentUser"],response["currentUserName"],response["numberOfFollowing"],response["profileDescription"]];
@@ -503,7 +503,7 @@ function submitfollow(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://"+ip+":3000/users/follow",
+      url: "http://"+ip+"/users/follow",
       type: 'POST',
       data: {userName:info[1]},
        success: function(response){
@@ -548,7 +548,7 @@ var submitForm = function(myImage){
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://"+ip+":3000/users/updateProfile",
+	      url: "http://"+ip+"/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -576,7 +576,7 @@ var submitForm = function(myImage){
 var logout = function(){
 	console.log("exiting");
 	$.ajax({
-      url: "http://"+ip+":3000/users/logout",
+      url: "http://"+ip+"/users/logout",
       type: 'POST',
       success: function(response){
       	localStorage.Logged = "";
@@ -593,7 +593,7 @@ var logout = function(){
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
 	$.ajax({
-      url: "http://"+ip+":3000/users/login",
+      url: "http://"+ip+"/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){

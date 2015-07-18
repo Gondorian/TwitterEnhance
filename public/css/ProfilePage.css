@@ -31,6 +31,9 @@ body {
 #logout:hover {
   background-color: #EEE; }
 
+#dropdown2 {
+  width: 658px; }
+
 #profileBut {
   width: 37px;
   border-radius: 50%;

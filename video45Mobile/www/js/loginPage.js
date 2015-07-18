@@ -1,7 +1,5 @@
 //the react container for the navbar elements
-
-var ip = "104.131.218.159";
-
+var ip = "192.168.2.19:3000";
 var Navbar = React.createClass({
   render:function(){
     return(
@@ -54,6 +52,10 @@ var LoginBox =React.createClass({
               <a className="btn waves-effect waves-light" onClick={login}>LogIn</a>
             </div>
             <div className="row">
+              <a className="social btn-flat col s6" href="http://www.facebook.com" style={{"background-image": "url(http://"+ip+"/design/facebook.png);"}} />
+              <a className="social btn-flat col s6" href="http://www.twitter.com" style={{"background-image": "url(http://"+ip+"/design/twitter.png);"}}/>
+            </div>
+            <div className="row">
               <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
               <label htmlFor="remember" id="remLabel">Remember me</label>
               <a href="#">Forgot Password? </a>
@@ -61,8 +63,6 @@ var LoginBox =React.createClass({
           </form>
         </div>
       </div>
-    </div>
-
     );
   }
 });

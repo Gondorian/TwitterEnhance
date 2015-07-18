@@ -1,4 +1,5 @@
-var ip = "104.131.218.159";
+//var ip = "104.131.218.159";
+var ip = "localhost:3000";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},
@@ -318,9 +319,11 @@ var ResultPanel = React.createClass({
 	render: function(){
 		return(
 			<div>
-				<li className="collection-item avatar">
-					<img className="circle" src={this.props.url} />
-					<span className="title">{this.props.name}</span>
+				<li>
+					<a className="collection-item avatar" style={{"display": "block;"}} href={"http://"+ip+"/"+this.props.name}>
+						<img className="circle" src={this.props.url} />
+						<span className="title">{this.props.name}</span>
+					</a>
 				</li>
 			</div>
 		);
@@ -347,8 +350,10 @@ var SearchResults = React.createClass({
 var Navbar = React.createClass({
 	searchChange: function(){
 		console.log("sending get request");
-		if(document.getElementById('navSearch').value !=''){
+		if(document.getElementById('navSearch').value !==''){
 			getSearch();
+		}else{
+			resultData=[];
 		}
 	},
 	render: function(){
@@ -358,7 +363,7 @@ var Navbar = React.createClass({
 					<div className = "nav-wrapper">
 						<a href="#" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
 						<ul className="right hide-on-med-and-down">
-							<li id="searchHover" className='dropdown-button'  hover="false"  constrain_width="true" data-beloworigin="true" data-outduration="1000000" data-gutter="0" href='#' data-activates='dropdown2'>
+							<li id="searchHover" className='dropdown-button'  hover="false"  constrain_width="true" data-beloworigin="true" data-outduration="1000000" data-gutter="0" data-activates='dropdown2'>
 								<form>
 								<div className="input-field">
 									<input id="navSearch" type="search" placeholder="search" onChange={this.searchChange}/>
@@ -670,7 +675,7 @@ var handleResize = function(){
  $('.dropdown-button').dropdown({
      inDuration: 300,
      outDuration: 225,
-     constrain_width: true, // Does not change width of dropdown to that of the activator
+     constrain_width: false, // Does not change width of dropdown to that of the activator
      hover: false, // Activate on hover
      gutter: 1000, // Spacing from edge
      belowOrigin: true // Displays dropdown below the button
