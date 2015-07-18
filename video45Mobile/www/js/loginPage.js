@@ -296,6 +296,7 @@ $(document).ready(function(){
   ];
   console.log(localStorage.logged);
   console.log(localStorage.password);
+  /*
   $.ajax({
     url: "http://"+ip+"/users/test",
       type: 'GET',
@@ -311,7 +312,7 @@ $(document).ready(function(){
         alert('not successful ' + {response});
       }
     });
-    return false;
+    return false;*/
 });
 
 $(window).resize(function(){

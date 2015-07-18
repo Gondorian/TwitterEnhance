@@ -71,8 +71,13 @@ var Selector = React.createClass({
 var Search = React.createClass({
 	searchClick: function(){
 		console.log("search was clicked");
-		if(document.getElementById('searchField')!==''){
+		if(document.getElementById('searchField').value !==''){
+			console.log('searching');
 			getResults($('#searchField').val());
+		}else{
+			profile=[];
+			shownTags=[];
+			shownName=[];
 		}
 	},
 	render: function(){
@@ -98,13 +103,14 @@ var Navbar = React.createClass({
 	profileClick: function(){
 		sessionStorage.viewedUser = "refSessionID";
 		$(document).attr('location').href='profilePage.html'
+
 	},
 	render: function(){
 		return(
 			<div  className="navbar-fixed">
 				<nav>
 					<div className = "nav-wrapper">
-						<a href='#' className="brand-logo"> Hello, {this.props.cust} </a>
+						<a href='#' className="brand-logo"> </a>
 						<a href="#" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
 						<ul className="right hide-on-med-and-down">
 							<li id="searchHover">
@@ -228,15 +234,22 @@ function refreshInfo(userName){
 
 //recieve the profile list from the server
 function getResults(name){
+	//used as an intermediary for response formatting
+	var resultData = [];
 	$.ajax({
-      url: "http://"+ip+"/users/searchName?name="+name,
+      url: "http://"+ip+"/users/searchName?search="+name,
       type: 'GET',
       success: function(response){
       	shownName=[];
       	shownTags=[];
-      	console.log("response from get Results was: ");
-        console.log(response);
-        profile = response;
+        console.log("successful response was");
+		console.log(response);
+		for(var i = 0; i<response.length;i++){
+			console.log(response[i].fields);
+			resultData.unshift(response[i].fields);
+			console.log(resultData);
+		}
+        profile = resultData;
         //handle the original panels that are place on the screen
 		var height = $(window).height();
 		console.log(height);
