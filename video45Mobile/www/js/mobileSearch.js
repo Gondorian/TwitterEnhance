@@ -1,5 +1,5 @@
-//var ip = "192.168.2.19:3000";
-var ip = "104.131.218.159";
+var ip = "192.168.2.19:3000";
+//var ip = "104.131.218.159";
 var info = ["","","","","design/balloons.png","", "true", "", "",""];
 var mode = 'name';//default is name, used for tab selection
 //all profiles taken from the server
