@@ -1,3 +1,5 @@
+//var ip = "104.131.218.159";
+var ip = "localhost:3000";
 //the react container for the navbar elements
 var Navbar = React.createClass({
   render:function(){
@@ -48,6 +50,10 @@ var LoginBox =React.createClass({
               <label htmlFor="password">Password</label>
             </div>
             <button className="valign btn waves-effect waves-light" type="submit" name="action" id="logButton"> log in</button>
+          </div>
+          <div className="row">
+            <a className="social btn-flat col s6" href="http://www.facebook.com" style={{"background-image": "url(http://"+ip+"/design/facebook.png);"}} />
+            <a className="social btn-flat col s6" href="http://www.twitter.com" style={{"background-image": "url(http://"+ip+"/design/twitter.png);"}}/>
           </div>
           <div className="row">
             <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
@@ -129,7 +135,7 @@ React.render(
 //below is the ajax post for the login button form
 $('#loginForm').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/login",
+      url: "http://"+ip+"/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       statusCode: {
@@ -155,7 +161,7 @@ $('#loginForm').submit(function(){
 
 $('#registration').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/register",
+      url: "http://"+ip+"/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
@@ -185,8 +191,8 @@ $('#registration').submit(function(){
 
 //list of urls that will cycle through on front page
 var backs = [
-  "url(http://localhost:3000/design/super-high-resolution-nature-wallpaper.jpg)",
-  "url(http://localhost:3000/design/high-resolution-wallpapers-25.jpg)"
+  "url(http://"+ip+"/design/super-high-resolution-nature-wallpaper.jpg)",
+  "url(http://"+ip+"/design/high-resolution-wallpapers-25.jpg)"
 ];
 
 var toggleHelp = -1;

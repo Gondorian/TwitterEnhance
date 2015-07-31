@@ -1,0 +1,47 @@
+<!-- belowis the twitter summary card metaTag information -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@video45" />
+<meta name="twitter:title" content="Video45" />
+<meta name="twitter:description" content="watch 45 second videos" />
+<meta name="twitter:image" content="https://farm6.staticflickr.com/5510/14338202952_93595258ff_z.jpg" />
+
+<!--below is the metatags for twitter summary card with large image-->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@video45">
+<meta name="twitter:creator" content="@Staff">
+<meta name="twitter:title" content="Watch our stuff plox">
+<meta name="twitter:description" content="We allow for a fun and entertaining way to view and edit videos that last 45 seconds.">
+<meta name="twitter:image" content="http://graphics8.nytimes.com/images/2012/02/19/us/19whitney-span/19whitney-span-articleLarge.jpg">
+
+<!--Below is the twitter meta tags for app cards -->
+<meta name="twitter:card" content="app">
+<meta name="twitter:site" content="@TwitterDev">
+<meta name="twitter:description" content="Cannonball is the fun way to create and share stories and poems on your phone. Start with a beautiful image from the gallery, then choose words to complete the story and share it with friends.">
+<meta name="twitter:app:country" content="US">
+<meta name="twitter:app:name:iphone" content="video45">
+<meta name="twitter:app:id:iphone" content="929750075">
+<meta name="twitter:app:url:iphone" content="cannonball://poem/5149e249222f9e600a7540ef">
+<meta name="twitter:app:name:ipad" content="Cannonball">
+<meta name="twitter:app:id:ipad" content="929750075">
+<meta name="twitter:app:url:ipad" content="cannonball://poem/5149e249222f9e600a7540ef">
+
+<!--Below are the openGraph metatags for facebook integration -->
+<meta property="og:title" content="Video 45 webpage" />
+<meta property="og:site_name" content="Video45" />
+<meta property="og:url" content="http://localhost:3000" /> <!--should link to the article not the person doing the action -->
+<meta property="og:description" content="Video45 is a website that allows the social sharing of 45 second videos"/>
+<meta property="fb:app_id" content="[FB_APP_ID]" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="en_US" /> <!-- Default language -->
+<meta property="article:author" content="https:www.facebook.com/fareedzakaria" />
+<meta property="article:publisher" content="https://www.facebook.com/cnn" />
+
+<!-- for facebook images -->
+<meta property="ogimage:width" content="some_number" />
+<meta property="og:image:height" content="some_number" />
+
+<!--facebook content metatags-->
+<meta property="contentURL" content="the sharing link" />
+<meta property="contentTitle" content="The title of the content link"/>
+<meta property="imageURL" content="the thumnail image that appears in the post, poster image" />
+<meta property="contentDescription" content="the text from the user for the post">

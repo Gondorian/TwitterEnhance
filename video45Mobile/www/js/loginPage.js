@@ -1,5 +1,6 @@
 //the react container for the navbar elements
-var ip = "192.168.0.146";
+var ip = "192.168.2.19:3000";
+//var ip = "104.131.218.159"
 var Navbar = React.createClass({
   render:function(){
     return(
@@ -50,6 +51,10 @@ var LoginBox =React.createClass({
                 <label htmlFor="password">Password</label>
               </div>
               <a className="btn waves-effect waves-light" onClick={login}>LogIn</a>
+            </div>
+            <div className="row">
+              <a className="social btn-flat col s6" href="http://www.facebook.com" style={{"background-image": "url(http://"+ip+"/design/facebook.png);"}} />
+              <a className="social btn-flat col s6" href="http://www.twitter.com" style={{"background-image": "url(http://"+ip+"/design/twitter.png);"}}/>
             </div>
             <div className="row">
               <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
@@ -163,7 +168,7 @@ React.render(
 function login(){
     var loginName = $('#logEmail').val();
     $.ajax({
-      url: "http://"+ ip +":3000/users/m/login",
+      url: "http://"+ ip +"/users/m/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
       success: function(response){
@@ -189,7 +194,7 @@ function login(){
 //below is the ajax post for the register box
 function register(){
       $.ajax({
-      url: "http://" + ip +":3000/users/register",
+      url: "http://" + ip +"/users/register",
       type: 'POST',
       data: $('#registration').serialize(),
       success: function(response){
@@ -291,8 +296,9 @@ $(document).ready(function(){
   ];
   console.log(localStorage.logged);
   console.log(localStorage.password);
+  /*
   $.ajax({
-    url: "http://"+ip+":3000/users/test",
+    url: "http://"+ip+"/users/test",
       type: 'GET',
       success: function(response){
         console.log(response);
@@ -306,7 +312,7 @@ $(document).ready(function(){
         alert('not successful ' + {response});
       }
     });
-    return false;
+    return false;*/
 });
 
 $(window).resize(function(){

@@ -1,3 +1,5 @@
+//var ip = "104.131.218.159";
+var ip = "localhost:3000";
 var cust = "l";
 var data = [
 	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},
@@ -5,6 +7,8 @@ var data = [
 	{url: "http://i.ytimg.com/vi/tHSA519vVvg/hqdefault.jpg", text: "Another comment was written here"},
 	{url: "http://thedailyfandom.com/wp-content/uploads/2015/01/Why_5d76e0_1095350.jpg", text: "Me and my dad at the park"}
 ];
+
+var resultData=[];
 
 var comments=[
 	{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
@@ -258,7 +262,7 @@ var ProfileInfo = React.createClass({
 	},
 	getInitialState: function(){
 		if(info[6] === 'true'){
-			return({button: <Edit buttonClick={this.props.buttonClick}/>});
+			return({button: <div />});
 		}else{
 			return({button: <Follow followClick={this.props.followClick} />});
 		};
@@ -310,23 +314,65 @@ var EditProfileInfo = React.createClass({
 	}
 });
 
+//the individual result panels
+var ResultPanel = React.createClass({
+	render: function(){
+		return(
+			<div>
+				<li>
+					<a className="collection-item avatar" style={{"display": "block;"}} href={"http://"+ip+"/"+this.props.name}>
+						<img className="circle" src={this.props.url} />
+						<span className="title">{this.props.name}</span>
+					</a>
+				</li>
+			</div>
+		);
+	}
+});
+
+//This will display the results from the elasticsearch below the search bar
+var SearchResults = React.createClass({
+	render: function(){
+		var results = this.props.data.map(function(result){
+			return(
+				<ResultPanel name={result.userName} url={result.profilePic} />
+			);
+		});
+		return(
+			<div>
+				{results}
+			</div>
+		);
+	}
+});
+
 //this will edit the content of the navbar
 var Navbar = React.createClass({
+	searchChange: function(){
+		console.log("sending get request");
+		if(document.getElementById('navSearch').value !==''){
+			getSearch();
+		}else{
+			resultData=[];
+		}
+	},
 	render: function(){
 		return(
 			<div  className="navbar-fixed">
 				<nav style={{"background-color": this.props.color}}>
 					<div className = "nav-wrapper">
-						<a href='#' className="brand-logo"> Hello, {this.props.cust} </a>
 						<a href="#" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
 						<ul className="right hide-on-med-and-down">
-							<li id="searchHover">
+							<li id="searchHover" className='dropdown-button'  hover="false"  constrain_width="true" data-beloworigin="true" data-outduration="1000000" data-gutter="0" data-activates='dropdown2'>
 								<form>
 								<div className="input-field">
-									<input id="navSearch" type="search" placeholder="search" onfocus="searchChange()"/>
+									<input id="navSearch" type="search" placeholder="search" onChange={this.searchChange}/>
 									<label htmlFor="navsearch"><i className="mdi-action-search"></i></label>
 								</div>
 								</form>
+								<ul id="dropdown2" className='dropdown-content collection'>
+									<SearchResults data={this.props.data}/>
+								</ul>
 							</li>
 							<li className='dropdown-button'data-beloworigin="true" data-outduration="1000000" data-gutter="30" href='#' data-activates='dropdown1'>
 								<a id="profileBut" className='btn-floating' href={"/users/"+info[7]}><i className="mdi-action-perm-identity left" /></a>
@@ -334,7 +380,7 @@ var Navbar = React.createClass({
 									<li><a href={"/users/"+info[7]+'/post'} >profilePage</a></li>
 									<li id="logoutBut">
 										<div className="input-field">
-											<form action="http://localhost:3000/users/logout" method="POST">
+											<form action={"http://"+ip+"/users/logout"} method="POST">
 												<button className="btn-flat" type="submit" id="logout">logout</button>
 											</form>
 										</div>
@@ -353,7 +399,7 @@ var Navbar = React.createClass({
 							</li>
 							<li id="logoutBut">
 								<div className="input-field">
-									<form action="http://localhost:3000/users/logout" method="POST">
+									<form action={"http://"+ip+"/users/logout"} method="POST">
 										<button className="btn-flat" type="submit" id="logout">logout</button>
 									</form>
 								</div>
@@ -397,8 +443,10 @@ var Content = React.createClass({
 	},
 	loadPostsFromServer: function(){
 		this.setState({followers: info[2]});
+		this.setState({color: info[5]});
 		this.setState({following: info[8]});
 		this.setState({dat:data});
+		this.setState({resultData: resultData});
 		if(this.state.mode === "standard"){
 			this.setState({profileSection: <ProfileInfo buttonClick={this.editMode} followClick={this.followEvent} myProfile={true} profileURL={this.state.profileURL} cust = {this.state.custName} posts={info[3]} followers={this.state.followers} following={this.state.following} desc={this.state.desc} />});
 		}else if(this.state.mode === "edit"){
@@ -427,6 +475,7 @@ var Content = React.createClass({
 		this.setState({logged: info[7]});
 		this.setState({following: info[8]});
 		this.setState({desc: info[9]});
+		this.setState({resultData: resultData});
 		//maintain none server variables
 		this.setState({dat:data}); //this is the post data, it is currently just a stand-in
 		this.setState({mode: "standard"}); //this is the aside type(standard is normal, edit is for edit mode)
@@ -435,7 +484,7 @@ var Content = React.createClass({
 	render: function(){
 		return(
 			<div className = "profilePage">
-				<Navbar cust = {this.state.logged} color={this.state.color}/>
+				<Navbar cust = {this.state.logged} color={this.state.color} data={this.state.resultData}/>
 				{this.state.profileSection}
 				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
 				<div className="fixed-action-btn" id="buttonOptions">
@@ -445,7 +494,7 @@ var Content = React.createClass({
 				    <ul>
 				      <li><a className="btn-floating red" onClick={this.editMode}><i className="material-icons">settings</i></a></li>
 				      <li><a className="btn-floating yellow darken-1"><i className="material-icons">videocam</i></a></li>
-				      <li><a href={"http://localhost:3000/"+info[7]}className="btn-floating green"><i className="material-icons">person_pin</i></a></li>
+				      <li><a href={"http://"+ip+"/"+info[7]}className="btn-floating green"><i className="material-icons">person_pin</i></a></li>
 				      <li><a href="#" className="btn-floating blue">Top</a></li>
 				    </ul>
 				</div>
@@ -457,7 +506,7 @@ var Content = React.createClass({
 
 //the root this calls the parent with some dummy data
 React.render(
-	<Content pollInterval={200} />,
+	<Content pollInterval={200} resultData={resultData}/>,
 	document.getElementById("content")
 );
 
@@ -467,13 +516,12 @@ React.render(
 *     AJAX CALLS    *
 ********************/
 
-
 //refresh page information
 function refreshInfo(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://localhost:3000/",
+      url: "http://"+ip+"/",
       type: 'GET',
       success: function(response){
         console.log(response);
@@ -486,12 +534,37 @@ function refreshInfo(){
     return false;
 };
 
+//the elastic search query
+function getSearch(){
+	var value = document.getElementById("navSearch").value;
+	console.log("value in search Field: "+value);
+	resultData = [];
+	$.ajax({
+		url: "http://"+ip+"/users/searchName?search="+value,
+		type: 'GET',
+		success: function(response){
+			console.log("successful response was");
+			console.log(response);
+			for(var i = 0; i<response.length;i++){
+				console.log(response[i].fields);
+				resultData.unshift(response[i].fields);
+				console.log(resultData);
+			}
+		},
+      	error: function(response){
+	      	console.log(response);
+	        alert('not successful ' + {response});
+      }
+	});
+	return false;
+}
+
 //below is the update for follow press
 function submitfollow(){
 	console.log(info[7]);
 	console.log(info[0]);
       $.ajax({
-      url: "http://localhost:3000/users/follow",
+      url: "http://"+ip+"/users/follow",
       type: 'POST',
       data: {userName:info[1]},
       success: function(response){
@@ -526,13 +599,14 @@ var submitForm = function(myImage){
 			var colorThief= new ColorThief();
 			var mainColor = colorThief.getColor(myImage);
 			data = data+'&colour=rgb('+mainColor+')';
+			info[5] = 'rgb('+mainColor+')';
 		}catch(err){
 			console.log("could not load image");
 			data = data+'&colour='+info[5];
 		}
 		console.log(data);
 	    $.ajax({
-	      url: "http://localhost:3000/users/updateProfile",
+	      url: "http://"+ip+"/users/updateProfile",
 	      type: 'POST',
 	      data: data,
 	      success: function(response){
@@ -558,7 +632,7 @@ var submitForm = function(myImage){
 //below is the ajax post for the edit button form
 $('#modalForm').submit(function(){
       $.ajax({
-      url: "http://localhost:3000/users/login",
+      url: "http://"+ip+"/users/login",
       type: 'POST',
       data: $('#modalForm').serialize(),
       success: function(response){
@@ -598,12 +672,11 @@ var handleResize = function(){
 	}
 }
 
-
  $('.dropdown-button').dropdown({
      inDuration: 300,
      outDuration: 225,
      constrain_width: false, // Does not change width of dropdown to that of the activator
-     hover: true, // Activate on hover
+     hover: false, // Activate on hover
      gutter: 1000, // Spacing from edge
      belowOrigin: true // Displays dropdown below the button
    }

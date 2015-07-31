@@ -83,7 +83,6 @@ module.exports = function(passport, express){
     res.send('Authenticated successfully!');
   });
 
-
   // Request for registering a user.
   router.post('/register', function(req, res, next) {
     console.log('Attempting to register new user.');

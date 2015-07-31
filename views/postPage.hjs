@@ -5,22 +5,30 @@
     <meta name="description",contents="">
     <meta name="author", contents="Sagar, Paul">
     <meta name="viewport", content="width=device-width,initial-scale=1">
-    <link rel='stylesheet' href='../public/css/style.css' />
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
     <link rel='stylesheet' href='../bower_components/materialize/bin/materialize.css' />
-    <link rel='stylesheet' href='../public/css/ProfilePage.css' />
+    <link rel='stylesheet' href='../public/css/postPage.css' />
   </head>
   <body>
-    <div id = 'content'></div>
-
-    <!--Scripts-->
-    <script>
-      var info = ["{{name}}","{{userName}}","{{numberOfFollowers}}","{{numberOfPosts}}","{{profilePic}}","{{profileColour}}", "{{isCurrentUser}}", "{{currentUserName}}", "{{numberOfFollowing}}","{{profileDescription}}"];
-    </script>
-    <script src="../bower_components/color-thief/src/color-thief.js" ></script>
+    <div id='content'>
+      <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="../bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
     <script src="../bower_components/react/JSXTransformer.js"></script>
-    <script src="../bower_components/react/react.js"></script>
     <script src="../bower_components/materialize/bin/materialize.js"></script>
-    <script type="text/jsx;harmony=true" src="../public/js/profilePage.js"></script>
+    <script src="../bower_components/react/react.js"></script>
+    <script type="text/jsx;harmony=true" src="../public/js/postPage.js"></script>
   </body>
 </html>
+

@@ -31,6 +31,9 @@ body {
 #logout:hover {
   background-color: #EEE; }
 
+#dropdown2 {
+  width: 658px; }
+
 #profileBut {
   width: 37px;
   border-radius: 50%;
@@ -121,7 +124,7 @@ body {
   max-width: 600px;
   background-color: white;
   border-radius: 2px;
-  box-shadow: 4px 4px 12px black; }
+  box-shadow: 6px 6px 20px black; }
   .card.centerd {
     float: none;
     display: block;
@@ -168,7 +171,7 @@ body {
   color: #464646; }
 
 #buttonOptions {
-  bottom: 30px;
-  right: 27px; }
+  bottom: 23px;
+  right: 12px; }
 
 /*# sourceMappingURL=profilePage.css.map */

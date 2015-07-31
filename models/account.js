@@ -1,7 +1,8 @@
 // contains code to deal with database
 
 //Database
-var nano = require('nano')('https://video45.iriscouch.com/');
+
+var nano = require('nano')('http://video45.iriscouch.com:5984');
 var video45 = nano.use('video45');
 
 

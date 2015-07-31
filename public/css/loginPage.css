@@ -91,6 +91,11 @@ body {
 #logButton:hover {
   background-color: #39a4eb; }
 
+.social {
+  margin-top: 20px;
+  background-size: contain;
+  background-repeat: no-repeat; }
+
 #remLabel {
   margin-top: 10px; }
 
