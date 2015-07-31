@@ -8,7 +8,9 @@ var session = require('express-session');
 var cors = require('cors');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var myPassport = require('./config/passport.js')(passport, LocalStrategy);
+var FacebookStrategy = require('passport-facebook').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
+var myPassport = require('./config/passport.js')(passport, LocalStrategy, FacebookStrategy, TwitterStrategy);
 
 
 //Routes

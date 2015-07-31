@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:userName', function(req, res, next){
-  console.log('Requesting /username');
+  console.log('Requesting /username ' + req.params.userName);
   if(UserController.isLoggedIn(req)){
     var userName = req.params.userName;
     UserController.loadProfile(req, userName, function(info){ //pass the data to the view

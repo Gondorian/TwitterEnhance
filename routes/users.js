@@ -1,7 +1,7 @@
 var Account = require('../models/account'); //for testing purposes
 var UserController = require('../controllers/UserController');
 
-module.exports = function(passport, express){
+module.exports = function(passport, express) {
   var router = express.Router();
 
   //==============
@@ -56,18 +56,23 @@ module.exports = function(passport, express){
     });
   });
 
+  //directs user to facebook for authentication
+  router.get('/auth/facebook', passport.authenticate('facebook'));
 
+  //facebook redirects user to here after user authorizes fb
+  router.get('/auth/facebook/callback', passport.authenticate('facebook'), function(req, res, next){
+    res.redirect('/');
+  });
 
   router.get('/test', function(req, res, next) {
 
   });
 
   router.get('/test1', function(req, res, next) {
-    if(req.user){
+    if (req.user) {
       console.log(req.user);
       res.send('You are authenticated! user object:');
-    }
-    else{
+    } else {
       res.send('you are not authenticated!');
     }
 
@@ -118,14 +123,8 @@ module.exports = function(passport, express){
   // request to logout the current user
   router.post('/logout', function(req, res, next) {
     console.log('recieved logout request');
-    UserController.logout(req, function(success) {
-      if (success) {
-        console.log('logout succeded! redirecting to frontpage!');
-        res.redirect('/');
-      } else {
-        res.send("you can't leave. video45 is love, video45 is life.");
-      }
-    });
+    req.logout();
+    res.redirect('/');
   });
 
   router.post('/follow', function(req, res, next) {

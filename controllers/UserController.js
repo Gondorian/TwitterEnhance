@@ -53,9 +53,13 @@ exports.registerUser = function(req, callback) {
 
   Account.checkIfUserExists(email, userName, function(exists) {
     if (exists === false) { //if user doesn't already exists, insert new user
-      Account.insertNewUser(fullName, email, userName, password);
-      req.session.userName = userName;
-      callback(true);
+      Account.insertNewUser(fullName, email, userName, password, function(result){
+        if(result){
+          req.session.userName = userName;
+          callback(true);
+        }
+      });
+
     } else { //else callback with the error
       callback(exists);
     }

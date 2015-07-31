@@ -52,8 +52,8 @@ var LoginBox =React.createClass({
             <button className="valign btn waves-effect waves-light" type="submit" name="action" id="logButton"> log in</button>
           </div>
           <div className="row">
-            <a className="social btn-flat col s6" href="http://www.facebook.com" style={{"background-image": "url(http://"+ip+"/design/facebook.png);"}} />
-            <a className="social btn-flat col s6" href="http://www.twitter.com" style={{"background-image": "url(http://"+ip+"/design/twitter.png);"}}/>
+            <a className="social btn-flat col s6" href={"http://"+ip+"/users/auth/facebook"} style={{"background-image": "url(http://"+ip+"/design/facebook.png);"}} />
+            <a className="social btn-flat col s6" href={"http://"+ip+"/users/auth/twitter"} style={{"background-image": "url(http://"+ip+"/design/twitter.png);"}}/>
           </div>
           <div className="row">
             <input type="checkbox" value="remember" className="filled-in" name="group" id="remember"/>
