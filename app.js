@@ -4,20 +4,16 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require ('express-session');
+var session = require('express-session');
 var cors = require('cors');
-
-/*
-//Authentication
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-*/
+var myPassport = require('./config/passport.js')(passport, LocalStrategy);
 
 
 //Routes
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/users')(myPassport, express);
 
 var app = express();
 
@@ -29,29 +25,28 @@ app.set('view engine', 'hjs');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
 app.use(cors());
+
 // passport stuff
-app.use(session({ secret: 'sagarisaboss' }));
-/*
-app.use(passport.initialize());
-app.use(passport.session());
-*/
+app.use(session({
+  secret: 'sagarisaboss'
+}));
+app.use(myPassport.initialize());
+app.use(myPassport.session());
+
+
 
 // set the route files.
 app.use('/', routes);
 app.use('/users', users);
 
-// passport config
-/*
-var Account = require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
-*/
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

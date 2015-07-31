@@ -138,12 +138,15 @@ $('#loginForm').submit(function(){
       url: "http://"+ip+"/users/login",
       type: 'POST',
       data: $('#loginForm').serialize(),
-      success: function(response){
-        if(response.length < 40){       //if the login fails, response is less than 40
-          Materialize.toast(response,10000);
+      statusCode: {
+        401: function(){
+          Materialize.toast('Incorrect Email or Password!',10000);
           $('#password').css("border-color","red");
           $('#logEmail').css("border-color","red");
-        }else{
+        }
+      },
+      success: function(response){
+        if(response === 'Success!'){
           $(document).attr('location').href='/'
         }
       },

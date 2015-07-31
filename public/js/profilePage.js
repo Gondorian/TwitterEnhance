@@ -493,7 +493,7 @@ var Content = React.createClass({
 				    </a>
 				    <ul>
 				      <li><a className="btn-floating red" onClick={this.editMode}><i className="material-icons">settings</i></a></li>
-				      <li><a href={"http://"+ip+"/users/test1"}className="btn-floating yellow darken-1"><i className="material-icons">videocam</i></a></li>
+				      <li><a href={"http://"+ip+"/users/video"}className="btn-floating yellow darken-1"><i className="material-icons">videocam</i></a></li>
 				      <li><a href={"http://"+ip+"/"+info[7]}className="btn-floating green"><i className="material-icons">person_pin</i></a></li>
 				      <li><a href="#" className="btn-floating blue">Top</a></li>
 				    </ul>
