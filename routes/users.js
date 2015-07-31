@@ -88,6 +88,14 @@ module.exports = function(passport, express) {
     res.send('Authenticated successfully!');
   });
 
+router.get('/test1', function (req, res, next) {
+  res.render('postPage.hjs');
+});
+
+router.get('/video', function (req, res, next) {
+  res.render('postPage.hjs');
+});
+
   // Request for registering a user.
   router.post('/register', function(req, res, next) {
     console.log('Attempting to register new user.');
@@ -118,6 +126,7 @@ module.exports = function(passport, express) {
     });
   });
 
+>>>>>>> f1065d584f6fc5d41b4a9c382422a15877214be4
 
 
   // request to logout the current user

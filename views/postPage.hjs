@@ -23,7 +23,11 @@
         </div>
       </div>
     </div>
+    <div id="link"> </div>
+    <video id="awesome" width="500" height="500" controls loop src=""></video>
+    <script src="../bower_components/whammy/whammy.js"></script>
     <script src="../bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js" charset="utf-8"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script>
     <script src="../bower_components/react/JSXTransformer.js"></script>
     <script src="../bower_components/materialize/bin/materialize.js"></script>
