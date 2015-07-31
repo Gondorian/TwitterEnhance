@@ -49,10 +49,11 @@ router.get('/test', function (req, res, next) {
 
 router.get('/test1', function (req, res, next) {
   res.render('postPage.hjs');
-
 });
 
-
+router.get('/video', function (req, res, next) {
+  res.render('postPage.hjs');
+});
 
 //==============
 //POST REQUESTS
