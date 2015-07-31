@@ -1,11 +1,35 @@
-var ip = "192.168.2.19:3000";
-//var ip = "104.131.218.159";
+//var ip = "192.168.2.19:3000";
+var ip = "104.131.218.159";
 
-var recording = false;
-var currentCanvas = 0;
-var updatingCanvas;
-var canvasList = []
-var startRecording;
+var callOrder = [] //This is the order that video parts should be called in
+var recording = false; //wether the video is currently being recorded
+var currentCanvas = 0; //The number of clips shown in timeline
+var updatingCanvas; //The current canvas updating in timeline
+var canvasList = []; //The list of jSON for video data in the timeline
+var startRecording; //The time the video began recordeing
+
+//List of filters
+var FilterList = React.createClass({
+	render: function(){
+		return(
+			<div className="row filters vidSection">
+				<ul className="filterList">
+					<li id="grayscale" className="filter"><p>Grayscale</p></li>
+					<li id="brighten" className="filter"><p>Brighten</p></li>
+					<li id="threshold" className="filter"><p>Threshold</p></li>
+					<li id="sharpen" className="filter"><p>Sharpen</p></li>
+					<li id="blur" className="filter"><p>Blur</p></li>
+					<li id="depth" className="filter"><p>Depth</p></li>
+					<li id="darken" className="filter"><p>Darken</p></li>
+					<li id="contrast" className="filter"><p>Contrast</p></li>
+					<li id="tint" className="filter"><p>Tint</p></li>
+					<li id="color" className="filter"><p>Color</p></li>
+					<li id="undefined" className="filter"><p>None</p></li>
+				</ul>
+			</div>
+		);
+	}
+})
 
 //This is for the images in the timeline
 var CanvasPart = React.createClass({
@@ -20,7 +44,9 @@ var CanvasPart = React.createClass({
 	},
 	render: function(){
 		return (
-			<canvas ref="vidCanvas" className="part"></canvas>
+			<li className="ui-state-default">
+				<canvas id={this.props.keys} ref="vidCanvas" className="part"></canvas>
+			</li>
 		);
 	}
 });
@@ -38,12 +64,14 @@ var VideoPart = React.createClass({
 	render: function(){
 		var canvasNodes = this.props.canvasList.map(function(canvas){
 			return(
-				<CanvasPart />
+				<CanvasPart key={canvas.key} keys={canvas.key}/>
 			);
 		});
 		return(
 			<div className="videoPart">
-				{canvasNodes}
+				<ul id="sortable">
+					{canvasNodes}
+				</ul>
 			</div>
 		);
 	}
@@ -55,6 +83,7 @@ var Video = React.createClass({
 		if(!recording){
 			recording = true;
 			canvasList.push({key: currentCanvas})
+			document.getElementById("record").style.color = "#8B0000";
 			//add location to canvas list
 		}else {
 			recording = false;
@@ -63,8 +92,11 @@ var Video = React.createClass({
 			canvasList[currentCanvas].startTime = startRecording;
 			canvasList[currentCanvas].endTime = v.currentTime;
 			canvasList[currentCanvas].key = currentCanvas;
+			//modify the call order to include the new item and move to next canvas
+			callOrder[currentCanvas]=currentCanvas;
 			console.log(canvasList);
 			currentCanvas++;
+			document.getElementById("record").style.color = "white";
 		}
 	},
 	render: function(){
@@ -73,7 +105,7 @@ var Video = React.createClass({
 				<div className="video">
 					<canvas id="vidCanvas" onClick={playPause}></canvas>
 					<video id="video" >
-						<source src="../design/BigBuckBunny.mp4" type="video/mp4" />
+						<source id="source" src="" type="video/mp4" />
 					</video>
 					<div className="controller">
 						<div>
@@ -81,8 +113,8 @@ var Video = React.createClass({
 						</div>
 						<div className="Controls">
 							<div className="leftControls">
-								<a id="play" className="" onClick={this.playClick}><i className="mdi-av-play-arrow"></i></a>
-								<a id="record" className="" onClick={this.recordClick}><i className="mdi-image-brightness-1"></i></a>
+								<a title="Play" id="play" className="" onClick={this.playClick}><i className="mdi-av-play-arrow"></i></a>
+								<a title="Record" id="record" className="" onClick={this.recordClick}><i className="mdi-image-brightness-1"></i></a>
 								<a id="sound" className=""><i className="mdi-av-volume-up" /></a>
 								<input type="range" id="volumeControl" defaultValue="100" />
 							</div>
@@ -96,7 +128,7 @@ var Video = React.createClass({
 					</div>
 				</div>
 				<div className="timeline">
-					<progress id="timeline" value="0" max="450"></progress>
+					<progress id="timeline" value="0" max="2250"></progress>
 					<VideoPart canvasList={this.props.canvasList} />
 				</div>
 				<div className="buttons row">
@@ -107,6 +139,28 @@ var Video = React.createClass({
 		);
 	}
 });
+
+//The bar along the top that asks for the file
+var FilePicker = React.createClass({
+	clicked: function(){
+		var x = document.getElementById("myfile").files;
+		console.log(x[0]);
+		document.getElementById("source").src="../design/"+x[0].name;
+		video.load();
+		video.play();
+		playButton.getElementsByTagName("i")[0].className=("mdi-av-pause");
+	},
+	render: function(){
+		return(
+			<div className="vidSection">
+				<form id="selector">
+					<input id="myfile" type="file" />
+					<a href="#" onClick={this.clicked}> submit </a>
+				</ form>
+			</div>
+		);
+	}
+})
 
 //creates the standard navbar for the website
 var Navbar = React.createClass({
@@ -191,7 +245,9 @@ var Content = React.createClass({
 		return(
 			<div className="content">
 				<Navbar />
+				<FilePicker />
 				<Video canvasList={this.state.canvasList} viewClick={this.viewClick}/>
+				<FilterList />
 			</div>
 		);
 	}
@@ -233,11 +289,13 @@ function refreshInfo(){
 var v = document.getElementById('video');
 var canvas = document.getElementById('vidCanvas');
 var context = canvas.getContext('2d');
+var finalVideo = new Whammy.Video(50);
 var filter;
 var cw = canvas.clientWidth;
 var ch = canvas.clientHeight;
 canvas.width = cw;
 canvas.height = ch;
+var frame = 0;
 
 //video buttons
 var playButton = document.getElementById("play");
@@ -314,6 +372,7 @@ seekBar.addEventListener("mouseup", function() {
 	// Update the video time
 	video.currentTime = time;
 	video.play();
+	playButton.getElementsByTagName("i")[0].className=("mdi-av-pause");
 });
 
 // Event listener for the mute button
@@ -352,13 +411,20 @@ function volumeSetting(){
 	}
 }
 
-var runTime;
+//set the filter to the clicked filters id
+$('.filter').on("click",function(){
+	video.pause();
+	var filterName = $(this).attr('id');
+	filter = filterName;
+	setTimeout(function(){video.play();},20);
+	playButton.getElementsByTagName("i")[0].className=("mdi-av-pause");
+});
+
 var playback = false;
+//Function is called when view is clicked
 function watchEdit(){
 	//change video to edited video and start from the beginning
 	//load symbol should appear ontop of video
-	video.play();
-	runTime = 0;
 	console.log(canvasList);
 	if(!recording){
 		playback = true;
@@ -368,39 +434,56 @@ function watchEdit(){
 			//create the timeOuts for each part
 			doSetTimeout(i, wait);
 			console.log("wait: " + wait);
-			wait = wait+canvasList[i].endTime-canvasList[i].startTime;
+			wait = wait+canvasList[callOrder[i]].endTime-canvasList[callOrder[i]].startTime;
 		}
 		//waits until video is done with playback
-		setTimeout(function(){
-			//pause the video when finished
-			playback = false;
-			video.pause();
-		},wait*1000);
+		console.log("first wait: " + wait);
+		checkEnd(wait);
 	}else{alert("Please stop recording before viewing");}
 }
 
-//allows the timeout to function without a run on the memory
-function doSetTimeout(i, wait){
-	setTimeout(function(){
-		console.log("changing location");
-		video.currentTime = canvasList[i].startTime;
+function checkEnd(wait){
+	console.log("wait " + wait + " frame: "+frame);
+	if(frame*0.02>wait){
+		//stop rendering video
+		console.log("creating final version");
+		//pause the video when finished
+		playback = false;
+		//finalize the video
+		var output = finalVideo.compile();
+		var url = webkitURL.createObjectURL(output);
+		document.getElementById('awesome').src = url;
+		document.getElementById('link').innerHTML = url;
+	}
+	else setTimeout(checkEnd,200, wait); //recheck if weve rendered enough video
+}
 
+//allows the timeout to function without a run on the memory
+//sets when each section should start in the video.
+function doSetTimeout(i, wait){
+	if(frame*0.02>wait){ //if the frames have passed for the time
+		console.log("changing video location");
+		video.currentTime = canvasList[callOrder[i]].startTime;
 		return false;
-	},wait*1000);
+	}
+	else{ setTimeout(doSetTimeout, 100, i, wait);} //check again in a tenth of a second
 }
 
 function timer(){
-	//sets a half second timeout
+	//sets a 50th of a second timeout
 	setTimeout(function(){
+		//console.log(runTime);
+		if(!playback){
+			if(v.paused||v.ended) return false;
+		}
 		if(playback === true){
 			//this will be run every half second
-			var width = runTime;
-			 $("#timeline").val( Math.max(0,width));
-			runTime++;
+			var width = frame;
+		 	$("#timeline").val( Math.max(0,frame));
 			timer();
 			return false;
 		}
-	},100)
+	},500);
 }
 
 //canvas drawing
@@ -409,21 +492,86 @@ $('video').on("play",function(){
 	draw(this,context,cw,ch,filter);
 });
 
-
 //add a filter to the canvas object
 function filterdata(idata, type){
 	switch(type){
 		//applys grey tint to canvas
-		case "grey":
+		case "grayscale":
 			var data= idata.data;
 			for(var i = 0; i< data.length; i+=4){
 				var r= data[i];
 				var g = data[i+1];
 				var b = data[i+2];
-				var brightness = parseInt((r+g+b)/3);
+				var brightness = 0.2126*r + 0.7152*g + 0.0722*b;
 				data[i]=brightness;
 				data[i+1]=brightness;
 				data[i+2]=brightness;
+			}
+			idata.data = data;
+			return idata;
+		  break;
+		case "brighten":
+			var adjustment = 30;
+			var data = idata.data;
+			for(var i=0;i<data.length;i+=4){
+				data[i] += adjustment;
+				data[i+1] += adjustment;
+				data[i+2] += adjustment;
+			}
+			return idata;
+		  break;
+		case "threshold":
+			var data = idata.data;
+			var threshold = 160;
+			for(var i=0; i< data.length; i+=4){
+				var r = data[i];
+				var g = data[i+1];
+				var b = data[i+2];
+				var brightness = (0.2126*r + 0.7152*g + 0.0722*b >= threshold) ? 255:0;
+				data[i] = data[i+1] = data[i+2] = brightness
+			}
+			return idata;
+		  break;
+		case "sharpen":
+			idata = convulute(idata,[0,-1,0,-1,5,-1,0,-1,0],1);
+			return idata;
+		  break;
+		case "blur":
+			idata = convulute(idata,[1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9],1);
+			return idata;
+		  break;
+		case "depth":
+			idata = convulute(idata,[1,1,1,1,0.7,-1,-1,-1,-1],1);
+			return idata;
+		  break;
+		case "darken":
+			var adjustment = -30;
+			var data = idata.data;
+			for(var i=0;i<data.length;i+=4){
+				data[i] += adjustment;
+				data[i+1] += adjustment;
+				data[i+2] += adjustment;
+			}
+			return idata;
+		  break;
+		case "contrast":
+			return idata
+		  break;
+		case "color":
+			var data=idata.data;
+			for(var i=0;i<data.length;i+=4){
+				data[i] = 0;
+			}
+			idata.data = data;
+			return idata;
+		  break;
+		case "tint":
+			var data = idata.data;
+			for(var i=0;i<data.length;i+=4){
+				var average = (data[i] +data[i+1] +data[i+2]) /3;
+				data[i] = average;
+				data[i+1] = average+30;
+				data[i+2] = average;
 			}
 			idata.data = data;
 			return idata;
@@ -433,10 +581,61 @@ function filterdata(idata, type){
 	}
 }
 
+//this creates a convulution matrix for different types of filters.w
+var convulute = function(pixels, weights, opaque){
+	//used for temporary matrix convulution before placing on main canvas
+	var tmpCanvas = document.createElement('canvas');
+	var tmpCtx = tmpCanvas.getContext('2d');
+	var side = Math.round(Math.sqrt(weights.length));
+	var halfSide = Math.floor(side/2);
+	var src = pixels.data;
+	var sw = pixels.width;
+	var sh = pixels.height;
+
+	var w = sw;
+	var h = sh;
+	var output = tmpCtx.getImageData(0,0,w,h);
+	var dst = output.data;
+	//look through pixels in matrix
+	var alphaFac = opaque ? 1:0;
+	for(var y=0;y<h;y++){
+		for (var x=0; x<w;x++){
+			var sy = y;
+			var sx = x;
+			var dstOff = (y*w+x)*4;
+			//matrix calculation for convolution matrix
+			var r=0, g=0, b=0, a=0;
+			for (var cy=0; cy<side; cy++){
+				for (var cx=0; cx<side;cx++){
+					var scy = sy+cy-halfSide;
+					var scx = sx +cx - halfSide
+					if(scy >= 0 && scy < sh && scx >=0 && scx < sw){
+						var srcOff = (scy*sw+scx)*4;
+						var wt = weights[cy*side+cx];
+						r += src[srcOff] * wt;
+						g += src[srcOff+1] * wt;
+						b += src[srcOff+2] * wt;
+						a += src[srcOff+3] * wt;
+					}
+				}
+			}
+			dst[dstOff] = r;
+			dst[dstOff+1] = g;
+			dst[dstOff+2] = b;
+			dst[dstOff+3] = a +alphaFac*(255-a);
+		}
+	}
+	return output;
+}
+
 //draw an image onto the canvas
 function draw(v,c,w,h,filter){
-	if(v.paused||v.ended) return false;
+	//if(!((!v.paused&&!v.ended&&!playback)||(!v.ended&&playback))) return false;
+	if(!playback){
+		if(v.paused||v.ended) return false;
+	}
 	c.drawImage(v,0,0,w,h);
+	//console.log("count");
 
 	if (typeof filter === 'undefined'){
 	}else{
@@ -444,9 +643,44 @@ function draw(v,c,w,h,filter){
 		newdata = filterdata(idata,filter);
 		c.putImageData(newdata,0,0);
 	}
-	setTimeout(draw,20,v,c,w,h,filter);
+		//Creates the video from the canvas
+	if(playback){
+		frame++;
+		console.log(frame);
+		video.pause();
+		//wait for the timeout to finish before continueing
+		setTimeout(function(){
+			console.log(video.currentTime);
+			video.currentTime = video.currentTime+.02;
+			finalVideo.add(c);
+			setTimeout(draw,1000,v,c,w,h,filter);
+		},0);
+	}else{
+		setTimeout(draw,20,v,c,w,h,filter); //every 20 milliseconds(50fps) redraw the canvas
+	}
 }
 
 $(document).ready(function(){
+	//get parts of materialize to function correctly
+	$(".button-collapse").sideNav();
+	$('.modal-trigger').leanModal();
 
+	//below is for the drag effect on the canvas
+	$("#sortable").sortable({
+		stop: function(){
+			//loops through each image to find the new positioning for the JSON list
+			$.each($('.part'),function(key, value){
+				console.log(value.id);
+				callOrder[key] = value.id;
+			})
+			console.log(callOrder);
+		},
+		revert: false
+	});
+	$("#draggable").draggable({
+		connectToSortable: "#sortable",
+		helper: "clone",
+		revert: "invalid"
+	});
+	$("ul, li").disableSelection();
 });

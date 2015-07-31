@@ -1,0 +1,282 @@
+.preloader-wrapper {
+  position: fixed;
+  top: 50%;
+  right: 50%; }
+
+body {
+  background-color: white; }
+
+.nav-wrapper {
+  padding-left: 20px; }
+  .nav-wrapper #logoutBut:hover {
+    background-color: transparent; }
+  .nav-wrapper #navSearch {
+    float: right;
+    width: 200px; }
+  .nav-wrapper #navSearch:focus {
+    width: 600px; }
+  .nav-wrapper #searchHover {
+    height: 65px; }
+
+#logout {
+  font-size: 1.2rem;
+  color: #26a69a;
+  height: 40px;
+  width: 100%; }
+
+#logout:hover {
+  background-color: #EEE; }
+
+#dropdown2 {
+  width: 658px; }
+
+#profileBut {
+  width: 37px;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-left: 20px; }
+  #profileBut i {
+    line-height: 36px; }
+
+.brand-logo span {
+  font-size: 1.4rem; }
+
+.vidSection {
+  display: block;
+  max-width: 900px;
+  padding: 10px;
+  margin: 5px auto; }
+
+.video {
+  position: relative;
+  margin-bottom: 10px; }
+
+video {
+  width: 100%;
+  display: none; }
+
+#awesome {
+  display: none; }
+
+#vidCanvas {
+  background-color: ghostwhite;
+  padding-bottom: 20px;
+  width: 100%; }
+
+.controller {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding-top: 13px;
+  background-color: black;
+  overflow: hidden; }
+
+progress {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none; }
+
+#vidProgress {
+  color: red; }
+
+#vidProgress::-moz-progress-bar {
+  background: red; }
+
+#vidProgress::-webkit-progress-value {
+  background: red; }
+
+#vidProgress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  width: 100%;
+  color: red; }
+
+.Controls {
+  width: 100%;
+  height: 25px;
+  margin-bottom: 0px; }
+
+.leftControls {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 25px;
+  min-width: 100px;
+  width: 100px;
+  transition: ease-in-out 0.3s; }
+
+.leftControls:hover {
+  width: 160px; }
+
+#play {
+  margin-right: 10px;
+  color: white;
+  height: 25px;
+  font-size: 2em;
+  position: relative;
+  bottom: 11px; }
+
+#play:hover {
+  background-color: black;
+  cursor: pointer; }
+
+#record {
+  height: 25px;
+  margin-right: 10px;
+  color: white;
+  font-size: 1.5em;
+  position: relative;
+  bottom: 14px; }
+
+#record:hover {
+  background-color: black;
+  cursor: pointer; }
+
+#sound {
+  color: white;
+  font-size: 1.8em;
+  height: 25px;
+  position: relative;
+  bottom: 11px; }
+
+#volumeControl {
+  position: absolute;
+  left: 100px;
+  bottom: -3px;
+  width: 60px; }
+
+.time {
+  display: inline;
+  position: relative;
+  margin-left: 10px;
+  bottom: 8px;
+  height: 25px;
+  color: white; }
+  .time label {
+    font-size: 1em; }
+
+.timeline {
+  position: relative;
+  border: single; }
+
+#timeline {
+  position: relative;
+  display: block;
+  border: solid;
+  border-width: 1px;
+  pointer-events: none;
+  appearance: none;
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  z-index: 6; }
+
+#timeline::-webkit-progress-value {
+  background-color: rgba(51, 153, 204, 0.5); }
+
+#timeline::-webkit-progress-bar {
+  background-color: rgba(250, 244, 250, 0); }
+
+#vidProgress::-moz-progress-bar {
+  background-color: rgba(0, 244, 0, 0); }
+
+.part {
+  width: 1px;
+  height: 96px;
+  border-right: solid;
+  border-left: solid;
+  border-color: black;
+  border-width: 1px; }
+
+.videoPart {
+  position: absolute;
+  bottom: -3px;
+  left: 2px; }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  ul li {
+    float: left; }
+    ul li.ui-sortable-helper {
+      transform: rotate(7deg); }
+
+.filterList {
+  width: 100%;
+  height: 100px;
+  padding-left: 20px;
+  border: solid;
+  background-color: green; }
+  .filterList .filter {
+    font-size: 15px;
+    display: block;
+    float: left;
+    margin: 25px 12px 0px;
+    width: 45px;
+    height: 45px;
+    background-color: yellow;
+    transform: scale(1, 1);
+    transition: width 0.5s, height 0.5s, transform 0.5s ease-in-out; }
+    .filterList .filter p {
+      text-align: center;
+      position: relative;
+      bottom: 35px;
+      right: 4px; }
+  .filterList .filter:hover {
+    transform: scale(2, 2); }
+  .filterList .direction {
+    height: 100%;
+    width: 20px;
+    text-align: middle;
+    background-color: rgba(200, 200, 200, 0.3); }
+
+#grayscale {
+  background-image: url("http://104.131.218.159/design/filters/Grayscale.png");
+  background-size: cover; }
+
+#brighten {
+  background-image: url("http://104.131.218.159/design/filters/Brighten.png");
+  background-size: cover; }
+
+#threshold {
+  background-image: url("http://104.131.218.159/design/filters/Threshold.png");
+  background-size: cover; }
+
+#sharpen {
+  background-image: url("http://104.131.218.159/design/filters/Sharpen.png");
+  background-size: cover; }
+
+#blur {
+  background-image: url("http://104.131.218.159/design/filters/Blur.png");
+  background-size: cover; }
+
+#depth {
+  background-image: url("http://104.131.218.159/design/filters/None.png");
+  background-size: cover; }
+
+#darken {
+  background-image: url("http://104.131.218.159/design/filters/Darken.png");
+  background-size: cover; }
+
+#contrast {
+  background-image: url("http://104.131.218.159/design/filters/None.png");
+  background-size: cover; }
+
+#tint {
+  background-image: url("http://104.131.218.159/design/filters/Tint.png");
+  background-size: cover; }
+
+#color {
+  background-image: url("http://104.131.218.159/design/filters/Color.png");
+  background-size: cover; }
+
+#undefined {
+  background-image: url("http://104.131.218.159/design/filters/None.png");
+  background-size: cover; }
+
+/*# sourceMappingURL=postPage.css.map */
