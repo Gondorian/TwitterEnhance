@@ -124,7 +124,7 @@ body {
   max-width: 600px;
   background-color: white;
   border-radius: 2px;
-  box-shadow: 6px 6px 20px black; }
+  box-shadow: 1px 1px 1px black; }
   .card.centerd {
     float: none;
     display: block;

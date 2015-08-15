@@ -41,11 +41,54 @@ body {
 .brand-logo span {
   font-size: 1.4rem; }
 
+.navButton {
+  position: fixed;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  z-index: 50;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); }
+  .navButton i {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 40px;
+    color: white;
+    z-index: 50; }
+
+#leftPan {
+  left: 30px;
+  top: 300px; }
+
+#rightPan {
+  right: 30px;
+  top: 300px; }
+
 .vidSection {
   display: block;
   max-width: 900px;
   padding: 10px;
   margin: 5px auto; }
+
+.section {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 1000px;
+  padding: 10px;
+  margin: 5px auto;
+  background-color: black;
+  transition: all 1s ease-in-out;
+  transform: translateX(0px); }
+  .section.offScreen {
+    transform: translate(-2000px); }
+
+#fileSection {
+  z-index: 11; }
+
+#renderSection {
+  z-index: 10; }
 
 .video {
   position: relative;
@@ -56,10 +99,48 @@ video {
   display: none; }
 
 #awesome {
-  display: none; }
+  display: block; }
+
+.image {
+  display: block;
+  margin: auto; }
+
+.textField {
+  display: block;
+  margin: auto;
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: white; }
+
+#selector {
+  display: block;
+  margin: auto;
+  width: 600px;
+  padding-left: 100px; }
+
+.social {
+  position: relative;
+  left: 100px;
+  vertical-align: middle;
+  background: no-repeat url("//s.ytimg.com/yts/imgbin/www-sharing-vflHLVWBN.webp") 0 -861px;
+  background-size: auto;
+  width: 32px;
+  height: 32px;
+  margin: -1px; }
+
+#facebook {
+  background-position: 0 -861px; }
+
+#twitter {
+  background-position: 0 -348px; }
+
+#google {
+  background-position: 0 -276px; }
 
 #vidCanvas {
   background-color: ghostwhite;
+  box-shadow: 0px 5px 10px gray;
   padding-bottom: 20px;
   width: 100%; }
 
@@ -210,8 +291,7 @@ ul {
   width: 100%;
   height: 100px;
   padding-left: 20px;
-  border: solid;
-  background-color: green; }
+  border: solid; }
   .filterList .filter {
     font-size: 15px;
     display: block;
@@ -223,6 +303,7 @@ ul {
     transform: scale(1, 1);
     transition: width 0.5s, height 0.5s, transform 0.5s ease-in-out; }
     .filterList .filter p {
+      color: white;
       text-align: center;
       position: relative;
       bottom: 35px;
@@ -236,47 +317,47 @@ ul {
     background-color: rgba(200, 200, 200, 0.3); }
 
 #grayscale {
-  background-image: url("http://104.131.218.159/design/filters/Grayscale.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Grayscale.png");
   background-size: cover; }
 
 #brighten {
-  background-image: url("http://104.131.218.159/design/filters/Brighten.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Brighten.png");
   background-size: cover; }
 
 #threshold {
-  background-image: url("http://104.131.218.159/design/filters/Threshold.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Threshold.png");
   background-size: cover; }
 
 #sharpen {
-  background-image: url("http://104.131.218.159/design/filters/Sharpen.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Sharpen.png");
   background-size: cover; }
 
 #blur {
-  background-image: url("http://104.131.218.159/design/filters/Blur.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Blur.png");
   background-size: cover; }
 
 #depth {
-  background-image: url("http://104.131.218.159/design/filters/None.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/None.png");
   background-size: cover; }
 
 #darken {
-  background-image: url("http://104.131.218.159/design/filters/Darken.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Darken.png");
   background-size: cover; }
 
 #contrast {
-  background-image: url("http://104.131.218.159/design/filters/None.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/None.png");
   background-size: cover; }
 
 #tint {
-  background-image: url("http://104.131.218.159/design/filters/Tint.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Tint.png");
   background-size: cover; }
 
 #color {
-  background-image: url("http://104.131.218.159/design/filters/Color.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/Color.png");
   background-size: cover; }
 
 #undefined {
-  background-image: url("http://104.131.218.159/design/filters/None.png");
+  background-image: url("http://192.168.2.19:3000/design/filters/None.png");
   background-size: cover; }
 
 /*# sourceMappingURL=postPage.css.map */

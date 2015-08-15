@@ -121,8 +121,6 @@ router.get('/video', function (req, res, next) {
     });
   });
 
->>>>>>> f1065d584f6fc5d41b4a9c382422a15877214be4
-
 
   // request to logout the current user
   router.post('/logout', function(req, res, next) {
