@@ -7,7 +7,7 @@ var video45 = nano.use('video45');
 
 
 
-exports.insertNewUser = function(fullName, email, userName, password) {
+exports.insertNewUser = function(fullName, email, userName, password, callback) {
   video45.insert({
     "type": "user",
     "fullName": fullName,
@@ -21,8 +21,14 @@ exports.insertNewUser = function(fullName, email, userName, password) {
     "profileColour": "rgb(255,0,0)",
     "profileDescription": "Welcome to my profile! Please follow me. I have stage 3 cancer and the doctor said if I get 10k followers he can do the operation. 1 follow = 1 prayer."
   }, function(err, body) {
-    if (err)
+    if (err){
       console.log('Error: ' + err);
+      callback(false);
+    }
+    else{
+      callback(true);
+    }
+
 
   });
 };

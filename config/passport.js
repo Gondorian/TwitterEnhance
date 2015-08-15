@@ -1,5 +1,7 @@
+//var ip = "104.131.218.159";
+var ip = 'localhost:3000';
 var Account = require('../models/account.js');
-module.exports = function(passport, LocalStrategy) {
+module.exports = function(passport, LocalStrategy, FacebookStrategy, TwitterStrategy) {
 
   passport.use(new LocalStrategy({
       usernameField: 'email',
@@ -28,6 +30,28 @@ module.exports = function(passport, LocalStrategy) {
     }
   ));
 
+  passport.use(new FacebookStrategy({
+      clientID: '1674138302874457',
+      clientSecret: '72ba3c0d8008aab4beade37d0c557bb6',
+      callbackURL: "http://"+ip+"/users/auth/facebook/callback"
+    },
+    function(accessToken, refreshToken, profile, done) {
+      console.log('Called facebook authenticate.');
+      if (profile.emails) {
+        Account.insertNewUser(profile.displayName, profile.emails[0].value);
+      } else {
+        Account.insertNewUser(profile.displayName, 'no email', profile.id, profile.provider, function(result) {
+          if (result) {
+            done(null, profile.id);
+          }
+        });
+      }
+    }
+  ));
+
+  
+
+
   //determines what gets stored in the session
   passport.serializeUser(function(user, done) {
     console.log('Called serialize. Serializing: ' + user);
@@ -44,5 +68,6 @@ module.exports = function(passport, LocalStrategy) {
     };
     done(null, user);
   });
+
   return passport;
 };
