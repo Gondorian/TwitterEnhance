@@ -65,7 +65,7 @@ module.exports = function(passport, express) {
   });
 
   router.get('/test', function(req, res, next) {
-
+    res.render('facebookRegister.hjs');
   });
 
   router.get('/test1', function(req, res, next) {
