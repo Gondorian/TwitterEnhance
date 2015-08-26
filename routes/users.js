@@ -75,7 +75,6 @@ module.exports = function(passport, express) {
     } else {
       res.send('you are not authenticated!');
     }
-
   });
 
 
@@ -94,6 +93,10 @@ router.get('/test1', function (req, res, next) {
 
 router.get('/video', function (req, res, next) {
   res.render('postPage.hjs');
+});
+
+router.get('/feed', function (req, res, next) {
+  res.render('mainPage.hjs');
 });
 
   // Request for registering a user.

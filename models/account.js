@@ -2,7 +2,7 @@
 
 //Database
 
-var nano = require('nano')('http://video45.iriscouch.com:5984');
+var nano = require('nano')('http://localhost:5984');
 var video45 = nano.use('video45');
 
 

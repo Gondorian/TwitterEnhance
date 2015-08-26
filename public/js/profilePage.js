@@ -10,19 +10,14 @@ var data = [
 
 var resultData=[];
 
-var comments=[
-	{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
-	{poster: "Paul Azevedo", text: "This anime wasn't too amazing"},
-	{poster: "Walter Cunningham", text: "This artist was rather skillful"}
-];
+var comments=[];
 
 var Comment = React.createClass({
 	render: function(){
 		return(
 			<div className="commentBox">
-				<p id="poster">{this.props.poster}</p>
+				<a id="poster">{this.props.poster}</a>
 				<p id="comment">{this.props.comment}</p>
-				<hr />
 			</div>
 		);
 	}
@@ -31,28 +26,24 @@ var Comment = React.createClass({
 //below is the comment modal react element
 var CommentModal = React.createClass({
 	getInitialState: function(){
-		return{comments:comments};
+		return{comments:this.props.comments};
 	},
 	loadCommentsFromServer: function(){
-		this.setState({comments: comments});
+
+		this.setState({comments: this.props.comments});
 	},
 	componentDidMount: function(){
 		this.loadCommentsFromServer
 	},
 	render:function(){
-		var commentNodes = this.state.comments.map(function(comm){
+		var commentNodes = this.props.comments.map(function(comm){
 			return(
 				<Comment poster={comm.poster} comment={comm.text} />
 			);
 		});
 		return(
-		    <div id="commentModal" className="modal modal-fixed-footer">
-		    	<div className="modal-content">
+		    <div id="commentGroup">
 		    		{commentNodes}
-		     	</div>
-		     	<div className="modal-footer">
-		        	<a href="#!" className="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
-		     	</div>
 		    </div>
 	    );
 	}
@@ -62,6 +53,7 @@ var CommentModal = React.createClass({
 //all copies as this is the template used by vidList
 var Videos = React.createClass({
 	clickHandeler: function(){
+		/*
 		React.render(<CommentModal />,document.getElementById("commentMod"));
 		//the options for the modal
 		$('#commentModal').openModal({
@@ -73,6 +65,17 @@ var Videos = React.createClass({
 				var result = React.unmountComponentAtNode(document.getElementById("commentMod"));
 	      	}
     	});
+		*/
+		console.log("inside the click handeler for videos");
+		var comments=[
+			{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
+			{poster: "Paul Azevedo", text: "This anime wasn't too amazing"},
+			{poster: "Walter Cunningham", text: "This artist was rather skillful"}
+		];
+		this.setState({comments : <CommentModal comments={comments} />});
+	},
+	getInitialState: function(){
+		return({comments : <CommentModal comments={comments}/>});
 	},
 	render: function(){
 		return(
@@ -92,11 +95,12 @@ var Videos = React.createClass({
 					<div className="card-content inline-text">
 						<a href="#"><i className="small mdi-action-thumb-up prefix" /> {this.props.likes} likes</a>
 						<a href="#"><i className="small mdi-av-repeat" /> {this.props.reposts} reposts </a>
-						<a href="#"><i className="small mdi-action-thumb-up prefix" />{this.props.shares} share </a>
+						<a href="#"><i className="small mdi-file-cloud prefix" />{this.props.shares} share </a>
 					</div>
 					<hr />
 					<div className="card-content">
 						<a id="viewComments" onClick={this.clickHandeler}>{this.props.comments} comments</a>
+						{this.state.comments}
 						<form>
 							 <div className="row">
         						<div className="input-field col s12">
