@@ -520,6 +520,26 @@ React.render(
 *     AJAX CALLS    *
 ********************/
 
+//get videolist
+function getPost(name){
+	$.ajax({
+			url: "http://"+ip+"/user/loadVideos&userName="+name,
+			type: 'GET',
+			success: function(response){
+				//user has posted something
+				console.log(response);
+				if(response.length===0){
+					console.log("nothing Returned");
+				}
+			},error: function(response){
+				//user hasn't posted anything
+				console.log("failed");
+				console.log(response);
+			}
+		})
+	})
+}
+
 //refresh page information
 function refreshInfo(){
 	console.log(info[7]);

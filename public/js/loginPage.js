@@ -151,7 +151,7 @@ $('#loginForm').submit(function(){
         }
       },
       error: function(response){
-        alert('not successful ' + response);
+        console.log(response);
       }
     });
     return false;
@@ -182,7 +182,7 @@ $('#registration').submit(function(){
         }
       },
       error: function(response){
-        alert('not successful ' + {response});
+        console.log(response);
       }
     });
     return false;

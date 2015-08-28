@@ -511,6 +511,7 @@ window.Whammy = (function(){
 			image: frame,
 			duration: duration || this.duration
 		})
+		//console.log(this.frames);
 	}
 
 	WhammyVideo.prototype.compile = function(outputAsArray){

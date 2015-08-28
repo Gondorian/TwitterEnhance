@@ -140,6 +140,12 @@ video {
 #google {
   background-position: 0 -276px; }
 
+#submit {
+  position: relative;
+  left: 100px;
+  vertical-align: middle;
+  margin: -1px; }
+
 #vidCanvas {
   background-color: ghostwhite;
   box-shadow: 0px 5px 10px gray;
@@ -301,7 +307,7 @@ ul {
     margin: 25px 12px 0px;
     width: 45px;
     height: 45px;
-    background-color: yellow;
+    background-color: white;
     transform: scale(1, 1);
     transition: width 0.5s, height 0.5s, transform 0.5s ease-in-out; }
     .filterList .filter p {
@@ -317,6 +323,9 @@ ul {
     width: 20px;
     text-align: middle;
     background-color: rgba(200, 200, 200, 0.3); }
+
+#titleField {
+  color: ghostWhite; }
 
 #grayscale {
   background-image: url("http://192.168.2.19:3000/design/filters/Grayscale.png");

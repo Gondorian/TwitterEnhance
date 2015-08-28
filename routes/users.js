@@ -1,6 +1,6 @@
 var Account = require('../models/account'); //for testing purposes
 var UserController = require('../controllers/UserController');
-
+var util = require('util');
 module.exports = function(passport, express) {
   var router = express.Router();
 
@@ -83,8 +83,11 @@ module.exports = function(passport, express) {
   //POST REQUESTS
   //==============
   //test post request
-  router.post('/test3', passport.authenticate('local'), function(req, res, next) {
-    res.send('Authenticated successfully!');
+  router.post('/test3', function(req, res, next) {
+    console.log("info captured below");
+    console.log(req.body);
+    res.send(req.body);
+    console.log(util.inspect(req.body, {showHidden: false, depth: null}));
   });
 
 router.get('/test1', function (req, res, next) {

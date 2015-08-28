@@ -270,11 +270,15 @@ var Content = React.createClass({
 					<FilterList />
 				</div>
 				<div className="section">
-    				<video id="awesome" width="500" height="500" controls loop src=""></video>
     				<div className="vidSection">
+    					<form id="vidInfo">
+    						<input id="titleField" className="vidSection" type="text" placeholder="Video Title"/>
+    					</form>
+    					<video id="awesome" width="500" height="500" controls loop src=""></video>
     					<a id="twitter" href="https://twitter.com/intent/tweet?text='A video posted from Video45' via @'travis' &url=http://video45.com " className="social btn-flat"><i className="fa fa-twitter"></i></a>
 						<a id="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://video45.com" className="social btn-flat"><i className="fa fa-facebook"></i></a>
 						<a id="google" href="https://plus.google.com/share?url=http://video45.com" className="social btn-flat"><i className="fa fa-google-plus"></i></a>
+						<a id="submit" className="btn waves-light waves-effect" onClick={post}>POST</a>
 					</div>
 				</div>
 			</div>
@@ -310,6 +314,27 @@ function refreshInfo(){
     return false;
 };
 
+//create the post and save to the server.
+function post(info){
+	var data = new FormData();
+	data.append('file', info);
+	$.ajax({
+        url : "http://"+ip+"/users/test3",
+        type: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          console.log("boa!");
+          console.log(response)
+        },    
+        error: function(response) {
+          console.log("not so boa!");
+          console.log(response);
+
+        }
+    });
+}
 
 /*****************
 *   Javascript   *
@@ -480,6 +505,8 @@ function checkEnd(wait){
 		setTimeout(function(){
 			//finalize the video
 			var output = finalVideo.compile();
+			console.log(output);
+			post(output);
 			var url = webkitURL.createObjectURL(output);
 			document.getElementById('awesome').src = url;
 			document.getElementById('link').innerHTML = url;
@@ -509,6 +536,7 @@ function timer(){
 //canvas drawing
 $('#video').on("play",function(){
 	console.log("video playing");
+	var vid = document.getElementById("video");
 	var can = this;
 	draw(can,context,cw,ch,filter);
 });
@@ -657,7 +685,6 @@ function renderFrame(context, frame){
 
 //draw an image onto the canvas
 function draw(v,c,w,h,filter){
-	v.play();
 	if(!playback){
 		if(v.paused||v.ended) return false;
 	}
@@ -672,12 +699,14 @@ function draw(v,c,w,h,filter){
 	}
 		//Creates the video from the canvas
 	if(playback){
-		v.pause();
+		setTimeout(draw,20,v,c,w,h,filter); //recall this function
 		frame++;
-		setTimeout(renderFrame, 10000, c, frame);
+		var canvasInfo = c.canvas.toDataURL('image/webp', 0.8);
+		//console.log(c);
+		//console.log(canvasInfo.slice(23));
+		setTimeout(renderFrame, 10000, canvasInfo, frame);
 		watchEdit();
 		//video.currentTime = video.currentTime+.02;
-		setTimeout(draw,20,v,c,w,h,filter); //recall this function
 	}else{
 		setTimeout(draw,20,v,c,w,h,filter); //every 20 milliseconds(50fps) redraw the canvas
 	}
