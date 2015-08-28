@@ -1,5 +1,6 @@
 var Account = require('../models/account');
 var elasticsearch = require('elasticsearch');
+var fs = require('fs');
 var client = new elasticsearch.Client({
   host: '104.131.218.159:9200',
   log: 'trace'
@@ -134,6 +135,29 @@ exports.createPost = function(req, callback) {
   Account.insertNewPost(postTitle, postDescription, vidURL, req.user.userName, date, function(success){
     callback(success);
   });
+};
+
+exports.addComment = function(req, callback){
+  var comment = req.body.comment;
+  var userName = req.user.userName;
+
+};
+
+exports.saveRecording = function(req, res) {
+  console.log("Saving Recording.");
+  res.send(req.body.blob);
+  /*
+  var buf = new Buffer(req.body.blob, 'base64'); // decode
+  console.log("Got the buffer. Writing to file.");
+  fs.writeFile("test.txt", req.body, function(err) {
+    if(err) {
+      console.log("Couldnt write to file: ", err);
+    } else {
+      console.log('Writen to file successfully!');
+      return res.json({'status': 'success'});
+    }
+  });
+  */
 };
 
 exports.searchName = function(req, callback) {

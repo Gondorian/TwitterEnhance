@@ -1,0 +1,33 @@
+body {
+  margin-right: 10%;
+  margin-left: 10%;
+  background-color: ghostwhite; }
+
+.form {
+  display: block;
+  width: 320px;
+  margin: auto;
+  padding: 10px;
+  border-radius: 1px;
+  margin-bottom: 20px; }
+  .form h3 {
+    margin-top: 5px;
+    padding-left: 10px;
+    font-weight: 100;
+    font-size: 20px; }
+  .form a {
+    margin-left: 20px;
+    text-decoration: none; }
+  .form input {
+    margin-bottom: 0px; }
+  .form .row {
+    margin-bottom: 0px; }
+  .form.center {
+    float: none;
+    display: block;
+    margin: auto; }
+
+input[type=text], input[type=password] {
+  height: 2rem; }
+
+/*# sourceMappingURL=facebookRegister.css.map */

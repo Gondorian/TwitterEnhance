@@ -108,7 +108,7 @@ module.exports = function(passport, express) {
   //==============
   //test post request
   router.post('/test3', function(req, res, next) {
-    console.log(req.body.info);
+    UserController.saveRecording(req, res);
   });
 
 

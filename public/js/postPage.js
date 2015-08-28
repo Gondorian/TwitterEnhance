@@ -1,4 +1,4 @@
-var ip = "192.168.2.19:3000";
+var ip = "localhost:3000";
 //var ip = "104.131.218.159";
 
 var callOrder = [] //This is the order that video parts should be called in
@@ -270,11 +270,15 @@ var Content = React.createClass({
 					<FilterList />
 				</div>
 				<div className="section">
-    				<video id="awesome" width="500" height="500" controls loop src=""></video>
     				<div className="vidSection">
+    					<form id="vidInfo">
+    						<input id="titleField" className="vidSection" type="text" placeholder="Video Title"/>
+    					</form>
+    					<video id="awesome" width="500" height="500" controls loop src=""></video>
     					<a id="twitter" href="https://twitter.com/intent/tweet?text='A video posted from Video45' via @'travis' &url=http://video45.com " className="social btn-flat"><i className="fa fa-twitter"></i></a>
 						<a id="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://video45.com" className="social btn-flat"><i className="fa fa-facebook"></i></a>
 						<a id="google" href="https://plus.google.com/share?url=http://video45.com" className="social btn-flat"><i className="fa fa-google-plus"></i></a>
+						<a id="submit" className="btn waves-light waves-effect" onClick={post}>POST</a>
 					</div>
 				</div>
 			</div>
@@ -310,6 +314,66 @@ function refreshInfo(){
     return false;
 };
 
+var blobToBase64 = function(blob, cb) {
+  var reader = new FileReader();
+  reader.onload = function() {
+    var dataUrl = reader.result;
+    var base64 = dataUrl.split(',')[1];
+    cb(base64);
+  };
+  reader.readAsDataURL(blob);
+};
+
+function base64ToBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || 'video/webm';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
+//create the post and save to the server.
+function post(info) {
+  blobToBase64(info, function(base64) { // encode
+    var update = {
+      'blob': base64
+    };
+
+    $.ajax({
+      url: "http://" + ip + "/users/test3",
+      type: 'POST',
+      data: update,
+      success: function(response) {
+				var blob = base64ToBlob(response);
+				console.log(blob);
+				var url = webkitURL.createObjectURL(blob);
+				console.log(url);
+      },
+      error: function(response) {
+        console.log(response);
+        alert('not successful ' + {
+          response
+        });
+      }
+    });
+  });
+}
 
 /*****************
 *   Javascript   *
@@ -480,6 +544,8 @@ function checkEnd(wait){
 		setTimeout(function(){
 			//finalize the video
 			var output = finalVideo.compile();
+			console.log(output);
+			post(output);
 			var url = webkitURL.createObjectURL(output);
 			document.getElementById('awesome').src = url;
 			document.getElementById('link').innerHTML = url;
@@ -509,6 +575,7 @@ function timer(){
 //canvas drawing
 $('#video').on("play",function(){
 	console.log("video playing");
+	var vid = document.getElementById("video");
 	var can = this;
 	draw(can,context,cw,ch,filter);
 });
@@ -657,7 +724,6 @@ function renderFrame(context, frame){
 
 //draw an image onto the canvas
 function draw(v,c,w,h,filter){
-	v.play();
 	if(!playback){
 		if(v.paused||v.ended) return false;
 	}
@@ -672,12 +738,14 @@ function draw(v,c,w,h,filter){
 	}
 		//Creates the video from the canvas
 	if(playback){
-		v.pause();
+		setTimeout(draw,20,v,c,w,h,filter); //recall this function
 		frame++;
-		setTimeout(renderFrame, 10000, c, frame);
+		var canvasInfo = c.canvas.toDataURL('image/webp', 0.8);
+		//console.log(c);
+		//console.log(canvasInfo.slice(23));
+		setTimeout(renderFrame, 10000, canvasInfo, frame);
 		watchEdit();
 		//video.currentTime = video.currentTime+.02;
-		setTimeout(draw,20,v,c,w,h,filter); //recall this function
 	}else{
 		setTimeout(draw,20,v,c,w,h,filter); //every 20 milliseconds(50fps) redraw the canvas
 	}

@@ -51,7 +51,7 @@ exports.insertFacebookUser = function(fullName, email, userName, facebookID, cal
       callback(true);
     }
   });
-}
+};
 
 exports.insertNewPost = function(title, description, vidURL, userName, date, callback) {
   video45.insert({
