@@ -229,20 +229,22 @@ var Content = React.createClass({
 	},
 	viewClick: function(){
 		console.log("view was clicked ")
-		watchEdit();
+		playback = true;
+		timer();
+		video.play(); //start playing for the render
 	},
 	submitClick: function(){
 		//compile the video and send to the server, send to filters page
 	},
 	nextClick: function(){
 		//the navigation button was clicked for the next page to come in
-		console.log($(".section"));
-		console.log("depth: " + viewDepth);
+		if(viewDepth > 1) return;
 		$(".section:eq("+viewDepth+")").addClass("offScreen");
 		viewDepth++;
 	},
 	lastClick: function(){
 		//the navigation button was clicked or the last page to come in
+		if(viewDepth < 1) return;
 		viewDepth--;
 		$(".section:eq("+viewDepth+")").removeClass("offScreen");
 	},
@@ -452,20 +454,18 @@ var playback = false;
 function watchEdit(){
 	//change video to edited video and start from the beginning
 	//load symbol should appear ontop of video
-	video.play();
-	console.log(canvasList);
 	if(!recording){
 		playback = true;
-		timer();
 		var wait = 0;
 		for(var i=0;i<canvasList.length;i++){
-			//create the timeOuts for each part
-			doSetTimeout(i, wait);
-			console.log("wait: " + wait);
+			//check each section for change
+			if(frame*0.02>wait&&frame*0.02<=wait+0.02){
+				console.log("changing video location");
+				video.currentTime = canvasList[callOrder[i]].startTime;
+			}
 			wait = wait+canvasList[callOrder[i]].endTime-canvasList[callOrder[i]].startTime;
 		}
 		//waits until video is done with playback
-		console.log("first wait: " + wait);
 		checkEnd(wait);
 	}else{alert("Please stop recording before viewing");}
 }
@@ -475,28 +475,20 @@ function checkEnd(wait){
 	if(frame*0.02>wait){
 		//stop rendering video
 		console.log("creating final version");
-		//pause the video when finished
+		//pause the video when finis
 		playback = false;
-		//finalize the video
-		var output = finalVideo.compile();
-		var url = webkitURL.createObjectURL(output);
-		document.getElementById('awesome').src = url;
-		document.getElementById('link').innerHTML = url;
+		setTimeout(function(){
+			//finalize the video
+			var output = finalVideo.compile();
+			var url = webkitURL.createObjectURL(output);
+			document.getElementById('awesome').src = url;
+			document.getElementById('link').innerHTML = url;
+			video.pause();
+		},10000)
 	}
-	else setTimeout(checkEnd,200, wait); //recheck if weve rendered enough video
 }
 
-//allows the timeout to function without a run on the memory
-//sets when each section should start in the video.
-function doSetTimeout(i, wait){
-	if(frame*0.02>wait){ //if the frames have passed for the time
-		console.log("changing video location");
-		video.currentTime = canvasList[callOrder[i]].startTime;
-		return false;
-	}
-	else{ setTimeout(doSetTimeout, 100, i, wait);} //check again in a tenth of a second
-}
-
+//This controls the blue progress bar tha lies overtop the canvas list
 function timer(){
 	//sets a 50th of a second timeout
 	setTimeout(function(){
@@ -511,11 +503,11 @@ function timer(){
 			timer();
 			return false;
 		}
-	},500);
+	},20);
 }
 
 //canvas drawing
-$('video').on("play",function(){
+$('#video').on("play",function(){
 	console.log("video playing");
 	var can = this;
 	draw(can,context,cw,ch,filter);
@@ -657,9 +649,15 @@ var convulute = function(pixels, weights, opaque){
 	return output;
 }
 
+//acts as a buffer for context information
+function renderFrame(context, frame){
+	console.log("saving frame" + frame);
+	finalVideo.add(context);
+}
+
 //draw an image onto the canvas
 function draw(v,c,w,h,filter){
-	//if(!((!v.paused&&!v.ended&&!playback)||(!v.ended&&playback))) return false;
+	v.play();
 	if(!playback){
 		if(v.paused||v.ended) return false;
 	}
@@ -674,20 +672,17 @@ function draw(v,c,w,h,filter){
 	}
 		//Creates the video from the canvas
 	if(playback){
+		v.pause();
 		frame++;
-		console.log(frame);
-		video.pause();
-		//wait for the timeout to finish before continueing
-		setTimeout(function(){
-			console.log(video.currentTime);
-			video.currentTime = video.currentTime+.02;
-			finalVideo.add(c);
-			setTimeout(draw,1000,v,c,w,h,filter);
-		},0);
+		setTimeout(renderFrame, 10000, c, frame);
+		watchEdit();
+		//video.currentTime = video.currentTime+.02;
+		setTimeout(draw,20,v,c,w,h,filter); //recall this function
 	}else{
 		setTimeout(draw,20,v,c,w,h,filter); //every 20 milliseconds(50fps) redraw the canvas
 	}
 }
+
 
 $(document).ready(function(){
 	//get parts of materialize to function correctly

@@ -10,7 +10,7 @@ module.exports = function(passport, LocalStrategy, FacebookStrategy, TwitterStra
     },
     function(username, password, done) {
       var email = username;
-      console.log('Called Authenticate function.');
+      console.log('Called Local Authenticate function.');
       //authenticate the user here
 
       Account.checkCredentials(email, password, function(exists) {
@@ -23,7 +23,7 @@ module.exports = function(passport, LocalStrategy, FacebookStrategy, TwitterStra
             };
             done(null, user);
           });
-        } else { //else callback with false
+        } else {
           console.log('Account does not exist');
           done(null, false);
         }

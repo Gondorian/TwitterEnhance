@@ -69,9 +69,7 @@ module.exports = function(passport, express) {
   });
 
   router.get('/test', function(req, res, next) {
-    Account.findFacebookUser('test', function(userName) {
-      res.send('Call back was answered: ' + userName);
-    });
+    res.render('facebookRegister.hjs');
   });
 
   router.get('/test1', function(req, res, next) {
@@ -81,11 +79,26 @@ module.exports = function(passport, express) {
     } else {
       res.send('you are not authenticated!');
     }
-
   });
 
   router.get('/video', function(req, res, next) {
     res.render('postPage.hjs');
+  });
+
+  router.get('/loadVideos', function(req, res, next) {
+    if (UserController.isLoggedIn(req)) {
+      if (req.query.userName === 'refSessionID') { //if request is for current user
+        UserController.getUserVideos(req.user.userName, function(results) {
+
+        });
+      } else {
+        UserController.getUserVideos(req.query.userName, function(results) {
+
+        });
+      }
+    } else {
+      res.send('Authentication Error. Make sure you are logged in.');
+    }
   });
 
 
@@ -94,11 +107,15 @@ module.exports = function(passport, express) {
   //POST REQUESTS
   //==============
   //test post request
-  router.post('/test3', passport.authenticate('local'), function(req, res, next) {
-    res.send('Authenticated successfully!');
+  router.post('/test3', function(req, res, next) {
+    console.log(req.body.info);
   });
 
 
+
+  router.get('/feed', function(req, res, next) {
+    res.render('mainPage.hjs');
+  });
 
   // Request for registering a user.
   router.post('/register', function(req, res, next) {
@@ -173,6 +190,14 @@ module.exports = function(passport, express) {
     }
   });
 
+  router.post('/comment', function(req, res, next){
+    if(UserController.isLoggedIn(req)){
+      UserController.addComment(req, function(success){
+
+      });
+    }
+  });
+
   router.post('/updateProfile', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       UserController.updateProfile(req, function(msg) {
@@ -186,14 +211,17 @@ module.exports = function(passport, express) {
 
   router.post('/createPost', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
-      UserController.createPost(req, function() {
-
+      UserController.createPost(req, function(success) {
+        if (success) {
+          res.send('Success!');
+        } else {
+          res.send('Unable to create the video. Please try again later.');
+        }
       });
     } else {
       res.send('Not logged in!');
     }
   });
-
   return router;
 
 };

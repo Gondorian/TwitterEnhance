@@ -83,6 +83,9 @@ body {
     border-color: #7cea57;
     background-color: transparent; }
 
+.card hr {
+  display: none; }
+
 .profilePic {
   display: block;
   width: 100px;
@@ -155,9 +158,11 @@ body {
   width: 100%;
   height: 535px; }
 
-#comment {
-  padding: 0.6rem;
-  max-width: 90%; }
+.commentBox {
+  margin-top: 10px; }
+  .commentBox #comment {
+    margin-top: 3px;
+    margin-bottom: 5px; }
 
 .card .card-content a {
   margin-right: 30px;

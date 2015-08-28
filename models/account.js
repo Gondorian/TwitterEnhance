@@ -53,6 +53,27 @@ exports.insertFacebookUser = function(fullName, email, userName, facebookID, cal
   });
 }
 
+exports.insertNewPost = function(title, description, vidURL, userName, date, callback) {
+  video45.insert({
+    "type": "post",
+    "title": title,
+    "description": description,
+    "vidURL": vidURL,
+    "user": userName,
+    "numberOfLikes": 0,
+    "numberOfComments": 0,
+    "numberOfShares": 0,
+    "date": date
+  }, function(err, body) {
+    if (err) {
+      console.log('Error in insertFacebookUser: ' + err);
+      callback(false);
+    } else {
+      callback(true);
+    }
+  });
+};
+
 //check if credentials match to ones in database (when loggin in)
 exports.checkCredentials = function(email, password, callback) {
   console.log('Called checkCredentials.');
@@ -67,6 +88,7 @@ exports.checkCredentials = function(email, password, callback) {
         }
       });
     } else {
+      console.log('Check Credentials returned no rows! Error: ' + err);
       callback(false);
     }
 
@@ -252,9 +274,7 @@ exports.updateProfile = function(userName, description, profilePic, fullName, pr
   });
 };
 
-exports.createPost = function() {
 
-};
 
 exports.searchName = function(searchTerm, callback) {
   video45.view('user', 'search', function(err, body) {

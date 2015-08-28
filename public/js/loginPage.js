@@ -72,7 +72,7 @@ var RegisterBox = React.createClass({
       <div className="row">
         <div className="registerBox  col s12">
         <form id = "registration" className="form">
-        <h3><b>New to Video45?</b> Sign up</h3><hr />
+        
           <div className="row">
             <div className="input-field col s12">
               <input type="text" id="fullName" name="fullName" /><br/>
