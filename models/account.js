@@ -2,7 +2,7 @@
 
 //Database
 
-var nano = require('nano')('http://video45.iriscouch.com:5984');
+var nano = require('nano')('http://localhost:5984');
 var video45 = nano.use('video45');
 
 
@@ -21,28 +21,55 @@ exports.insertNewUser = function(fullName, email, userName, password, callback) 
     "profileColour": "rgb(255,0,0)",
     "profileDescription": "Welcome to my profile! Please follow me. I have stage 3 cancer and the doctor said if I get 10k followers he can do the operation. 1 follow = 1 prayer."
   }, function(err, body) {
-    if (err){
+    if (err) {
       console.log('Error: ' + err);
       callback(false);
-    }
-    else{
+    } else {
       callback(true);
     }
-
-
   });
 };
+
+exports.insertFacebookUser = function(fullName, email, userName, facebookID, callback){
+  video45.insert({
+    "type": "user",
+    "fullName": fullName,
+    "email": email,
+    "userName": userName,
+    "facebookID": facebookID,
+    "numberOfPosts": 0,
+    "numberOfFollowers": 0,
+    "numberOfFollowing": 0,
+    "profilePic": "design/no-profile-img.gif",
+    "profileColour": "rgb(255,0,0)",
+    "profileDescription": "Hey! Welcome to my profile!"
+  }, function(err, body) {
+    if (err) {
+      console.log('Error in insertFacebookUser: ' + err);
+      callback(false);
+    } else {
+      callback(true);
+    }
+  });
+}
 
 //check if credentials match to ones in database (when loggin in)
 exports.checkCredentials = function(email, password, callback) {
   console.log('Called checkCredentials.');
-  video45.view('user', 'credentials', {keys: [email]}, function(err, body) { //key = email, value = password
+  video45.view('user', 'credentials', {
+    keys: [email]
+  }, function(err, body) { //key = email, value = password
     var found = false;
-    body.rows.forEach(function(doc) { //for each row in the view check for the email and username
-      if (doc.key == email && doc.value == password) {
-        found = true;
-      }
-    });
+    if (!err) {
+      body.rows.forEach(function(doc) { //for each row in the view check for the email and username
+        if (doc.key == email && doc.value == password) {
+          found = true;
+        }
+      });
+    } else {
+      callback(false);
+    }
+
 
     if (found === true) //if the email and password matched, return true
       callback(true);
@@ -57,14 +84,17 @@ exports.checkCredentials = function(email, password, callback) {
 exports.checkIfUserExists = function(email, userName, callback) { //returns the userNames view (key = email, value = username)
   video45.view('user', 'userNames', function(err, body) {
     var found = "";
-    body.rows.forEach(function(doc) { //for each row in the view check for the email and username
-      if (doc.key == email) {
-        found = 'Email already exists!';
-      }
-      if (doc.value == userName) {
-        found = found + ' Username is taken!';
-      }
-    });
+    if (!err) {
+      body.rows.forEach(function(doc) { //for each row in the view check for the email and username
+        if (doc.key == email) {
+          found = 'Email already exists! ';
+        }
+        if (doc.value == userName) {
+          found = found + 'Username is taken!';
+        }
+      });
+    }
+
     if (found === "") //if email or username wasnt found, callback false
       callback(false);
     else {
@@ -76,24 +106,28 @@ exports.checkIfUserExists = function(email, userName, callback) { //returns the 
 
 //get the username of a user based on the email (used when loggin in)
 exports.getUserName = function(email, callback) {
-  video45.view('user', 'userNames', {keys: [email]}, function(err, body) { //key = email, value = username
-    if (body.rows) {
+  video45.view('user', 'userNames', {
+    keys: [email]
+  }, function(err, body) { //key = email, value = username
+    if (!err) {
       body.rows.forEach(function(doc) { //for each row in the view check for the email
         if (doc.key == email) {
           callback(doc.value); //if email is found, return the associated username
         }
       });
     } else {
+      callback(false); //return false to show that no such user was found
       console.log('Database query in getUserName returned no rows.');
     }
-
   });
 };
 
 // get the details of a particular user
 exports.getUserProfile = function(userName, callback) {
-  video45.view('user', 'by_id', {keys: [userName]}, function(err, body) { //key = userName, value = _id
-    if (body.rows) {
+  video45.view('user', 'by_id', {
+    keys: [userName]
+  }, function(err, body) { //key = userName, value = _id
+    if (!err) {
       body.rows.forEach(function(doc) { //for each row in the view check for the userName
         if (doc.key == userName) {
           var docID = doc.value; //if username is found, get the doc id
@@ -114,19 +148,38 @@ exports.getUserProfile = function(userName, callback) {
   });
 };
 
+exports.findFacebookUser = function(facebookID, callback) {
+  console.log('Finding facebook user.');
+  video45.view('user', 'facebook_id', {
+    keys: [facebookID]
+  }, function(err, body) { //key = facebookID, value = userName
+    console.log('Reply from database. facebook_id');
+    if (!err) {
+      body.rows.forEach(function(doc) { //for each row in the view check for the userName
+        if (doc.key == facebookID) {
+          callback(doc.value);
+        }
+      });
+
+    } else { // no results (i.e user doesn't exist)
+      callback(null);
+    }
+  });
+};
+
 exports.followUser = function(currentUser, followUser, callback) {
-  video45.view('user', 'by_id',  function(err, body) { //key = useName, value = _id
+  video45.view('user', 'by_id', function(err, body) { //key = useName, value = _id
     var currentID; //doc id for currentUser
     var followID; //doc id for followUser
-
-    body.rows.forEach(function(doc) { //find the docID for the currentUser and followUser
-      if (doc.key == currentUser) {
-        currentID = doc.value;
-      } else if (doc.key == followUser) {
-        followID = doc.value;
-      }
-    });
-
+    if (!err) {
+      body.rows.forEach(function(doc) { //find the docID for the currentUser and followUser
+        if (doc.key == currentUser) {
+          currentID = doc.value;
+        } else if (doc.key == followUser) {
+          followID = doc.value;
+        }
+      });
+    }
 
     if (currentID !== null && followID !== null) { //If the docs for Current User and Follow User were found
       //call follow_user update function in db
@@ -172,14 +225,15 @@ exports.updateProfile = function(userName, description, profilePic, fullName, pr
   console.log('The profile info: ' + userName + ' description: ' + description + ' fullName: ' + fullName + ' profilePic: ' + profilePic + ' profileColour: ' + profileColour);
   video45.view('user', 'by_id', function(err, body) {
     var docID;
-    body.rows.forEach(function(doc) { //find the docID for the user whose profile is being updated
-      if (doc.key == userName) {
-        docID = doc.value;
-      }
-    });
+    if (!err) {
+      body.rows.forEach(function(doc) { //find the docID for the user whose profile is being updated
+        if (doc.key == userName) {
+          docID = doc.value;
+        }
+      });
+    }
 
     if (docID !== null) { //if the doc is found
-
       video45.atomic('user', 'update_profile', docID, {
         desc: description,
         name: fullName,

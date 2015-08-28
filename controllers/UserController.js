@@ -45,27 +45,39 @@ exports.isLoggedIn = function(req) { //checks if logged in by seeing if the sess
   }
 };
 
-exports.registerUser = function(req, callback) {
-  var fullName = req.body.fullName;
-  var email = req.body.email;
-  var userName = req.body.username;
-  var password = req.body.password;
-
+exports.registerUser = function(fullName, email, userName, password, req, callback) {
   Account.checkIfUserExists(email, userName, function(exists) {
     if (exists === false) { //if user doesn't already exists, insert new user
-      Account.insertNewUser(fullName, email, userName, password, function(result){
-        if(result){
+      Account.insertNewUser(fullName, email, userName, password, function(result) {
+        if (result) {
           req.session.userName = userName;
           callback(true);
         }
       });
-
     } else { //else callback with the error
       callback(exists);
     }
   });
 };
 
+exports.registerFacebookUser = function(userName, email, facebookID, callback){
+  Account.checkIfUserExists(email, userName, function(exists) {
+    if (exists === false) { //if user doesn't already exists, insert new user
+      Account.insertNewFacebookUser(fullName, email, userName, facebookID, function(result) {
+        if (result) {
+          callback(true, null);
+        } else{
+          callback(false, '500'); //internal error
+        }
+        else{
+          callback(false, exists);  //exists contains the error message
+        }
+      });
+    } else { //else callback with the error
+      callback(exists);
+    }
+  });
+};
 
 exports.login = function(req, callback) { //get the user's session and set the session variable 'email' to the one supplied by the user
   var email = req.body.email;

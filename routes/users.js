@@ -60,12 +60,18 @@ module.exports = function(passport, express) {
   router.get('/auth/facebook', passport.authenticate('facebook'));
 
   //facebook redirects user to here after user authorizes fb
-  router.get('/auth/facebook/callback', passport.authenticate('facebook'), function(req, res, next){
-    res.redirect('/');
+  router.get('/auth/facebook/callback', passport.authenticate('facebook'), function(req, res, next) {
+    res.send(req.user.profileID);
+  });
+
+  router.get('/error', function(req, res, next) {
+    res.send('There was an internal error. Please try again later.');
   });
 
   router.get('/test', function(req, res, next) {
-
+    Account.findFacebookUser('test', function(userName) {
+      res.send('Call back was answered: ' + userName);
+    });
   });
 
   router.get('/test1', function(req, res, next) {
@@ -78,6 +84,10 @@ module.exports = function(passport, express) {
 
   });
 
+  router.get('/video', function(req, res, next) {
+    res.render('postPage.hjs');
+  });
+
 
 
   //==============
@@ -88,18 +98,16 @@ module.exports = function(passport, express) {
     res.send('Authenticated successfully!');
   });
 
-router.get('/test1', function (req, res, next) {
-  res.render('postPage.hjs');
-});
 
-router.get('/video', function (req, res, next) {
-  res.render('postPage.hjs');
-});
 
   // Request for registering a user.
   router.post('/register', function(req, res, next) {
     console.log('Attempting to register new user.');
-    UserController.registerUser(req, function(success) {
+    var fullName = req.body.fullName;
+    var email = req.body.email;
+    var userName = req.body.username;
+    var password = req.body.password;
+    UserController.registerUser(fullName, email, userName, password, req, function(success) {
       if (success === true) {
         console.log('Succesfully registered. Redirecting to profile.');
         res.send('Success!');
@@ -109,6 +117,22 @@ router.get('/video', function (req, res, next) {
     });
   });
 
+  router.post('/registerFacebook', function(req, res, next) {
+    var userName = req.body.userName;
+    var email = req.body.email;
+    UserController.registerFacebookUser(userName, email, req.user.profileID, function(success, err) {
+      if (success) {
+
+      } else {
+        if (err === '500') {
+          res.redirect('/users/error');
+        } else {
+          res.send(err);
+        }
+
+      }
+    });
+  });
   // Request to login
   router.post('/login', passport.authenticate('local'), function(req, res, next) {
     res.send('Success!');
