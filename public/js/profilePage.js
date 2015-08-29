@@ -71,6 +71,8 @@ var Videos = React.createClass({
 		this.setState({comments : <CommentModal comments={comments} />});
 	},
 	getInitialState: function(){
+		this.setState({url: URL.createObjectURL(base64ToBlob(this.props.url))});
+		console.log(this.state.url)
 		return({comments : <CommentModal comments={comments}/>});
 	},
 	render: function(){
@@ -82,7 +84,7 @@ var Videos = React.createClass({
 						<p className="posterName">Posted by someone</p>
 					</div>
 					<div className="card-image">
-						<img className="vidImg" src={this.props.url} />
+						<video className="vidImg" src={this.state.url} />
 					</div>
 					<div className="card-content">
 						<p className="card-title">{this.props.text}</p>
@@ -530,11 +532,13 @@ React.render(
 //get videolist
 function getPost(name){
 	$.ajax({
-		url: "http://"+ip+"/user/loadVideos?userName="+name,
+		url: "http://"+ip+"/users/loadVideos?userName="+name,
 		type: 'GET',
 		success: function(response){
 			//user has posted something
 			console.log(response);
+			data.unshift(response.videos[0]);
+			console.log(data);
 			if(response.length===0){
 				console.log("nothing Returned");
 			}

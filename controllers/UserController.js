@@ -100,7 +100,7 @@ exports.loadProfile = function(req, userName, callback) {
 };
 
 exports.getUserVideos = function(userName, callback) {
-  Account.getUserVideos(username, function(success, videos){
+  Account.getUserVideos(userName, function(success, videos){
     if(success){
       callback(true, videos);
     } else {
@@ -137,8 +137,7 @@ exports.createPost = function(req, callback) {
   console.log('Creating post.');
   var postTitle = 'Test Video';
   var postDescription = 'This is a test video.';
-  var vidData = req.body.blob;
-  Account.insertNewPost(postTitle, postDescription, vidData, req.user.userName, 'Day 0', function(success){
+  Account.insertNewPost(postTitle, postDescription, req.body.blob, req.user.userName, 'Day 0', function(success){
     callback(success);
   });
 };
