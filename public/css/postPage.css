@@ -152,6 +152,10 @@ video {
   padding-bottom: 20px;
   width: 100%; }
 
+#vidCanvas {
+  display: none;
+  width: 100%; }
+
 .controller {
   position: absolute;
   left: 0px;

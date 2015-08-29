@@ -280,6 +280,7 @@ var Content = React.createClass({
 						<a id="google" href="https://plus.google.com/share?url=http://video45.com" className="social btn-flat"><i className="fa fa-google-plus"></i></a>
 						<a id="submit" className="btn waves-light waves-effect" onClick={post}>POST</a>
 					</div>
+					<canvas id="tempCanvas" onClick={playPause}></canvas>
 				</div>
 			</div>
 		);
@@ -314,39 +315,6 @@ function refreshInfo(){
     return false;
 };
 
-var blobToBase64 = function(blob, cb) {
-  var reader = new FileReader();
-  reader.onload = function() {
-    var dataUrl = reader.result;
-    var base64 = dataUrl.split(',')[1];
-    cb(base64);
-  };
-  reader.readAsDataURL(blob);
-};
-
-function base64ToBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || 'video/webm';
-    sliceSize = sliceSize || 512;
-
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
-
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        var byteNumbers = new Array(slice.length);
-        for (var i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        var byteArray = new Uint8Array(byteNumbers);
-
-        byteArrays.push(byteArray);
-    }
-
-    var blob = new Blob(byteArrays, {type: contentType});
-    return blob;
-}
 
 //create the post and save to the server.
 function post(info) {
@@ -356,14 +324,15 @@ function post(info) {
     };
 
     $.ajax({
-      url: "http://" + ip + "/users/test3",
+      url: "http://" + ip + "/users/createPost",
       type: 'POST',
       data: update,
       success: function(response) {
-				var blob = base64ToBlob(response);
-				console.log(blob);
-				var url = webkitURL.createObjectURL(blob);
-				console.log(url);
+      		alert(response);
+			/*var blob = base64ToBlob(response);
+			console.log(blob);
+			var url = webkitURL.createObjectURL(blob);
+			console.log(url);*/
       },
       error: function(response) {
         console.log(response);
@@ -577,6 +546,11 @@ $('#video').on("play",function(){
 	console.log("video playing");
 	var vid = document.getElementById("video");
 	var can = this;
+	if(playback){
+		video.playbackRate = 0.2;
+	}else{
+		video.playbackRate = 1.0;
+	}
 	draw(can,context,cw,ch,filter);
 });
 
@@ -740,10 +714,10 @@ function draw(v,c,w,h,filter){
 	if(playback){
 		setTimeout(draw,20,v,c,w,h,filter); //recall this function
 		frame++;
-		var canvasInfo = c.canvas.toDataURL('image/webp', 0.8);
+		//var canvasInfo = c.canvas.toDataURL('image/webp', 0.8);
 		//console.log(c);
 		//console.log(canvasInfo.slice(23));
-		setTimeout(renderFrame, 10000, canvasInfo, frame);
+		setTimeout(renderFrame, 0, c, frame);
 		watchEdit();
 		//video.currentTime = video.currentTime+.02;
 	}else{
@@ -751,6 +725,41 @@ function draw(v,c,w,h,filter){
 	}
 }
 
+//Base Conversion for blob transfer
+var blobToBase64 = function(blob, cb) {
+  var reader = new FileReader();
+  reader.onload = function() {
+    var dataUrl = reader.result;
+    var base64 = dataUrl.split(',')[1];
+    cb(base64);
+  };
+  reader.readAsDataURL(blob);
+};
+
+//base conversion for blob recreation
+function base64ToBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || 'video/webm';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
 
 $(document).ready(function(){
 	//get parts of materialize to function correctly

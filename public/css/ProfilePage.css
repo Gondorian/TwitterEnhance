@@ -164,6 +164,11 @@ body {
     margin-top: 3px;
     margin-bottom: 5px; }
 
+.infoText {
+  color: gray;
+  font-size: 32px;
+  text-align: center; }
+
 .card .card-content a {
   margin-right: 30px;
   color: #b2b2b2; }

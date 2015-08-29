@@ -2,10 +2,6 @@
 var ip = "localhost:3000";
 var cust = "l";
 var data = [
-	{url: "http://images.sodahead.com/polls/001176949/fillers_xlarge.jpeg", text: "Above is a filler"},
-	{url: "http://i25.tinypic.com/14cacci.jpg", text: "Check out this video"},
-	{url: "http://i.ytimg.com/vi/tHSA519vVvg/hqdefault.jpg", text: "Another comment was written here"},
-	{url: "http://thedailyfandom.com/wp-content/uploads/2015/01/Why_5d76e0_1095350.jpg", text: "Me and my dad at the park"}
 ];
 
 var resultData=[];
@@ -122,11 +118,21 @@ var Videos = React.createClass({
 //do that here
 var VidList = React.createClass({
 	render: function(){
-		var imageNodes = this.props.data.map(function(vidUrl){
+		if(data.length === 0){
 			return(
-				<Videos url={vidUrl.url} text={vidUrl.text} likes="2" reposts="2" shares="5" comments="2" />
-			);
-		});
+				<div className="row">
+					<div className="card col s6 offset-s5">
+						<p className="infoText"> No videos Have been uploaded on your channel please post a video from the button in the bottom corner</p>
+					</div>
+				</div>
+			)
+		}else{
+			var imageNodes = this.props.data.map(function(vidUrl){
+				return(
+					<Videos url={vidUrl.url} text={vidUrl.text} likes="2" reposts="2" shares="5" comments="2" />
+				);
+			});
+		}
 		return(
 			<div className = "pictures">
 				{imageNodes}
@@ -481,6 +487,7 @@ var Content = React.createClass({
 		this.setState({desc: info[9]});
 		this.setState({resultData: resultData});
 		//maintain none server variables
+		getPost(info[0]); //get the information from the successcall
 		this.setState({dat:data}); //this is the post data, it is currently just a stand-in
 		this.setState({mode: "standard"}); //this is the aside type(standard is normal, edit is for edit mode)
 	},
@@ -523,22 +530,22 @@ React.render(
 //get videolist
 function getPost(name){
 	$.ajax({
-			url: "http://"+ip+"/user/loadVideos&userName="+name,
-			type: 'GET',
-			success: function(response){
-				//user has posted something
-				console.log(response);
-				if(response.length===0){
-					console.log("nothing Returned");
-				}
-			},error: function(response){
-				//user hasn't posted anything
-				console.log("failed");
-				console.log(response);
+		url: "http://"+ip+"/user/loadVideos?userName="+name,
+		type: 'GET',
+		success: function(response){
+			//user has posted something
+			console.log(response);
+			if(response.length===0){
+				console.log("nothing Returned");
 			}
-		})
-	})
-}
+		},error: function(response){
+			//user hasn't posted anything
+			console.log("failed");
+			console.log(response);
+		}
+	});
+	return false;
+};
 
 //refresh page information
 function refreshInfo(){
@@ -706,6 +713,30 @@ var handleResize = function(){
    }
  );
 
+//base conversion for blob trabsfer
+function base64ToBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || 'video/webm';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
 
 //monitors screen resize
 $(window).resize(function(){
