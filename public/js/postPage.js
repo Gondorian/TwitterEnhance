@@ -315,14 +315,12 @@ function refreshInfo(){
     return false;
 };
 
-var tester;
 //create the post and save to the server.
 function post(info) {
   blobToBase64(info, function(base64) { // encode
     var update = {
       'blob': base64
     };
-	tester = update;
 
     $.ajax({
       url: "http://" + ip + "/users/createPost",
@@ -330,7 +328,6 @@ function post(info) {
       data: update,
       success: function(response) {
       		alert(response);
-      		getPost("w");
 			/*var blob = base64ToBlob(response);
 			console.log(blob);
 			var url = webkitURL.createObjectURL(blob);
@@ -346,30 +343,7 @@ function post(info) {
   });
 }
 
-//get videolist
-function getPost(name){
-	$.ajax({
-		url: "http://"+ip+"/users/loadVideos?userName="+name,
-		type: 'GET',
-		success: function(response){
-			//user has posted something
-			console.log(response);
-			if(tester==response.videos[0]){
-				console.log("they are equal");
-			}else{
-				console.log("they are not equal");
-			}
-			if(response.length===0){
-				console.log("nothing Returned");
-			}
-		},error: function(response){
-			//user hasn't posted anything
-			console.log("failed");
-			console.log(response);
-		}
-	});
-	return false;
-};
+
 /*****************
 *   Javascript   *
 *****************/
