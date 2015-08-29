@@ -53,17 +53,17 @@ exports.insertFacebookUser = function(fullName, email, userName, facebookID, cal
   });
 };
 
-exports.insertNewPost = function(title, description, vidURL, userName, date, callback) {
+exports.insertNewPost = function(title, description, vidData, userName, date, callback) {
   video45.insert({
     "type": "post",
     "title": title,
     "description": description,
-    "vidURL": vidURL,
-    "user": userName,
+    "userName": userName,
     "numberOfLikes": 0,
     "numberOfComments": 0,
     "numberOfShares": 0,
-    "date": date
+    "date": date,
+    "vidData": vidData
   }, function(err, body) {
     if (err) {
       console.log('Error in insertFacebookUser: ' + err);
@@ -166,6 +166,24 @@ exports.getUserProfile = function(userName, callback) {
       });
     } else {
       console.log('Database query in getUserProfile returned no rows.');
+    }
+  });
+};
+
+exports.getUserVideos = function(userName, callback){
+  video45.view('user', 'vid_by_user', {
+    keys: [userName]
+  }, function(err, body) { //key = userName, value = _id
+    if (!err) {
+      var videos = [];
+      body.rows.forEach(function(doc) { //for each row in the view check for the userName
+        videos.push(doc.value);
+      });
+      callback(true, videos);
+
+    } else {
+      console.log('Database query in getUserVideos returned no rows.');
+      callback(false, null); //no success
     }
   });
 };
