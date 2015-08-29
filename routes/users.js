@@ -85,15 +85,23 @@ module.exports = function(passport, express) {
     res.render('postPage.hjs');
   });
 
-  router.get('/loadVideos', function(req, res, next) {
+  router.get('/loadVideos', function(req, res, next) {    //CAN RE WRITE THIS TO BE MORE D.R.Y
     if (UserController.isLoggedIn(req)) {
       if (req.query.userName === 'refSessionID') { //if request is for current user
-        UserController.getUserVideos(req.user.userName, function(results) {
-
+        UserController.getUserVideos(req.user.userName, function(success, data) {
+          if(success){
+            res.send({'videos': data});
+          } else {
+            res.send('Error!');
+          }
         });
       } else {
-        UserController.getUserVideos(req.query.userName, function(results) {
-
+        UserController.getUserVideos(req.query.userName, function(success, data) {
+          if(success){
+            res.send({'videos': data});
+          } else {
+            res.send('Error!');
+          }
         });
       }
     } else {
@@ -201,7 +209,7 @@ module.exports = function(passport, express) {
   router.post('/updateProfile', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       UserController.updateProfile(req, function(msg) {
-        console.log("sesssion: " + req.session.userName);
+        console.log("sesssion: " + req.user.userName);
         res.send(msg);
       });
     } else {

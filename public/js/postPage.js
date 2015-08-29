@@ -356,7 +356,7 @@ function post(info) {
     };
 
     $.ajax({
-      url: "http://" + ip + "/users/test3",
+      url: "http://" + ip + "/users/createPost",
       type: 'POST',
       data: update,
       success: function(response) {
