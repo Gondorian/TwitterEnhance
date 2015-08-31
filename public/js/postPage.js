@@ -1,7 +1,7 @@
 var ip = "localhost:3000";
 //var ip = "104.131.218.159";
 
-var callOrder = [] //This is the order that video parts should be called in
+var callOrder = []; //This is the order that video parts should be called in
 var recording = false; //wether the video is currently being recorded
 var currentCanvas = 0; //The number of clips shown in timeline
 var updatingCanvas; //The current canvas updating in timeline
@@ -316,12 +316,13 @@ function refreshInfo(){
 
 var blobToBase64 = function(blob, cb) {
   var reader = new FileReader();
+	reader.readAsDataURL(blob);
   reader.onload = function() {
     var dataUrl = reader.result;
     var base64 = dataUrl.split(',')[1];
     cb(base64);
   };
-  reader.readAsDataURL(blob);
+
 };
 
 function base64ToBlob(b64Data, contentType, sliceSize) {
@@ -355,6 +356,14 @@ function post(info) {
       'blob': base64
     };
 
+		var convertedBlob = base64ToBlob(base64);
+
+		if(info === convertedBlob){
+			console.log('The converted and the original are the same!');
+		} else{
+			console.log('They are different!');
+		}
+
     $.ajax({
       url: "http://" + ip + "/users/test3",
       type: 'POST',
@@ -362,7 +371,7 @@ function post(info) {
       success: function(response) {
 				var blob = base64ToBlob(response);
 				console.log(blob);
-				var url = webkitURL.createObjectURL(blob);
+				var url = URL.createObjectURL(blob);
 				console.log(url);
       },
       error: function(response) {

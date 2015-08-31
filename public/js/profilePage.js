@@ -536,8 +536,7 @@ function getPost(name){
 				console.log("failed");
 				console.log(response);
 			}
-		})
-	})
+		});
 }
 
 //refresh page information

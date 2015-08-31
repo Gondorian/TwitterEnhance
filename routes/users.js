@@ -93,7 +93,7 @@ module.exports = function(passport, express) {
         });
       } else {
         UserController.getUserVideos(req.query.userName, function(results) {
-
+          
         });
       }
     } else {
