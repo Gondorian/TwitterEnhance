@@ -88,12 +88,20 @@ module.exports = function(passport, express) {
   router.get('/loadVideos', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       if (req.query.userName === 'refSessionID') { //if request is for current user
-        UserController.getUserVideos(req.user.userName, function(results) {
-
+        UserController.getUserVideos(req.user.userName, function(success, data) {
+          if(success){
+            res.send({'videos': data});
+          }else {
+            res.send('Error!');
+          }
         });
       } else {
-        UserController.getUserVideos(req.query.userName, function(results) {
-
+        UserController.getUserVideos(req.query.userName, function(success, data) {
+          if(success){
+            res.send({'videos': data});
+          }else {
+            res.send('Error!');
+          }
         });
       }
     } else {

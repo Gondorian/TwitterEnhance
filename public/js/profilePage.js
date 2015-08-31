@@ -14,6 +14,7 @@ var Comment = React.createClass({
 			<div className="commentBox">
 				<a id="poster">{this.props.poster}</a>
 				<p id="comment">{this.props.comment}</p>
+				<hr />
 			</div>
 		);
 	}
@@ -70,6 +71,9 @@ var Videos = React.createClass({
 		];
 		this.setState({comments : <CommentModal comments={comments} />});
 	},
+	postCommentClick: function(){
+		console.log(document.getElementById('comment').value);
+	},
 	componentDidMount: function(){
 		console.log(this.props.url);
 	},
@@ -107,6 +111,7 @@ var Videos = React.createClass({
 									<label htmlFor="comment"> Enter something Nice </label>
 								</div>
 							</div>
+							<a className="btn btn-flat waves-green" onClick={this.postCommentClick()}> post </a>
 						</form>
 					</div>
 				</div>
@@ -561,13 +566,9 @@ function getPost(name){
 			}else{//if some posts were returned
 				for(var i = 0; i<response.videos.length;i++){
 					//some data checks
-					if(response.videos[i].vidata!==null){
-						var url = (URL.createObjectURL(base64ToBlob(response.videos[i].vidData)));
-					}else{var url = ""};
-					if(response.videos[i].comments[0] !==0){
-						var comments = reponse[i].comments;
-					}else{var comments === ""}
-					data.unshift({'url': url, 'key':response.videos[i].id});
+					var url = (URL.createObjectURL(base64ToBlob(response.videos[i].vidData)));
+					//var comments = response[i].comments.slice(0);
+					data.unshift({'url': url, 'key':response.videos[i].id, 'comments': comments});
 				}
 			}
 		},error: function(response){

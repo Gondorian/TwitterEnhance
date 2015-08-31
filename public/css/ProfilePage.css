@@ -183,4 +183,9 @@ body {
   bottom: 23px;
   right: 12px; }
 
+.commentBox hr {
+  display: block; }
+.commentBox p {
+  padding-left: 6px; }
+
 /*# sourceMappingURL=profilePage.css.map */
