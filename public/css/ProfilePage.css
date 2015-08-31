@@ -159,7 +159,7 @@ body {
 
 .commentBox {
   margin-top: 10px; }
-  .commentBox #comment {
+  .commentBox .comment {
     margin-top: 3px;
     margin-bottom: 5px; }
 

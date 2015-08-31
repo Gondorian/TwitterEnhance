@@ -72,7 +72,10 @@ var Videos = React.createClass({
 		this.setState({comments : <CommentModal comments={comments} />});
 	},
 	postCommentClick: function(){
-		console.log(document.getElementById('comment').value);
+		//console.log(this.props.name);
+		var text = document.getElementById(this.props.name).value
+		console.log(text);
+		submitComment(this.props.name, text);
 	},
 	componentDidMount: function(){
 		console.log(this.props.url);
@@ -107,11 +110,11 @@ var Videos = React.createClass({
 						<form>
 							 <div className="row">
         						<div className="input-field col s12">
-									<textarea maxLength="255" id='comment' className="materialize-textarea"/>
+									<textarea maxLength="255" id={this.props.name} className="comment materialize-textarea"/>
 									<label htmlFor="comment"> Enter something Nice </label>
 								</div>
 							</div>
-							<a className="btn btn-flat waves-green" onClick={this.postCommentClick()}> post </a>
+							<a className="btn btn-flat waves-green" onClick={this.postCommentClick}> post </a>
 						</form>
 					</div>
 				</div>
@@ -137,7 +140,7 @@ var VidList = React.createClass({
 		}else{
 			var imageNodes = this.props.data.map(function(vidUrl){
 				return(
-					<Videos url={vidUrl.url} key={vidUrl.key} text={"Title Here"} likes="0" reposts="0" shares="0" comments="0" />
+					<Videos url={vidUrl.url} key={vidUrl.key} name={vidUrl.key} text={"Title Here"} likes="0" reposts="0" shares="0" comments="0" />
 				);
 			});
 		}
@@ -636,11 +639,12 @@ function submitfollow(){
 };
 
 //below is the submition of comments
-function submitComment(){
+function submitComment(vidId, comment){
+
 	$.ajax({
-		url: "http://"+ip+"/users/follow",
+		url: "http://"+ip+"/users/comment",
 		type: 'POST',
-		//data:  //This data should be the video id and the comment information,
+		data: {'vidID': vidId, 'comment': comment}, //This data should be the video id and the comment information,
 		success: function(response){
 			console.log("the response was");
 			console.log(response);
