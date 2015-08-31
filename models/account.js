@@ -63,12 +63,28 @@ exports.insertNewPost = function(title, description, vidData, userName, date, ca
     "numberOfComments": 0,
     "numberOfShares": 0,
     "date": date,
-    "vidData": vidData
+    "vidData": vidData,
+    "comments": [],
+    "likes": 0
   }, function(err, body) {
     if (err) {
       console.log('Error in insertFacebookUser: ' + err);
       callback(false);
     } else {
+      callback(true);
+    }
+  });
+};
+
+exports.insertNewComment = function(comment, vidID, userName, callback) {
+  video45.atomic('user', 'add_comment', vidID, {
+    "userName": userName, "comment": comment
+  }, function(error, response){
+    if(error){
+      console.log('Error in database query to add_comment: ' + error);
+      callback(false);
+    }
+    else{
       callback(true);
     }
   });

@@ -85,23 +85,15 @@ module.exports = function(passport, express) {
     res.render('postPage.hjs');
   });
 
-  router.get('/loadVideos', function(req, res, next) {    //CAN RE WRITE THIS TO BE MORE D.R.Y
+  router.get('/loadVideos', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       if (req.query.userName === 'refSessionID') { //if request is for current user
-        UserController.getUserVideos(req.user.userName, function(success, data) {
-          if(success){
-            res.send({'videos': data});
-          } else {
-            res.send('Error!');
-          }
+        UserController.getUserVideos(req.user.userName, function(results) {
+
         });
       } else {
-        UserController.getUserVideos(req.query.userName, function(success, data) {
-          if(success){
-            res.send({'videos': data});
-          } else {
-            res.send('Error!');
-          }
+        UserController.getUserVideos(req.query.userName, function(results) {
+
         });
       }
     } else {
@@ -198,18 +190,12 @@ module.exports = function(passport, express) {
     }
   });
 
-  router.post('/comment', function(req, res, next){
-    if(UserController.isLoggedIn(req)){
-      UserController.addComment(req, function(success){
 
-      });
-    }
-  });
 
   router.post('/updateProfile', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       UserController.updateProfile(req, function(msg) {
-        console.log("sesssion: " + req.user.userName);
+        console.log("sesssion: " + req.session.userName);
         res.send(msg);
       });
     } else {
@@ -228,6 +214,18 @@ module.exports = function(passport, express) {
       });
     } else {
       res.send('Not logged in!');
+    }
+  });
+
+  router.post('/comment', function(req, res, next){
+    if(UserController.isLoggedIn(req)){
+      UserController.addComment(req, function(success){
+        if (success) {
+          res.send('Success!');
+        } else{
+          
+        }
+      });
     }
   });
   return router;
