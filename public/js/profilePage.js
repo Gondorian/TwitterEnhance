@@ -70,9 +70,10 @@ var Videos = React.createClass({
 		];
 		this.setState({comments : <CommentModal comments={comments} />});
 	},
+	componentDidMount: function(){
+		console.log(this.props.url);
+	},
 	getInitialState: function(){
-		this.setState({url: URL.createObjectURL(base64ToBlob(this.props.url))});
-		console.log(this.state.url)
 		return({comments : <CommentModal comments={comments}/>});
 	},
 	render: function(){
@@ -84,7 +85,7 @@ var Videos = React.createClass({
 						<p className="posterName">Posted by someone</p>
 					</div>
 					<div className="card-image">
-						<video className="vidImg" src={this.state.url} />
+						<video className="vidImg" src={this.props.url} controls />
 					</div>
 					<div className="card-content">
 						<p className="card-title">{this.props.text}</p>
@@ -131,7 +132,7 @@ var VidList = React.createClass({
 		}else{
 			var imageNodes = this.props.data.map(function(vidUrl){
 				return(
-					<Videos url={vidUrl.url} text={vidUrl.text} likes="2" reposts="2" shares="5" comments="2" />
+					<Videos url={vidUrl.url} text={"asdf"} likes="0" reposts="0" shares="0" comments="0" />
 				);
 			});
 		}
@@ -489,7 +490,7 @@ var Content = React.createClass({
 		this.setState({desc: info[9]});
 		this.setState({resultData: resultData});
 		//maintain none server variables
-		getPost(info[0]); //get the information from the successcall
+		getPost("as"); //get the information from the successcall
 		this.setState({dat:data}); //this is the post data, it is currently just a stand-in
 		this.setState({mode: "standard"}); //this is the aside type(standard is normal, edit is for edit mode)
 	},
@@ -524,7 +525,6 @@ React.render(
 );
 
 
-
 /********************
 *     AJAX CALLS    *
 ********************/
@@ -536,8 +536,10 @@ function getPost(name){
 		type: 'GET',
 		success: function(response){
 			//user has posted something
-			console.log(response);
-			data.unshift(response.videos[0]);
+			console.log(response.videos[0]);
+			var url = (URL.createObjectURL(base64ToBlob(response.videos[0])))
+			console.log(url)
+			data.unshift({'url': url});
 			console.log(data);
 			if(response.length===0){
 				console.log("nothing Returned");
@@ -717,7 +719,7 @@ var handleResize = function(){
    }
  );
 
-//base conversion for blob trabsfer
+//base conversion for blob recreation
 function base64ToBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || 'video/webm';
     sliceSize = sliceSize || 512;
