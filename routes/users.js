@@ -93,7 +93,7 @@ module.exports = function(passport, express) {
         });
       } else {
         UserController.getUserVideos(req.query.userName, function(results) {
-          
+
         });
       }
     } else {
@@ -190,13 +190,7 @@ module.exports = function(passport, express) {
     }
   });
 
-  router.post('/comment', function(req, res, next){
-    if(UserController.isLoggedIn(req)){
-      UserController.addComment(req, function(success){
 
-      });
-    }
-  });
 
   router.post('/updateProfile', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
@@ -220,6 +214,18 @@ module.exports = function(passport, express) {
       });
     } else {
       res.send('Not logged in!');
+    }
+  });
+
+  router.post('/comment', function(req, res, next){
+    if(UserController.isLoggedIn(req)){
+      UserController.addComment(req, function(success){
+        if (success) {
+          res.send('Success!');
+        } else{
+          
+        }
+      });
     }
   });
   return router;

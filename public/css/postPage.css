@@ -98,7 +98,7 @@ body {
 
 video {
   width: 100%;
-  display: block; }
+  display: none; }
 
 #awesome {
   display: block; }

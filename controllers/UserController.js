@@ -100,7 +100,13 @@ exports.loadProfile = function(req, userName, callback) {
 };
 
 exports.getUserVideos = function(userName, callback) {
-  Account.getUserVideos(username);
+  Account.getUserVideos(userName, function(success, videos) {
+    if (success) {
+      callback(true, videos);
+    } else {
+      callback(false, null);
+    }
+  });
 };
 
 exports.followUser = function(req, callback) {
@@ -128,25 +134,22 @@ exports.updateProfile = function(req, callback) {
 };
 
 exports.createPost = function(req, callback) {
-  var postTitle = req.body.title;
-  var postDescription = req.body.description;
-  var vidURL = req.body.vidURL;
-  var date = req.body.date;
-  Account.insertNewPost(postTitle, postDescription, vidURL, req.user.userName, date, function(success){
+  console.log('Creating post.');
+  var postTitle = 'Test Video';
+  var postDescription = 'This is a test video.';
+  Account.insertNewPost(postTitle, postDescription, req.body.blob, req.user.userName, 'Day 0', function(success) {
     callback(success);
   });
 };
 
-exports.addComment = function(req, callback){
+exports.addComment = function(req, callback) {
   var comment = req.body.comment;
+  var vidID = req.body.vidID;
   var userName = req.user.userName;
+  Account.insertNewComment(comment, vidID, userName, function(success) {
+    callback(success);
+  });
 
-};
-
-exports.saveRecording = function(req, res) {
-  console.log("Saving Recording.");
-  res.send(req.body.blob);
-  
 };
 
 exports.searchName = function(req, callback) {
