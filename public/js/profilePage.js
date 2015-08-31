@@ -14,6 +14,7 @@ var Comment = React.createClass({
 			<div className="commentBox">
 				<a id="poster">{this.props.poster}</a>
 				<p id="comment">{this.props.comment}</p>
+				<hr />
 			</div>
 		);
 	}
@@ -70,6 +71,12 @@ var Videos = React.createClass({
 		];
 		this.setState({comments : <CommentModal comments={comments} />});
 	},
+	postCommentClick: function(){
+		//console.log(this.props.name);
+		var text = document.getElementById(this.props.name).value
+		console.log(text);
+		submitComment(this.props.name, text);
+	},
 	componentDidMount: function(){
 		console.log(this.props.url);
 	},
@@ -85,7 +92,7 @@ var Videos = React.createClass({
 						<p className="posterName">Posted by someone</p>
 					</div>
 					<div className="card-image">
-						<video className="vidImg" src={this.props.url} controls />
+						<video id={this.props.key} className="vidImg" src={this.props.url} controls />
 					</div>
 					<div className="card-content">
 						<p className="card-title">{this.props.text}</p>
@@ -103,10 +110,11 @@ var Videos = React.createClass({
 						<form>
 							 <div className="row">
         						<div className="input-field col s12">
-									<textarea maxLength="255" id='comment' className="materialize-textarea"/>
+									<textarea maxLength="255" id={this.props.name} className="comment materialize-textarea"/>
 									<label htmlFor="comment"> Enter something Nice </label>
 								</div>
 							</div>
+							<a className="btn btn-flat waves-green" onClick={this.postCommentClick}> post </a>
 						</form>
 					</div>
 				</div>
@@ -132,7 +140,7 @@ var VidList = React.createClass({
 		}else{
 			var imageNodes = this.props.data.map(function(vidUrl){
 				return(
-					<Videos url={vidUrl.url} text={"asdf"} likes="0" reposts="0" shares="0" comments="0" />
+					<Videos url={vidUrl.url} key={vidUrl.key} name={vidUrl.key} text={"Title Here"} likes="0" reposts="0" shares="0" comments="0" />
 				);
 			});
 		}
@@ -490,7 +498,7 @@ var Content = React.createClass({
 		this.setState({desc: info[9]});
 		this.setState({resultData: resultData});
 		//maintain none server variables
-		getPost("as"); //get the information from the successcall
+		getPost(info[0]); //get the information from the successcall
 		this.setState({dat:data}); //this is the post data, it is currently just a stand-in
 		this.setState({mode: "standard"}); //this is the aside type(standard is normal, edit is for edit mode)
 	},
@@ -529,31 +537,6 @@ React.render(
 *     AJAX CALLS    *
 ********************/
 
-//get videolist
-function getPost(name){
-	$.ajax({
-		url: "http://"+ip+"/users/loadVideos?userName="+name,
-		type: 'GET',
-		success: function(response){
-			//user has posted something
-			console.log(response.videos[0]);
-			var url = (URL.createObjectURL(base64ToBlob(response.videos[0])))
-			console.log(url)
-			data.unshift({'url': url});
-			console.log(data);
-			if(response.length===0){
-				console.log("nothing Returned");
-			}
-		},error: function(response){
-			//user hasn't posted anything
-			console.log("failed");
-			console.log(response);
-		}
-	});
-	return false;
-};
-
-
 //refresh page information
 function refreshInfo(){
 	console.log(info[7]);
@@ -570,6 +553,34 @@ function refreshInfo(){
       }
     });
     return false;
+};
+
+//get videolist
+function getPost(name){
+	$.ajax({
+		url: "http://"+ip+"/users/loadVideos?userName="+name,
+		type: 'GET',
+		success: function(response){
+			//reset the data variable
+			data = [];
+			console.log(response);
+			if(response.length===0){ //say there are no posts
+				console.log("nothing Returned");
+			}else{//if some posts were returned
+				for(var i = 0; i<response.videos.length;i++){
+					//some data checks
+					var url = (URL.createObjectURL(base64ToBlob(response.videos[i].vidData)));
+					//var comments = response[i].comments.slice(0);
+					data.unshift({'url': url, 'key':response.videos[i].id, 'comments': comments});
+				}
+			}
+		},error: function(response){
+			//user hasn't posted anything
+			console.log("failed");
+			console.log(response);
+		}
+	});
+	return false;
 };
 
 //the elastic search query
@@ -625,6 +636,24 @@ function submitfollow(){
       }
     });
     return false;
+};
+
+//below is the submition of comments
+function submitComment(vidId, comment){
+
+	$.ajax({
+		url: "http://"+ip+"/users/comment",
+		type: 'POST',
+		data: {'vidID': vidId, 'comment': comment}, //This data should be the video id and the comment information,
+		success: function(response){
+			console.log("the response was");
+			console.log(response);
+		},
+		error: function(response){
+			console.log("an error occured with this message " + response);
+		}
+	});
+	return false;
 };
 
 //below is the update for profile information
