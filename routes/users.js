@@ -73,12 +73,9 @@ module.exports = function(passport, express) {
   });
 
   router.get('/test1', function(req, res, next) {
-    if (req.user) {
-      console.log(req.user);
-      res.send('You are authenticated! user object:');
-    } else {
-      res.send('you are not authenticated!');
-    }
+    Account.insertNewComment("This is a comment", "6b672e661f223a637639751e28000b1c", "as", function(success) {
+      res.send(success);
+    });
   });
 
   router.get('/video', function(req, res, next) {
@@ -88,12 +85,20 @@ module.exports = function(passport, express) {
   router.get('/loadVideos', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       if (req.query.userName === 'refSessionID') { //if request is for current user
-        UserController.getUserVideos(req.user.userName, function(results) {
-
+        UserController.getUserVideos(req.user.userName, function(success, data) {
+          if(success){
+            res.send({'videos': data});
+          }else {
+            res.send('Error!');
+          }
         });
       } else {
-        UserController.getUserVideos(req.query.userName, function(results) {
-
+        UserController.getUserVideos(req.query.userName, function(success, data) {
+          if(success){
+            res.send({'videos': data});
+          }else {
+            res.send('Error!');
+          }
         });
       }
     } else {
@@ -191,7 +196,7 @@ module.exports = function(passport, express) {
   });
 
 
-
+//CEE15446
   router.post('/updateProfile', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       UserController.updateProfile(req, function(msg) {
@@ -223,7 +228,7 @@ module.exports = function(passport, express) {
         if (success) {
           res.send('Success!');
         } else{
-          
+
         }
       });
     }
