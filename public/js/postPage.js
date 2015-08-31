@@ -231,6 +231,7 @@ var Content = React.createClass({
 		console.log("view was clicked ")
 		playback = true;
 		timer();
+		video.pause(); // This allows the video to begin on the new speed for render
 		video.play(); //start playing for the render
 	},
 	submitClick: function(){
@@ -326,12 +327,7 @@ function post(info) {
       type: 'POST',
       data: {'blob': update},
       success: function(response) {
-      		alert(response);
-      		getPost("as");
-			/*var blob = base64ToBlob(update);
-			console.log(blob);
-			var url = webkitURL.createObjectURL(blob);
-			console.log(url);*/
+      	Materialize.toast(response,10000);
       },
       error: function(response) {
         console.log(response);
@@ -342,32 +338,6 @@ function post(info) {
     });
   });
 }
-
-//get videolist
-function getPost(name){
-	$.ajax({
-		url: "http://"+ip+"/users/loadVideos?userName="+name,
-		type: 'GET',
-		success: function(response){
-			//user has posted something
-			console.log(response);
-			console.log(response.videos);
-			//data.unshift(response.videos[0]);
-			var blob = base64ToBlob(response.videos);
-			console.log(blob);
-			var url = URL.createObjectURL(blob);
-			console.log(url);
-			if(response.length===0){
-				console.log("nothing Returned");
-			}
-		},error: function(response){
-			//user hasn't posted anything
-			console.log("failed");
-			console.log(response);
-		}
-	});
-	return false;
-};
 
 /*****************
 *   Javascript   *
@@ -535,16 +505,14 @@ function checkEnd(wait){
 		console.log("creating final version");
 		//pause the video when finis
 		playback = false;
-		setTimeout(function(){
-			//finalize the video
-			var output = finalVideo.compile();
-			console.log(output);
-			post(output);
-			var url = URL.createObjectURL(output);
-			document.getElementById('awesome').src = url;
-			document.getElementById('link').innerHTML = url;
-			video.pause();
-		},10000)
+		//finalize the video
+		var output = finalVideo.compile();
+		console.log(output);
+		post(output);
+		var url = URL.createObjectURL(output);
+		document.getElementById('awesome').src = url;
+		document.getElementById('link').innerHTML = url;
+		video.pause();
 	}
 }
 
