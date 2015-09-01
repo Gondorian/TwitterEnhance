@@ -149,7 +149,14 @@ exports.addComment = function(req, callback) {
   Account.insertNewComment(comment, vidID, userName, function(success) {
     callback(success);
   });
+};
 
+exports.addLike = function(req, callback){
+  var userName = req.user.userName;
+  var vidID = req.body.vidID;
+  Account.addLike(userName, vidID, function(msg){
+    callback(msg);
+  })
 };
 
 exports.searchName = function(req, callback) {

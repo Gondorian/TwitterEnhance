@@ -30,7 +30,7 @@ exports.insertNewUser = function(fullName, email, userName, password, callback) 
   });
 };
 
-exports.insertFacebookUser = function(fullName, email, userName, facebookID, callback){
+exports.insertFacebookUser = function(fullName, email, userName, facebookID, callback) {
   video45.insert({
     "type": "user",
     "fullName": fullName,
@@ -65,7 +65,8 @@ exports.insertNewPost = function(title, description, vidData, userName, date, ca
     "date": date,
     "vidData": vidData,
     "comments": [],
-    "likes": 0
+    "likes": 0,
+    "likers": []
   }, function(err, body) {
     if (err) {
       console.log('Error in insertFacebookUser: ' + err);
@@ -78,14 +79,27 @@ exports.insertNewPost = function(title, description, vidData, userName, date, ca
 
 exports.insertNewComment = function(comment, vidID, userName, callback) {
   video45.atomic('user', 'add_comment', vidID, {
-    "userName": userName, "comment": comment
-  }, function(error, response){
-    if(error){
+    "userName": userName,
+    "comment": comment
+  }, function(error, response) {
+    if (error) {
       console.log('Error in database query to add_comment: ' + error);
       callback(false);
+    } else {
+      callback(true);
+    }
+  });
+};
+
+exports.addLike = function(userName, vidID, callback) {
+  video45.atomic('user', 'add_like', vidID, {
+    "userName": userName
+  }, function(err, response) {
+    if(err){
+      console.log('Error in database query to add_like: ' + err);
     }
     else{
-      callback(true);
+      callback(response);
     }
   });
 };
@@ -186,7 +200,7 @@ exports.getUserProfile = function(userName, callback) {
   });
 };
 
-exports.getUserVideos = function(userName, callback){
+exports.getUserVideos = function(userName, callback) {
   video45.view('user', 'vid_by_user', {
     keys: [userName]
   }, function(err, body) { //key = userName, value = _id
