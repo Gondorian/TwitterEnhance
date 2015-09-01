@@ -73,12 +73,9 @@ module.exports = function(passport, express) {
   });
 
   router.get('/test1', function(req, res, next) {
-    if (req.user) {
-      console.log(req.user);
-      res.send('You are authenticated! user object:');
-    } else {
-      res.send('you are not authenticated!');
-    }
+    Account.addLike("as", "6b672e661f223a637639751e280077f8", function(msg) {
+      res.send(msg);
+    });
   });
 
   router.get('/video', function(req, res, next) {
@@ -89,23 +86,27 @@ module.exports = function(passport, express) {
     if (UserController.isLoggedIn(req)) {
       if (req.query.userName === 'refSessionID') { //if request is for current user
         UserController.getUserVideos(req.user.userName, function(success, data) {
-          if(success){
-            res.send({'videos': data});
-          }else {
+          if (success) {
+            res.send({
+              'videos': data
+            });
+          } else {
             res.send('Error!');
           }
         });
       } else {
         UserController.getUserVideos(req.query.userName, function(success, data) {
-          if(success){
-            res.send({'videos': data});
-          }else {
+          if (success) {
+            res.send({
+              'videos': data
+            });
+          } else {
             res.send('Error!');
           }
         });
       }
     } else {
-      res.send('Authentication Error. Make sure you are logged in.');
+      res.send('Authentication Error.');
     }
   });
 
@@ -193,21 +194,21 @@ module.exports = function(passport, express) {
           followers: numberOfFollowers
         }); //send back message, and updated number of followers
       });
-    } else {
-      res.send('Not logged in!');
+    } else{
+      res.send('Authentication error.');
     }
   });
 
 
-
+  //CEE15446
   router.post('/updateProfile', function(req, res, next) {
     if (UserController.isLoggedIn(req)) {
       UserController.updateProfile(req, function(msg) {
         console.log("sesssion: " + req.session.userName);
         res.send(msg);
       });
-    } else {
-      res.send('Not logged in!');
+    }else{
+      res.send('Authentication error.');
     }
   });
 
@@ -220,22 +221,36 @@ module.exports = function(passport, express) {
           res.send('Unable to create the video. Please try again later.');
         }
       });
-    } else {
-      res.send('Not logged in!');
+    }else{
+      res.send('Authentication error.');
     }
   });
 
-  router.post('/comment', function(req, res, next){
-    if(UserController.isLoggedIn(req)){
-      UserController.addComment(req, function(success){
+  router.post('/comment', function(req, res, next) {
+    if (UserController.isLoggedIn(req)) {
+      UserController.addComment(req, function(success) {
         if (success) {
           res.send('Success!');
-        } else{
+        } else {
           res.send('Fail!');
         }
       });
     }
+    else{
+      res.send('Authentication error.');
+    }
   });
-  return router;
 
+  router.post('/like', function(req, res, next){
+    if(UserController.isLoggedIn(req)){
+      UserController.addLike(req, function(msg){
+        res.send(msg);
+      });
+    } else{
+      res.send('Authentication error.');
+    }
+  });
+
+
+  return router;
 };
