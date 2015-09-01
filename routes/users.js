@@ -231,7 +231,7 @@ module.exports = function(passport, express) {
         if (success) {
           res.send('Success!');
         } else{
-          
+          res.send('Fail!');
         }
       });
     }

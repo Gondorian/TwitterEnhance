@@ -1,8 +1,7 @@
 //var ip = "104.131.218.159";
 var ip = "localhost:3000";
 var cust = "l";
-var data = [
-];
+var data = ["loading"];
 
 var resultData=[];
 
@@ -35,7 +34,7 @@ var CommentModal = React.createClass({
 	render:function(){
 		var commentNodes = this.props.comments.map(function(comm){
 			return(
-				<Comment poster={comm.poster} comment={comm.text} />
+				<Comment poster={comm.userName} comment={comm.comment} />
 			);
 		});
 		return(
@@ -45,40 +44,43 @@ var CommentModal = React.createClass({
 	    );
 	}
 });
-
 //edit the contents of the right panels here, note editing this will edit
 //all copies as this is the template used by vidList
 var Videos = React.createClass({
 	clickHandeler: function(){
-		/*
-		React.render(<CommentModal />,document.getElementById("commentMod"));
-		//the options for the modal
-		$('#commentModal').openModal({
-	      	dismissible: false, // Modal can be dismissed by clicking outside of the modal
-	      	opacity: .5, // Opacity of modal background
-	      	in_duration: 300, // Transition in duration
-	      	out_duration: 200, // Transition out duration
-	      	complete: function(){ //closes the modal and unmounts the react element
-				var result = React.unmountComponentAtNode(document.getElementById("commentMod"));
-	      	}
-    	});
-		*/
 		console.log("inside the click handeler for videos");
-		var comments=[
-			{poster: "travis goodwin", text: "This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool im This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img This is a cool img"},
-			{poster: "Paul Azevedo", text: "This anime wasn't too amazing"},
-			{poster: "Walter Cunningham", text: "This artist was rather skillful"}
-		];
+		console.log(this.props.comments);
+		//create empyt array and fill with comment text from server
+		var comments=[];
+		for(var i=0;i<this.props.numComments;i++){
+			comments.unshift({"userName": this.props.comments[i].userName,"comment": this.props.comments[i].comment});
+		}
+		//display the new array of comments to the screen
 		this.setState({comments : <CommentModal comments={comments} />});
 	},
 	postCommentClick: function(){
 		//console.log(this.props.name);
 		var text = document.getElementById(this.props.name).value
+		document.getElementById(this.props.name).value = ""; //empty the text field
 		console.log(text);
+		//add the comment to the old array and display
+		var newComments = this.props.comments;
+		newComments.unshift({"comment": text,"userName": info[0]});
+		//display the new array
+		this.setState({comments : <CommentModal comments={newComments}/>});
+		//submit the comment to the server
 		submitComment(this.props.name, text);
+	},
+	likeClick: function(){
+		console.log("Like clicked");
+		var like = this.props.likes+1;
+		this.setState({likes: like});
+		submitLike(this.props.name);
 	},
 	componentDidMount: function(){
 		console.log(this.props.url);
+		var like = this.props.likes;
+		this.setState({likes: like});
 	},
 	getInitialState: function(){
 		return({comments : <CommentModal comments={comments}/>});
@@ -99,13 +101,13 @@ var Videos = React.createClass({
 					</div>
 					<hr />
 					<div className="card-content inline-text">
-						<a href="#"><i className="small mdi-action-thumb-up prefix" /> {this.props.likes} likes</a>
+						<a onClick={this.likeClick}><i className="small mdi-action-thumb-up prefix" /> {this.state.likes} likes</a>
 						<a href="#"><i className="small mdi-av-repeat" /> {this.props.reposts} reposts </a>
 						<a href="#"><i className="small mdi-file-cloud prefix" />{this.props.shares} share </a>
 					</div>
 					<hr />
 					<div className="card-content">
-						<a id="viewComments" onClick={this.clickHandeler}>{this.props.comments} comments</a>
+						<a id="viewComments" onClick={this.clickHandeler}>{this.props.numComments} comments</a>
 						{this.state.comments}
 						<form>
 							 <div className="row">
@@ -137,10 +139,15 @@ var VidList = React.createClass({
 					</div>
 				</div>
 			)
+		}else if(data[0]=="loading"){
+			return(
+				<div className="row">
+				</div>
+			);
 		}else{
 			var imageNodes = this.props.data.map(function(vidUrl){
 				return(
-					<Videos url={vidUrl.url} key={vidUrl.key} name={vidUrl.key} text={"Title Here"} likes="0" reposts="0" shares="0" comments="0" />
+					<Videos url={vidUrl.url} key={vidUrl.key} name={vidUrl.key} comments={vidUrl.comments} text={"Title Here"} likes={vidUrl.likes} reposts="0" shares="0" numComments={vidUrl.numComments} />
 				);
 			});
 		}
@@ -210,71 +217,6 @@ var Edit = React.createClass({
 		);
 	}
 });
-
-//below is the modal for profile editing
-var EditModal = React.createClass({
-	acceptChange: function(){
-		var post = $('#modalPost').val();
-		var title = $('#modalTitle').val();
-
-		if(post!==""){
-			data.unshift({url: post, text: title});
-		}
-		//change the profile picture
-		var image = $('#modalImg').val();
-		if(image!==""){
-			$('.profilePic').attr('src', image);
-		}
-		//change the profile color
-		var col = $('#modalColor').val();
-		if(col!==""){
-			$('nav').css("background-color",col);
-		}
-		//close the modal when done
-		document.getElementById("modalForm").reset();
-		$('#editModal').closeModal();
-	}.bind(this),
-	createModal: function(){
-		React.render(<EditModal accept={this.acceptChange}/>,document.getElementById("editMod"));
-		//the options for the modal
-		$('#editModal').openModal({
-	      	dismissible: false, // Modal can be dismissed by clicking outside of the modal
-	      	opacity: .5, // Opacity of modal background
-	      	in_duration: 300, // Transition in duration
-	      	out_duration: 200, // Transition out duration
-	      	complete: function(){ //closes the modal and unmounts the react element
-				var result = React.unmountComponentAtNode(document.getElementById("editMod"))
-	      	}
-    	});
-	},
-	render: function(){
-		return(
-		<div id="editModal" className="modal modal-fixed-footer">
-	      <div className="modal-content">
-	        <h4> {{name}} </h4>
-	          <form id="modalForm">
-	            <input id="modalImg" type="text" placeholder="Profile Picture"/>
-	            <input id="modalColor" type="text" placeholder="Profile Color" /><br />
-	            <input id="modalPost" type="text" placeholder="Post" />
-	            <input id="modalTitle" type="text" placeholder="Video Title" />
-	            <div className="file-field input-field">
-	              <input className="file-path validate" type="text"/>
-	              <div className="btn">
-	                <span>File</span>
-	                <input type="file" />
-	              </div>
-	            </div>
-	          </form>
-	      </div>
-	      <div className="modal-footer">
-	        <a href="#!" onClick={this.props.accept} className="modal-action waves-effect waves-green btn-flat ">Agree</a>
-	        <a href="#!" className="modal-action modal-close waves-effect waves-red btn-flat ">Cancel</a>
-	      </div>
-	    </div>
-		);
-	}
-});
-
 
 //profileInfo is the information contained in the left pushpin, all
 // modifications can be done here
@@ -508,7 +450,7 @@ var Content = React.createClass({
 			<div className = "profilePage">
 				<Navbar cust = {this.state.logged} color={this.state.color} data={this.state.resultData}/>
 				{this.state.profileSection}
-				<VidList data={this.state.dat} likes="3" reposts="2" shares="0" comments="0"/>
+				<VidList data={this.state.dat} />
 				<div className="fixed-action-btn" id="buttonOptions">
 				    <a className="btn-floating btn-large red">
 				      <i className="large material-icons">navigation</i>
@@ -570,8 +512,16 @@ function getPost(name){
 				for(var i = 0; i<response.videos.length;i++){
 					//some data checks
 					var url = (URL.createObjectURL(base64ToBlob(response.videos[i].vidData)));
+					var comments = response.videos[i].comments;
+					console.log(comments);
 					//var comments = response[i].comments.slice(0);
-					data.unshift({'url': url, 'key':response.videos[i].id, 'comments': comments});
+					data.unshift(
+						{'url': url,
+						 'key':response.videos[i].id,
+						 'comments': response.videos[i].comments, 
+						 'numComments': response.videos[i].comments.length,
+						 'likes': response.videos[i].likes
+						});
 				}
 			}
 		},error: function(response){
@@ -640,11 +590,27 @@ function submitfollow(){
 
 //below is the submition of comments
 function submitComment(vidId, comment){
-
 	$.ajax({
 		url: "http://"+ip+"/users/comment",
 		type: 'POST',
 		data: {'vidID': vidId, 'comment': comment}, //This data should be the video id and the comment information,
+		success: function(response){
+			console.log("the response was");
+			console.log(response);
+		},
+		error: function(response){
+			console.log("an error occured with this message " + response);
+		}
+	});
+	return false;
+};
+
+//below is the submition of Likes
+function submitLike(vidId){
+	$.ajax({
+		url: "http://"+ip+"/users/like",
+		type: 'POST',
+		data: {'vidID': vidId}, //This data should be the video id
 		success: function(response){
 			console.log("the response was");
 			console.log(response);

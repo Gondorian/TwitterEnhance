@@ -321,7 +321,6 @@ function post(info) {
   blobToBase64(info, function(base64) { // encode
     var update = base64;
     //var update = atob(info);
-    console.log(update);
     $.ajax({
       url: "http://" + ip + "/users/createPost",
       type: 'POST',
@@ -725,7 +724,7 @@ var blobToBase64 = function(blob, cb) {
   reader.onloadend = function() {
   	base64data = reader.result;
     base64data = base64data.split(',')[1];
-  	console.log(base64data );
+
     cb(base64data);
   };
   //reader.readAsDataURL(blob);
