@@ -157,6 +157,13 @@ body {
   display: block;
   width: 100%; }
 
+a.vidButt {
+  color: blue; }
+  a.vidButt.liked {
+    color: green; }
+    a.vidButt.liked i {
+      color: green; }
+
 .commentBox {
   margin-top: 10px; }
   .commentBox .comment {

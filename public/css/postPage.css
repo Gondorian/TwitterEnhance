@@ -327,6 +327,13 @@ ul {
 #titleField {
   color: ghostWhite; }
 
+#buttonOptions {
+  bottom: 23px;
+  right: 12px; }
+
+.fixed-action-btn ul {
+  padding-left: 6px; }
+
 #grayscale {
   background-image: url("http://192.168.2.19:3000/design/filters/Grayscale.png");
   background-size: cover; }

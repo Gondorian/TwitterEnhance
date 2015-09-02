@@ -5,7 +5,6 @@
     <meta name="description",contents="">
     <meta name="author", contents="Sagar, Paul">
     <meta name="viewport", content="width=device-width,initial-scale=1">
-    <link rel='stylesheet' href='../public/css/style.css' />
     <link rel='stylesheet' href='../bower_components/materialize/bin/materialize.css' />
     <link rel='stylesheet' href='../public/css/ProfilePage.css' />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

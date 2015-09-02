@@ -59,10 +59,11 @@ var Videos = React.createClass({
 		this.setState({comments : <CommentModal comments={comments} />});
 	},
 	postCommentClick: function(){
-		//console.log(this.props.name);
-		var text = document.getElementById(this.props.name).value
-		document.getElementById(this.props.name).value = ""; //empty the text field
-		console.log(text);
+		//get the text area DOM
+		var textBox = document.getElementById("ta"+this.props.name);
+		var text = textBox.value //save the typed information from the DOM
+		textBox.value = ""; //empty the text field
+		console.log(text); // Print out the contents for debugging
 		//add the comment to the old array and display
 		var newComments = this.props.comments;
 		newComments.unshift({"comment": text,"userName": info[0]});
@@ -73,37 +74,52 @@ var Videos = React.createClass({
 	},
 	likeClick: function(){
 		console.log("Like clicked");
-		var like = this.props.likes+1;
-		this.setState({likes: like});
-		submitLike(this.props.name);
+		var likeButton = document.getElementById("lb"+this.props.name); //recieve the dom of the like button for editing
+		//ensure that the person hasn't already liked the post
+		if(likeButton.classList.length<2){
+			var like = this.props.likes+1;
+			this.setState({likes: like});
+			likeButton.classList.add("liked");
+			submitLike(this.props.name);
+		}
 	},
 	componentDidMount: function(){
 		console.log(this.props.url);
+		//set the likes to a state
 		var like = this.props.likes;
-		this.setState({likes: like});
+		this.setState({likes: this.props.likes});
+		//look if the viewer has already liked the post
+		for(var i=0;i<this.props.likers.length;i++){
+			if(this.props.likers[i]==info[0]){
+				//if the viewer has liked the post we are goingto modify the button
+				var likeButton = document.getElementById("lb"+this.props.name); //recieve the dom of the like button for editing
+				likeButton.classList.add("liked");
+				likeButton.setAttribute("disabled", true);
+			}
+		}
 	},
 	getInitialState: function(){
 		return({comments : <CommentModal comments={comments}/>});
 	},
 	render: function(){
 		return(
-			<div className="row">
+			<div id={this.props.key} className="row">
 				<div className="card col s6 offset-s5">
 					<div className="card-content ">
 						<img className="posterImg" src="http://www.bdu.edu.et/cos/sites/bdu.edu.et.cos/files/default_images/no-profile-img.gif" />
 						<p className="posterName">Posted by someone</p>
 					</div>
 					<div className="card-image">
-						<video id={this.props.key} className="vidImg" src={this.props.url} controls />
+						<video className="vidImg" src={this.props.url} controls />
 					</div>
 					<div className="card-content">
 						<p className="card-title">{this.props.text}</p>
 					</div>
 					<hr />
 					<div className="card-content inline-text">
-						<a onClick={this.likeClick}><i className="small mdi-action-thumb-up prefix" /> {this.state.likes} likes</a>
-						<a href="#"><i className="small mdi-av-repeat" /> {this.props.reposts} reposts </a>
-						<a href="#"><i className="small mdi-file-cloud prefix" />{this.props.shares} share </a>
+						<a id={"lb"+this.props.name} onClick={this.likeClick} className="vidButt"><i className="small mdi-action-thumb-up prefix" /> {this.state.likes} likes</a>
+						<a href="#" className="vidButt"><i className="small mdi-av-repeat" /> {this.props.reposts} reposts </a>
+						<a href="#" className="vidButt"><i className="small mdi-file-cloud prefix" />{this.props.shares} share </a>
 					</div>
 					<hr />
 					<div className="card-content">
@@ -112,7 +128,7 @@ var Videos = React.createClass({
 						<form>
 							 <div className="row">
         						<div className="input-field col s12">
-									<textarea maxLength="255" id={this.props.name} className="comment materialize-textarea"/>
+									<textarea id={"ta"+this.props.name} maxLength="255" className="comment materialize-textarea"/>
 									<label htmlFor="comment"> Enter something Nice </label>
 								</div>
 							</div>
@@ -147,7 +163,7 @@ var VidList = React.createClass({
 		}else{
 			var imageNodes = this.props.data.map(function(vidUrl){
 				return(
-					<Videos url={vidUrl.url} key={vidUrl.key} name={vidUrl.key} comments={vidUrl.comments} text={"Title Here"} likes={vidUrl.likes} reposts="0" shares="0" numComments={vidUrl.numComments} />
+					<Videos url={vidUrl.url} key={vidUrl.key} name={vidUrl.key} comments={vidUrl.comments} text={"Title Here"} likes={vidUrl.likes} likers={vidUrl.likers} reposts="0" shares="0" numComments={vidUrl.numComments} />
 				);
 			});
 		}
@@ -520,7 +536,8 @@ function getPost(name){
 						 'key':response.videos[i].id,
 						 'comments': response.videos[i].comments, 
 						 'numComments': response.videos[i].comments.length,
-						 'likes': response.videos[i].likes
+						 'likes': response.videos[i].likes,
+						 'likers': response.videos[i].likers
 						});
 				}
 			}
@@ -750,6 +767,7 @@ $(document).ready(function(){
 	$(".button-collapse").sideNav();
 	$('.modal-trigger').leanModal();
 	console.log("color is: " + info[5]);
+	document.cookie = "name=" + info[0];
     console.log("cookie: " + document.cookie);
 	handleResize();
 })

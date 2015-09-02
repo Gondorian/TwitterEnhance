@@ -1,6 +1,6 @@
 var ip = "localhost:3000";
 //var ip = "104.131.218.159";
-
+var viewerName = "";//this is the name of the person looking at the page
 var callOrder = [] //This is the order that video parts should be called in
 var recording = false; //wether the video is currently being recorded
 var currentCanvas = 0; //The number of clips shown in timeline
@@ -282,6 +282,15 @@ var Content = React.createClass({
 						<a id="submit" className="btn waves-light waves-effect" onClick={post}>POST</a>
 					</div>
 					<canvas id="tempCanvas" onClick={playPause}></canvas>
+				</div>
+				<div className="fixed-action-btn" id="buttonOptions">
+				    <a className="btn-floating btn-large red">
+				      <i className="large material-icons">navigation</i>
+				    </a>
+				    <ul>
+				      <li><a href={"http://"+ip+"/"+viewerName}className="btn-floating green"><i className="material-icons">person_pin</i></a></li>
+				      <li><a href="#" className="btn-floating blue">Top</a></li>
+				    </ul>
 				</div>
 			</div>
 		);
@@ -755,8 +764,20 @@ function base64ToBlob(b64Data, contentType, sliceSize) {
     return blob;
 }
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
 $(document).ready(function(){
 	//get parts of materialize to function correctly
+	viewerName = getCookie("name");
 	$(".button-collapse").sideNav();
 	$('.modal-trigger').leanModal();
 
